@@ -1,0 +1,28 @@
+@interrupt void TRAP_IRQHandler(void);
+@interrupt void TLI_IRQHandler (void);
+@interrupt void AWU_IRQHandler (void);
+@interrupt void CLK_IRQHandler (void);
+@interrupt void EXTI_PORTA_IRQHandler (void);
+@interrupt void EXTI_PORTB_IRQHandler (void);
+@interrupt void EXTI_PORTC_IRQHandler (void);
+@interrupt void EXTI_PORTD_IRQHandler (void);
+@interrupt void EXTI_PORTE_IRQHandler (void);
+@interrupt void CAN_RX_IRQHandler (void);
+@interrupt void CAN_TX_IRQHandler (void);
+@interrupt void SPI_IRQHandler (void);
+@interrupt void TIM1_UPD_OVF_TRG_BRK_IRQHandler (void);
+@interrupt void TIM1_CAP_COM_IRQHandler (void);
+@interrupt void TIM2_UPD_OVF_BRK_IRQHandler (void);
+@interrupt void TIM2_CAP_COM_IRQHandler (void);
+@interrupt void TIM3_UPD_OVF_BRK_IRQHandler (void);
+@interrupt void TIM3_CAP_COM_IRQHandler (void);
+@interrupt void USART_TX_IRQHandler (void);
+@interrupt void USART_RX_IRQHandler (void);
+@interrupt void I2C_IRQHandler (void);
+@interrupt void LINUART_TX_IRQHandler (void);
+@interrupt void LINUART_RX_IRQHandler (void);
+@interrupt void ADC_IRQHandler (void);
+@interrupt void TIM4_UPD_OVF_IRQHandler (void);
+@interrupt void EEPROM_EEC_IRQHandler (void);
+void Startup(void);
+
