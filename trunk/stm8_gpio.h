@@ -14,7 +14,14 @@
 /******          GPIO_B               *****/
 
 /******          GPIO_C               *****/
-#define SPEED_LEVEL GPIOC.ODR.field.bit1
+#define LED     GPIOC.ODR.byte
+#define LED_1   GPIOC.ODR.field.bit1
+#define LED_2   GPIOC.ODR.field.bit2
+#define LED_3   GPIOC.ODR.field.bit3
+#define LED_4   GPIOC.ODR.field.bit4
+#define LED_5   GPIOC.ODR.field.bit5
+#define LED_6   GPIOC.ODR.field.bit6
+#define LED_7   GPIOC.ODR.field.bit7
 
 /******          GPIO_D               *****/
 #define BEEP_PWM    GPIOD.ODR.field.bit4
