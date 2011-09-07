@@ -83,24 +83,31 @@ void Key_Scan_AD(void)
 	            BeepState=BEEP_SHORTBREAK;
 	            break;
 	        case UICC_3:
+	            LED_1=~LED_1;
 	            BeepState=BEEP_MIDDLEBREAK;
 	            break;
 	        case UICC_4:
+	            LED_2=~LED_2;
 	            BeepState=BEEP_LONGBREAK;
 	            break;
 	        case UICC_5:
+	            LED_3=~LED_3;
 	            BeepState=BEEP_OFF;
 	            break;
 	        case UICC_6:
+	            LED_4=~LED_4;
 	            BeepState=BEEP_OFF;
 	            break;
 	        case UICC_7:
+	            LED_5=~LED_5;
 	            BeepState=BEEP_OFF;
 	            break;
 	        case UICC_8:
+	            LED_6=~LED_6;
 	            BeepState=BEEP_OFF;
 	            break;
 	        case UICC_9:
+	            LED_7=~LED_7;
 	            BeepState=BEEP_OFF;
 	            break;
 	    }

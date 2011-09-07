@@ -2,7 +2,7 @@
 #include "includes.h"
 
 /*******************************************************************************
-* Function Name : CAN_Init
+* Function Name : CanInit
 * Description   : 配置,激活CAN模块
 * Input         : CAN_MasterCtrlReg (MCR各bit的组合)
 				  - CAN_MCR_ABOM: Automatic bus-off management -> left
@@ -15,7 +15,7 @@
 * Output        : .
 * Return        : .
 *******************************************************************************/  
-void CAN_Init(u8 CAN_MasterCtrlReg)
+void CanInit(u8 CAN_MasterCtrlReg)
 {
     CLK.PCKENR2|=CLK_PCKENR2_CAN; // 开启CAN时钟，stm8 的外设时钟可控
     
@@ -192,26 +192,6 @@ void CAN_Init(u8 CAN_MasterCtrlReg)
 }
 
 /*******************************************************************************
-* Function Name : CAN_Sleep
-* Description   : This routine lets the CAN sleep.
-* Input         : .
-* Output        : .
-* Return        : .
-*******************************************************************************/
-void CAN_Sleep(void)
-{
-    CAN_Init(CAN_MCR_AWUM);
-    Can_Wakeup_Enable();
-    
-    /* Wait for Sleep acknowledge */
-    while(!(CAN.MSR &CAN_MSR_SLAK))
-    {
-        /* Set Sleep mode */
-        CAN.MCR |= CAN_MCR_SLEEP;		
-    }
-}
-
-/*******************************************************************************
 * Function Name : Can_Wakeup_Enable()
 * Description   : This service enable CAN WAKEUP interrupts.
 * Input         : .
@@ -239,13 +219,33 @@ void Can_Wakeup_Enable(void)
 }
 
 /*******************************************************************************
-* Function Name : CAN_WakeUp
+* Function Name : CanSleep
+* Description   : This routine lets the CAN sleep.
+* Input         : .
+* Output        : .
+* Return        : .
+*******************************************************************************/
+void CanSleep(void)
+{
+    CanInit(CAN_MCR_AWUM);
+    Can_Wakeup_Enable();
+    
+    /* Wait for Sleep acknowledge */
+    while(!(CAN.MSR &CAN_MSR_SLAK))
+    {
+        /* Set Sleep mode */
+        CAN.MCR |= CAN_MCR_SLEEP;		
+    }
+}
+
+/*******************************************************************************
+* Function Name : CanWakeUp
 * Description   : This routine wakes the CAN up.
 * Input         : .
 * Output        : .
 * Return        : .
 *******************************************************************************/
-void CAN_WakeUp(void)
+void CanWakeUp(void)
 {
 	CanBusWakeup();
 	
@@ -272,7 +272,7 @@ void CAN_WakeUp(void)
 * Return        : KCANTXOK - Request is accepted by CAN driver.
                   KCANTXFAILED - Request is not accepted by CAN driver.
 *******************************************************************************/
-BoolT CanMsgTransmit(void)
+BoolT CanMsgTransmit(CanMsgTypeDef *pCanMsg)
 {
 	unsigned char idx, MailboxNumber;
 
@@ -300,28 +300,34 @@ BoolT CanMsgTransmit(void)
 	//Data Length Code
     CAN_PAGE_MDLCR = 4;
     //EXT ID
-    CAN_PAGE_MIDR1 =0x1F |CAN_ID_EXT;
-    CAN_PAGE_MIDR2 =0x24;
-    CAN_PAGE_MIDR3 =0x20;
-    CAN_PAGE_MIDR4 =0x40;
+    *((u32*)&CAN_PAGE_MIDR1)=pCanMsg->id;
+    CAN_PAGE_MIDR1|= CAN_ID_EXT;
+    //CAN_PAGE_MIDR1 =0x1F |CAN_ID_EXT;
+    //CAN_PAGE_MIDR2 =0x24;
+    //CAN_PAGE_MIDR3 =0x20;
+    //CAN_PAGE_MIDR4 =0x40;
     //Data
     CAN_PAGE_MDAR1 =0x51;
     CAN_PAGE_MDAR2 =0x52;
-    CAN_PAGE_MDAR3 =0x54;
-    CAN_PAGE_MDAR4 =0x58;
+    CAN_PAGE_MDAR3 =0x53;
+    CAN_PAGE_MDAR4 =0x54;
+    CAN_PAGE_MDAR5 =0x55;
+    CAN_PAGE_MDAR6 =0x56;
+    CAN_PAGE_MDAR7 =0x57;
+    CAN_PAGE_MDAR8 =0x58;
     //Transmit Request
-    CAN_PAGE_MCSR |=CAN_PAGE_MCSR_TXRQ;
+    //CAN_PAGE_MCSR |=CAN_PAGE_MCSR_TXRQ;
 	return(TRUE);
 } 
 
 /*******************************************************************************
-* Function Name : CanCanInterruptDisable
+* Function Name : CanInterruptDisable
 * Description   : This routine disables all CAN interrupts.
 * Input         : .
 * Output        : .
 * Return        : .
 *******************************************************************************/
-void CanCanInterruptDisable(void)
+void CanInterruptDisable(void)
 {
 	CanSavePg();
 
@@ -333,13 +339,13 @@ void CanCanInterruptDisable(void)
 }
 
 /*******************************************************************************
-* Function Name : CanCanInterruptRestore
+* Function Name : CanInterruptRestore
 * Description   : This service restores all CAN interrupts.
 * Input         : .
 * Output        : .
 * Return        : .
 *******************************************************************************/
-void CanCanInterruptRestore (void)
+void CanInterruptRestore (void)
 {
 	CanSavePg();
 
@@ -360,62 +366,35 @@ void CanCanInterruptRestore (void)
 }
 
 
-void CAN_Store_Rcvd_Msg(void)	//中断服务程序中执行
+void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
 {
-	u8 i,idx;
+	u8 idx;
 	u8 *u8p =&CAN_PAGE_MDAR1;
-	spnear rCanMsgBuff *rp=(rCanMsgBuff *)NULL;
 	
 	CAN.PSR = CAN_PS_FIFO; //进入接收数据FIFO页面
-    can_msg_id16 =CAN_PAGE_MIDR1&0x1F;
-    can_msg_id16 <<=8; //移位计算更优
-    can_msg_id16 +=CAN_PAGE_MIDR2;
-    can_msg_id32 =can_msg_id16;
-    can_msg_id32 <<=8;
-    can_msg_id32 +=CAN_PAGE_MIDR3;
-    can_msg_id32 <<=8;
-    can_msg_id32 +=CAN_PAGE_MIDR4;
+    CanTxRxBuffer.id =CAN_PAGE_MIDR1&0x1F;
+    CanTxRxBuffer.id <<=8; //移位计算更优
+    CanTxRxBuffer.id +=CAN_PAGE_MIDR2;
+    CanTxRxBuffer.id <<=8;
+    CanTxRxBuffer.id +=CAN_PAGE_MIDR3;
+    CanTxRxBuffer.id <<=8;
+    CanTxRxBuffer.id +=CAN_PAGE_MIDR4;
 
-    switch(can_msg_id32)
+    switch(CanTxRxBuffer.id)
     {   //此处对ID进行软件过滤
         case CANID_ACC1: // OK
         case CANID_ILLUM1: // OK
-        case CANID_LOCK1: // OK
-        case CANID_PARKING: // OK
-        case CANID_REVERSE: // OK
-        case CANID_SPEED1: // OK
-        case CANID_SWC1: // OK
-        case CANID_TEMPEROUT1: // OK
-        case CANID_TEMPERSEAT1: // OK
-        case CANID_AIRINFO1: // OK
-        case CANID_WARNING: // OK
-        case CANID_WARN_DOOR1: // OK
-        case CANID_WARN_DOORZONE1: // OK
-        case CANID_WARN_FRONTCAP1: // OK
-        case CANID_WARN_REARCAP1: // OK
-        case CANID_WARN_REVERSE1: // OK
-        case CANID_WARN_SEATBELT1: // OK
-        case CANID_CARCENCTL:
-        case CANID_CARAIRCTL:
-        case CANID_RADAR1:
-        case CANID_ONSTARSW:
-        case CANID_ONSTARNUM:
-        case CANID_PHONEOVER:
-            rp =&CanRxBuffer;
-            if((*rp).Busy == FALSE) //检查主程序是否允许中断写入
-        	{
-        		(*rp).stdid = can_msg_id16; //保存ID
-        		(*rp).extid = can_msg_id32;
-        		(*rp).RxRdy =TRUE; //标志数据需要分析处理
-        		(*rp).dlc = CAN_PAGE_MDLCR; //此帧长度(字节数)
-        		{
-        			for (idx=0;idx<(*rp).dlc;idx++)
-        			{   //保存此帧CAN数据
-        				(*rp).data[idx]=u8p[idx];
-        			}
-        		}
-        	}
+        case CANID_SWITCHSTATE:
+        {
+    		CanTxRxBuffer.id = can_msg_id32; //保存ID
+    		CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
+			for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
+			{   //保存此帧CAN数据
+				CanTxRxBuffer.data[idx]=u8p[idx];
+			}
+            CanMsgAnalyze(&CanTxRxBuffer);
             break;
+        }
         default:
     		break;
     }
@@ -470,24 +449,11 @@ void ISR_Can_Rx(void)
 	}
 	while (CAN.RFR & CAN_RFR_FMP)	/* Check until FMP != 0 */
 	{
-        CAN_Store_Rcvd_Msg();
+        Can_Store_Rcvd_Msg();
         CAN.RFR |= CAN_RFR_RFOM; // Release mailbox
 		CAN.RFR |= CAN_RFR_RFOM; //此语句要用2句,原因还没搞明白
     }
 	CanRestorePg();
-}
-/******************************************************************
-*函数名称:IllumeAdjust()
-*功   能 :背光亮度调整
-*入口参数:u8 Parameter
-*出口参数:NONE
-*描   述 :
-*时   间 :2010.5.25
-*作   者 :mjzhang
-******************************************************************/
-void IllumeAdjust(u8 Parameter)
-{
-    
 }
 /******************************************************************
 *函数名称:CanIllumLevel()
@@ -530,656 +496,72 @@ u8 CanIllumLevel(u8 Byte)
 /******************************************************************
 *函数名称:CanMsgAnalyze()
 *功   能 :如果收到CAN消息,分析CAN消息结构体,
-*         将结果保存到CarState
+*         将结果保存到NodeState
 *入口参数:NONE   
 *出口参数:NONE
 *描   述 :
 *时   间 :2010.5.25
 *作   者 :mjzhang
 ******************************************************************/
-static void CanMsgAnalyze(void)
+static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 {
     u16 TempPara;
     u8 u8Temp;
-    static u8 LastSWCValue;
     BoolT FlagCANDataOK=TRUE;
     
-    if(CanRxBuffer.RxRdy)
+    switch(pCanMsg->id)
     {
-        CanRxBuffer.Busy=TRUE;
-        switch(CanRxBuffer.extid)
+        case CANID_ACC1: // ACC ON\OFF Message
         {
-            case CANID_LOCK1: //钥匙插入
-                if(0xFF==CanRxBuffer.data[0])
-                {
-                    CAR_LOCK_FLAG=1;
-                }
-                else if(0x00==CanRxBuffer.data[0])
-                {
-                    CAR_LOCK_FLAG=0;
-                }
-                break;
-            case CANID_ACC1: // ACC ON\OFF Message
+            if(0x4A==pCanMsg->data[0])
             {
-                if(0x4A==CanRxBuffer.data[0])
-                {
-                    CAR_ACC_FLAG=1;
-                }
-                else //if(0x85==CANMsgACC.data[0])
-                {
-                    CAR_ACC_FLAG=0;
-                }
-                break;
+                CAR_ACC_FLAG=1;
             }
-            case CANID_ILLUM1: // Illume Message
+            else //if(0x85==CANMsgACC.data[0])
             {
-                u8Temp=CanIllumLevel(CanRxBuffer.data[0]);
-                if(0xFF!=u8Temp)
-                {
-                    if(0x7F==u8Temp)
-                    {
-                        if(CarState.IllumeLevel==u8Temp)
-                        {
-                            FlagCANDataOK=FALSE; //重复的数据,不需发给主机
-                        }
-                        CAR_ILLUME_FLAG =0;
-                        CarState.IllumeLevel=u8Temp;
-                    }
-                    else
-                    {
-                        if(CarState.IllumeLevel==u8Temp)
-                        {
-                            FlagCANDataOK=FALSE; //重复的数据,不需发给主机
-                        }
-                        CAR_ILLUME_FLAG =1;
-                        CarState.IllumeLevel=u8Temp;
-                    }
-                    if(TRUE==FlagCANDataOK)
-                    {
-                        //WriteToMainMsgQue(PROTO_TYPE_ILL);
-                    }
-                }
-                break;
+                CAR_ACC_FLAG=0;
             }
-            case CANID_PARKING: // PARKING Message
-            {
-                if(0x00==CanRxBuffer.data[0])
-                {
-                    CAR_PARKING_FLAG=0;
-                }
-                else if(0xFF==CanRxBuffer.data[0])
-                {
-                    CAR_PARKING_FLAG=1;
-                }
-                break;
-            }
-            case CANID_SWC1: // SWC Message
-            {
-                if(((CanRxBuffer.data[0]&0x0F)!=((CanRxBuffer.data[0]>>4)&0x0F))
-                    /*||((CANMsgSWC.data[0]&0x0F)==LastSWCValue)*/)
-                {
-                    FlagCANDataOK=FALSE;
-                }
-                else
-                {
-                    if(CanRxBuffer.data[0])
-                    {   //CAN总线上只发一次方控键按下,接着会发方控键抬起
-                        LastSWCValue=CanRxBuffer.data[0]&0x0F;
-                        CarState.SWCKey=LastSWCValue;
-                        CAR_SWCKEYDOWN_FLAG=KEY_DOWN;
-                    }
-                    else
-                    {
-                        CarState.SWCKey=LastSWCValue;
-                        CAR_SWCKEYDOWN_FLAG=KEY_UP;
-                        LastSWCValue=0;
-                    }
-                }
-                if(TRUE==FlagCANDataOK)
-                {
-                    //WriteToMainMsgQue(PROTO_TYPE_SWC);
-                }
-                break;
-            }
-            case CANID_REVERSE: // Reverse Message
-            {
-                if(0xFF==CanRxBuffer.data[0])			
-                {   //倒车
-                    CAR_REVERSE_FLAG =1;
-                }
-                else if(0x00==CanRxBuffer.data[0])
-                {   //非倒车
-                    CAR_REVERSE_FLAG =0;
-                }
-                break;
-            }
-            case CANID_SPEED1: // Speed Message
-            {
-                TempPara=CanRxBuffer.data[0];
-                TempPara<<=8;
-                TempPara+=CanRxBuffer.data[1];
-                TempPara/=0x3A;
-                CarState.Speed=TempPara;
-                break;
-            }
-            case CANID_TEMPEROUT1: // Outdoor Temperature Message
-            {
-                switch(CanRxBuffer.data[1])
-                {
-                    case 0x00:
-                        u8Temp=-40;
-                        break;
-                    case 0x50:
-                        u8Temp=0;
-                        break;
-                    case 0x52:
-                        u8Temp=1;
-                        break;
-                    case 0xFF:
-                        u8Temp=87;
-                        break;
-                    default:
-                        if(!(CanRxBuffer.data[2]&0x01))
-                        {
-                            FlagCANDataOK=FALSE;
-                        }
-                        if(CanRxBuffer.data[1]<0x50)
-                        {
-                            u8Temp=CanRxBuffer.data[2]+1;
-                            u8Temp>>=1;
-                            u8Temp&=(~0x80); //去掉移位产生的最高位
-                            u8Temp=-u8Temp; //补码
-                        }
-                        else if(CanRxBuffer.data[1]<0xFF)
-                        {
-                            u8Temp=CanRxBuffer.data[2]-1;
-                            u8Temp>>=1;
-                            u8Temp&=(~0x80); //去掉移位产生的最高位
-                            u8Temp+=2;
-                        }
-                        break;
-                }
-                if(CarState.TemperOutdoor!=u8Temp)
-                {
-                    CarState.TemperOutdoor=u8Temp;
-                    if(TRUE==FlagCANDataOK)
-                    {
-                        //WriteToMainMsgQue(PROTO_TYPE_AIRINFO);
-                    }
-                }
-                break;
-            }
-            case CANID_TEMPERSEAT1: // Seat Temperature Message
-            {
-                if(0xFF==CanRxBuffer.data[0])
-                {   //左椅
-                    switch(CanRxBuffer.data[2])
-                    {
-                        case 0x65: // 1级热度
-                            u8Temp=0x10;
-                            break;
-                        case 0x6E: // 2级热度
-                            u8Temp=0x20;
-                            break;
-                        case 0xFF: // 3级热度
-                            u8Temp=0x30;
-                            break;
-                        default:
-                            u8Temp=0;
-                            FlagCANDataOK=FALSE;
-                            break;
-                    }
-                }
-                else if(0x00==CanRxBuffer.data[0])
-                {   // 关闭座椅热度
-                    u8Temp=0;
-                    if(0x00!=CanRxBuffer.data[2])
-                    {
-                        FlagCANDataOK=FALSE;
-                    }
-                }
-                else
-                {
-                    FlagCANDataOK=FALSE;
-                }
-                if(0xFF==CanRxBuffer.data[1])
-                {   //右椅
-                    switch(CanRxBuffer.data[3])
-                    {
-                        case 0x65: // 1级热度
-                            u8Temp|=1;
-                            break;
-                        case 0x6E: // 2级热度
-                            u8Temp|=2;
-                            break;
-                        case 0xFF: // 3级热度
-                            u8Temp|=3;
-                            break;
-                        default:
-                            u8Temp&=0xf0;
-                            FlagCANDataOK=FALSE;
-                            break;
-                    }
-                }
-                else if(0x00==CanRxBuffer.data[1])
-                {   // 关闭座椅热度
-                    u8Temp&=0xf0;
-                    if(0x00!=CanRxBuffer.data[3])
-                    {
-                        FlagCANDataOK=FALSE;
-                    }
-                }
-                else
-                {
-                    FlagCANDataOK=FALSE;
-                }
-                if(CarState.TemperSeat.byte!=u8Temp)
-                {
-                    CarState.TemperSeat.byte=u8Temp;
-                    if(TRUE==FlagCANDataOK)
-                    {
-                        //WriteToMainMsgQue(PROTO_TYPE_AIRINFO);
-                    }
-                }
-                break;
-            }
-            case CANID_AIRINFO1: // Air conditioning Infomation Message
-            {
-                FlagCANDataOK=FALSE;
-                if(0xF5<CanRxBuffer.data[1]&&CanRxBuffer.data[1]<0xFF)
-                {   //送风模式
-                    u8Temp=0xFF-CanRxBuffer.data[1];
-                    if(CarState.WindMode!=u8Temp)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CarState.WindMode=u8Temp;
-                    }
-                }
-                if(CanRxBuffer.data[6]&0x02)
-                {   // A/C ON
-                    if(!CarState.AirFlag.field.F_AC)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CarState.AirFlag.field.F_AC=1;
-                    }
-                }
-                else
-                {   // A/C OFF
-                    if(CarState.AirFlag.field.F_AC)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CarState.AirFlag.field.F_AC=0;
-                    }
-                }
-                if(CanRxBuffer.data[6]&0x04)
-                {   //内循环
-                    if(!CarState.AirFlag.field.F_LoopInOut)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CarState.AirFlag.field.F_LoopInOut=1;
-                    }
-                }
-                else
-                {   //外循环
-                    if(CarState.AirFlag.field.F_LoopInOut)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CarState.AirFlag.field.F_LoopInOut=0;
-                    }
-                }
-                u8Temp=CanRxBuffer.data[2]&0x07; //风力
-                if(CarState.AirFlag.field.F_WindLv!=u8Temp)
-                {
-                    FlagCANDataOK=TRUE;
-                    CarState.AirFlag.field.F_WindLv=u8Temp;
-                }
-                u8Temp=CanRxBuffer.data[4]-0x0C; //左边空调温度
-                if(CarState.TemperLeft!=u8Temp)
-                {
-                    FlagCANDataOK=TRUE;
-                    CarState.TemperLeft=u8Temp;
-                }
-                u8Temp=CanRxBuffer.data[5]-0x0C; //右边空调温度
-                if(CarState.TemperRight!=u8Temp)
-                {
-                    FlagCANDataOK=TRUE;
-                    CarState.TemperRight=u8Temp;
-                }
-                if(TRUE==FlagCANDataOK)
-                {
-                    //WriteToMainMsgQue(PROTO_TYPE_AIRINFO);
-                }
-                break;
-            }
-            case CANID_WARNING: // Warning Message
-            {
-                if(0x01==CanRxBuffer.data[0])
-                {
-                    CAR_WARNING_FLAG=1;
-                }
-                else if(0x00==CanRxBuffer.data[0])
-                {
-                    CAR_WARNING_FLAG=0; //无任何报警
-                    CAR_WARN_SEATBELT=0; //无安全带报警
-                    CAR_WARN_FRONTCAP=0; //无前盖报警
-                    CAR_WARN_REARCAP=0; //无后盖报警
-                    CAR_WARN_REVERSE=0; //无障碍物
-                    CAR_DOORWARNNING=0; //无门未关报警
-                }
-                break;
-            }
-            case CANID_WARN_DOOR1:
-            {
-                if((0xFF==CanRxBuffer.data[0])&&(0xFF==CanRxBuffer.data[2]))
-                {
-                    CAR_DOORWARNNING=1; //门未关报警
-                }
-                break;
-            }
-            case CANID_WARN_DOORZONE1:
-            {
-                if(0x11==(0x11 & CanRxBuffer.data[0]))
-                {
-                    CAR_DOORWARN_LF=1; //左前门未关
-                }
-                else
-                {
-                    CAR_DOORWARN_LF=0;
-                }
-                if(0x22==(0x22 & CanRxBuffer.data[0]))
-                {
-                    CAR_DOORWARN_LR=1; //左后门未关
-                }
-                else
-                {
-                    CAR_DOORWARN_LR=0;
-                }
-                if(0x44==(0x44 & CanRxBuffer.data[0]))
-                {
-                    CAR_DOORWARN_RF=1; //右前门未关
-                }
-                else
-                {
-                    CAR_DOORWARN_RF=0;
-                }
-                if(0x88==(0x88 & CanRxBuffer.data[0]))
-                {
-                    CAR_DOORWARN_RR=1; //右后门未关
-                }
-                else
-                {
-                    CAR_DOORWARN_RR=0;
-                }
-                if(0x00==CanRxBuffer.data[0])
-                {
-                    CAR_DOORWARNNING=0;
-                }
-                break;
-            }
-            case CANID_WARN_SEATBELT1:
-            {
-                if((0x20==CanRxBuffer.data[2])&&(0xFF==CanRxBuffer.data[3]))
-                {
-                    CAR_WARN_SEATBELT=1; //安全带报警
-                }
-                else
-                {
-                    CAR_WARN_SEATBELT=0;
-                }
-                break;
-            }
-            case CANID_WARN_FRONTCAP1:
-            {
-                if((0xFF==CanRxBuffer.data[0])&&(0x24==CanRxBuffer.data[1]))
-                {
-                    CAR_WARN_FRONTCAP=1; //前盖报警
-                }
-                else
-                {
-                    CAR_WARN_FRONTCAP=0;
-                }
-                break;
-            }
-            case CANID_WARN_REARCAP1:
-            {
-                if(0xFF==CanRxBuffer.data[0])
-                {
-                    CAR_WARN_REARCAP=1; //后盖报警
-                }
-                else
-                {
-                    CAR_WARN_REARCAP=0;
-                }
-                break;
-            }
-            case CANID_WARN_REVERSE1:
-            {
-                if(CanRxBuffer.data[0]==CanRxBuffer.data[1])
-                {
-                    if(0xFF==CanRxBuffer.data[0])
-                    {
-                        CAR_WARN_REVERSE=3; //远距离障碍物
-                    }
-                    else if(0x80==CanRxBuffer.data[0])
-                    {
-                        CAR_WARN_REVERSE=2; //中距离障碍物
-                    }
-                    else if(0x0F==CanRxBuffer.data[0])
-                    {
-                        CAR_WARN_REVERSE=1; //近距离障碍物
-                    }
-                    else
-                    {
-                        CAR_WARN_REVERSE=0; //无障碍物
-                    }
-                }
-                break;
-            }
-            case CANID_CARCENCTL:
-            {
-                DebugParameter++;
-                if(CANCENCTL_FIRSTBYTE==CanRxBuffer.data[0])
-                {
-                    FlagCANDataOK=FALSE;
-                    TempPara=CanRxBuffer.data[1];
-                    TempPara<<=8;
-                    TempPara+=CanRxBuffer.data[2];
-                    switch(TempPara)
-                    {
-                        case CANCENCTL_SRHCAR:
-                            if(CAR_SEARCHCARLIGHT!=(CanRxBuffer.data[7]&0x01))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_SEARCHCARLIGHT=(CanRxBuffer.data[7]&0x01);
-                            }
-                            break;
-                        case CANCENCTL_LOCKRUN:
-                            if(CAR_AUTOLOCKRUN!=(CanRxBuffer.data[7]&0x01))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_AUTOLOCKRUN=(CanRxBuffer.data[7]&0x01);
-                            }
-                            break;
-                        case CANCENCTL_DISOPDRAUTOLOCK:
-                            if(CAR_DISOPDRAUTOLOCK!=(CanRxBuffer.data[7]&0x01))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_DISOPDRAUTOLOCK=(CanRxBuffer.data[7]&0x01);
-                            }
-                            break;
-                        case CANCENCTL_REMOTEUNLOCKLIGHT:
-                            if(CAR_REMOUNLOCKLIGHT!=(CanRxBuffer.data[7]&0x01))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_REMOUNLOCKLIGHT=(CanRxBuffer.data[7]&0x01);
-                            }
-                            break;
-                        case CANCENCTL_REMOTEUNLOCK:
-                            if(CAR_REMOTEUNLOCKDR!=(CanRxBuffer.data[7]&0x01))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_REMOTEUNLOCKDR=(CanRxBuffer.data[7]&0x01);
-                            }
-                            break;
-                        case CANCENCTL_LOCKILLDELAY:
-                            if(CAR_LOCKILLDELAY!=(CanRxBuffer.data[7]&0x03))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_LOCKILLDELAY=CanRxBuffer.data[7]&0x03;
-                            }
-                            break;
-                        case CANCENCTL_PARKAUTOUNLOCK:
-                            if(CAR_PARKAUTOUNLOCK!=(CanRxBuffer.data[7]&0x03))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_PARKAUTOUNLOCK=CanRxBuffer.data[7]&0x03;
-                            }
-                            break;
-                        case CANCENCTL_REMOTELOCKLIGHTSPEAK:
-                            if(CAR_REMOLOCKLIGHTSP!=(CanRxBuffer.data[7]&0x03))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_REMOLOCKLIGHTSP=CanRxBuffer.data[7]&0x03;
-                            }
-                            break;
-                        case CANCENCTL_LOCKDELAY:
-                            if(CAR_LOCKDELAY!=(CanRxBuffer.data[7]&0x01))
-                            {
-                                FlagCANDataOK=TRUE;
-                                CAR_LOCKDELAY=CanRxBuffer.data[7]&0x01;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    if(TRUE==FlagCANDataOK)
-                    {
-                        //WriteToMainMsgQue(PROTO_TYPE_CENCTRL);
-                    }
-                }
-                break;
-            }
-            case CANID_CARAIRCTL:
-            {
-                FlagCANDataOK=FALSE;
-                if(0xFF==CanRxBuffer.data[0])
-                {
-                    if(!CAR_REARWAUTOFOG)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CAR_REARWAUTOFOG=1;
-                    }
-                }
-                else
-                {
-                    if(CAR_REARWAUTOFOG)
-                    {
-                        FlagCANDataOK=TRUE;
-                        CAR_REARWAUTOFOG=0;
-                    }
-                }
-                u8Temp=CAR_AIRSENSORSLT;
-                if(0x05==CanRxBuffer.data[1])
-                {
-                    CAR_AIRSENSORSLT=0;
-                }
-                else if(0xA0==CanRxBuffer.data[1])
-                {
-                    CAR_AIRSENSORSLT=1;
-                }
-                else if(0x5A==CanRxBuffer.data[1])
-                {
-                    CAR_AIRSENSORSLT=2;
-                }
-                if(u8Temp!=CAR_AIRSENSORSLT)
-                {
-                    FlagCANDataOK=TRUE;
-                }
-                u8Temp=CAR_AUTOMODEWINDLV;
-                if(0x05==CanRxBuffer.data[3])
-                {
-                    CAR_AUTOMODEWINDLV=0;
-                }
-                else if(0xA0==CanRxBuffer.data[3])
-                {
-                    CAR_AUTOMODEWINDLV=1;
-                }
-                else if(0x5A==CanRxBuffer.data[3])
-                {
-                    CAR_AUTOMODEWINDLV=2;
-                }
-                if(u8Temp!=CAR_AUTOMODEWINDLV)
-                {
-                    FlagCANDataOK=TRUE;
-                }
-                u8Temp=CAR_AIRTEMPZONE;
-                if(0x05==CanRxBuffer.data[4])
-                {
-                    CAR_AIRTEMPZONE=0;
-                }
-                else if(0xA0==CanRxBuffer.data[4])
-                {
-                    CAR_AIRTEMPZONE=1;
-                }
-                else if(0x5A==CanRxBuffer.data[4])
-                {
-                    CAR_AIRTEMPZONE=2;
-                }
-                if(u8Temp!=CAR_AIRTEMPZONE)
-                {
-                    FlagCANDataOK=TRUE;
-                }
-                if(TRUE==FlagCANDataOK)
-                {
-                    //WriteToMainMsgQue(PROTO_TYPE_AIRCTRL);
-                }
-                break;
-            }
-            case CANID_RADAR1:
-            {
-                FlagCANDataOK=FALSE;
-                if(0xFF==CanRxBuffer.data[0]&&0xFF==CanRxBuffer.data[2])
-                {
-                    if(!CAR_RADAR)
-                    {
-                        CAR_RADAR=1;
-                        FlagCANDataOK=TRUE;
-                    }
-                }
-                else if(0==CanRxBuffer.data[0]&&0==CanRxBuffer.data[2])
-                {
-                    if(CAR_RADAR)
-                    {
-                        CAR_RADAR=0;
-                        FlagCANDataOK=TRUE;
-                    }
-                }
-                if(TRUE==FlagCANDataOK)
-                {
-                    //WriteToMainMsgQue(PROTO_TYPE_RADAR);
-                }
-                break;
-            }
-            case CANID_ONSTARSW:
-            {
-                //这里添加数据分析代码
-                break;
-            }
-            case CANID_ONSTARNUM:
-            {
-                //这里添加数据分析代码
-                break;
-            }
-            case CANID_PHONEOVER:
-            {
-                //这里添加数据分析代码
-                break;
-            }
+            break;
         }
-        CanRxBuffer.RxRdy=FALSE; //数据分析完成
-        CanRxBuffer.Busy=FALSE; //允许中断写入数据
-        CanFlagAnalyse();
+        case CANID_ILLUM1: // Illume Message
+        {
+            u8Temp=CanIllumLevel(pCanMsg->data[0]);
+            if(0xFF!=u8Temp)
+            {
+                if(0x7F==u8Temp)
+                {
+                    if(NodeState.IllumeLevel==u8Temp)
+                    {
+                        FlagCANDataOK=FALSE; //重复的数据,不需发给主机
+                    }
+                    CAR_ILLUME_FLAG =0;
+                    NodeState.IllumeLevel=u8Temp;
+                }
+                else
+                {
+                    if(NodeState.IllumeLevel==u8Temp)
+                    {
+                        FlagCANDataOK=FALSE; //重复的数据,不需发给主机
+                    }
+                    CAR_ILLUME_FLAG =1;
+                    NodeState.IllumeLevel=u8Temp;
+                }
+                if(TRUE==FlagCANDataOK)
+                {
+                    //WriteToMainMsgQue(PROTO_TYPE_ILL);
+                }
+            }
+            break;
+        }
+        case CANID_SWITCHSTATE:
+        {
+            //这里添加数据分析代码
+            
+            SendToCan(pCanMsg);
+            break;
+        }
     }
+    CanFlagAnalyse();
 }
 
 /******************************************************************
@@ -1200,38 +582,6 @@ void CanFlagAnalyse(void)
 	else
 	{
 		ACC_CTRL=0;   
-	}
-	if(CAR_ILLUME_FLAG)  
-	{
-		ILLUMI_LEVEL=0;
-	}
-	else	
-	{
-		ILLUMI_LEVEL=1;
-	}
-	if(CAR_REVERSE_FLAG)
-	{
-		REVERSE_LEVEL=0;
-	}
-	else
-	{
-		REVERSE_LEVEL=1;
-	}
-	if(CAR_PARKING_FLAG)
-	{
-		PARKING_LEVEL=1;
-	}
-	else
-	{
-		PARKING_LEVEL=0;
-	}
-	if(CAR_WARNING_FLAG)
-	{
-	    BeepState=BEEP_SHORTBREAK;
-	}
-	else
-	{
-	    BeepState=BEEP_OFF;
 	}
 }
 /******************************************************************
@@ -1272,12 +622,12 @@ BoolT CANGetEmptyMegBox(void)
 *时   间 :2010.5.25
 *作   者 :mjzhang
 ******************************************************************/
-void SendToCan(void)
+void SendToCan(CanMsgTypeDef *pCanMsg)
 {
-    CanMsgTransmit();
+    CanMsgTransmit(pCanMsg);
 }
 /******************************************************************
-*函数名称:CAN_process()
+*函数名称:Can_Main()
 *功   能 :
 *入口参数:NONE   
 *出口参数:NONE
@@ -1285,30 +635,30 @@ void SendToCan(void)
 *时   间 :2010.5.25
 *作   者 :mjzhang
 ******************************************************************/
-void CAN_process(void)
+void Can_Main(void)
 {
 	switch(CanBusState)
 	{
 		case CAN_INITIAL:
-			CAN_WakeUp();                                                                      
-			CAN_Init(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
-			CanCanInterruptRestore();
+			CanWakeUp();                                                                      
+			CanInit(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
+			CanInterruptRestore();
 			CanBusWakeup();
 			CanBusState=CAN_RUNNING;
 			break;
 		case CAN_RUNNING:
-            CanMsgAnalyze();
-            //SendToCan();
+		    CanTxRxBuffer.id=CANID_SWITCHSTATE;
+		    CanTxRxBuffer.dlc=8;
+            SendToCan(&CanTxRxBuffer);
 			break;
 		case CAN_ACCOFF:
-			CanMsgAnalyze();
 			if(CAR_ACC_FLAG==1)
 			{
 				CanBusState=CAN_RUNNING;
 			}
 			break;
 		case CAN_WAITSLEEP:
-			CAN_Sleep();
+			CanSleep();
 			CanBusSleep();
 			CanBusState=CAN_SLEEP;	
 			break;

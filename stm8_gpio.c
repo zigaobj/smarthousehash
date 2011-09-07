@@ -12,8 +12,8 @@ void GPIOInit(void)
 	GPIOB.CR2=0x00;
 	GPIOB.ODR.byte=0x00;
 
-	GPIOC.DDR=0x00; //
-	GPIOC.CR1=0x00;
+	GPIOC.DDR=0xFE; //
+	GPIOC.CR1=0xFE;
 	GPIOC.CR2=0x00;
 	GPIOC.ODR.byte=0x00;
 

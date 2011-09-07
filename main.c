@@ -61,7 +61,7 @@ main()
             FLAGMAIN_4MS=0; // 4ms时基标志清0
             BeepManage();
             Key_Scan_AD();
-            CAN_process();
+            Can_Main();
         }
         if(FLAGMAIN_FATAL)
         {
