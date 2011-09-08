@@ -7,6 +7,7 @@
     #define EXT extern
 #endif
 
+#include "modsl.h"
 #include "stm8_type.h"
 #include "stm8_map.h" //stm8_type.h,stm8_map.h这两个头文件必须放在最前面
 
