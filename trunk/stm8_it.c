@@ -47,13 +47,13 @@
 
 @interrupt void CAN_RX_IRQHandler (void)
 {
-    //ISR_Can_Rx();
+    ISR_Can_Rx();
 	return;
 }
 
 @interrupt void CAN_TX_IRQHandler (void)
 {
-    //ISR_Can_Tx();
+    ISR_Can_Tx();
 	return;
 }
 
