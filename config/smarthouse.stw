@@ -6,7 +6,3 @@ Keyword=ST7Workspace-V0.7
 [Project0]
 Filename=smarthouse.stp
 Dependencies=
-[Options]
-ActiveProject=smarthouse
-ActiveConfig=Debug
-AddSortedElements=1
