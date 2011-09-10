@@ -63,6 +63,11 @@ main()
             Key_Scan_AD();
             Can_Main();
         }
+        if(FLAGMAIN_100MS)
+        {
+            FLAGMAIN_100MS=0;
+            
+        }
         if(FLAGMAIN_FATAL)
         {
             break;

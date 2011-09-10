@@ -97,6 +97,8 @@ void ISR_TIM4_UPD_OVF(void)
     
     if(0!=BeepTimer)
         BeepTimer--;
+    DebugWord[0]++;
+    DebugWord[1]=DebugWord[0];
     
 }
 
