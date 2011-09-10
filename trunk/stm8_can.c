@@ -298,25 +298,21 @@ BoolT CanMsgTransmit(CanMsgTypeDef *pCanMsg)
 
 	/* Transfert ID, DLC and Data in RAM to the right Mailbox */
 	//Data Length Code
-    CAN_PAGE_MDLCR = 4;
+    CAN_PAGE_MDLCR = pCanMsg->dlc;
     //EXT ID
     *((u32*)&CAN_PAGE_MIDR1)=pCanMsg->id;
     CAN_PAGE_MIDR1|= CAN_ID_EXT;
-    //CAN_PAGE_MIDR1 =0x1F |CAN_ID_EXT;
-    //CAN_PAGE_MIDR2 =0x24;
-    //CAN_PAGE_MIDR3 =0x20;
-    //CAN_PAGE_MIDR4 =0x40;
     //Data
-    CAN_PAGE_MDAR1 =0x51;
-    CAN_PAGE_MDAR2 =0x52;
-    CAN_PAGE_MDAR3 =0x53;
-    CAN_PAGE_MDAR4 =0x54;
-    CAN_PAGE_MDAR5 =0x55;
-    CAN_PAGE_MDAR6 =0x56;
-    CAN_PAGE_MDAR7 =0x57;
-    CAN_PAGE_MDAR8 =0x58;
+    CAN_PAGE_MDAR1 =pCanMsg->data[0];
+    CAN_PAGE_MDAR2 =pCanMsg->data[1];
+    CAN_PAGE_MDAR3 =pCanMsg->data[2];
+    CAN_PAGE_MDAR4 =pCanMsg->data[3];
+    CAN_PAGE_MDAR5 =pCanMsg->data[4];
+    CAN_PAGE_MDAR6 =pCanMsg->data[5];
+    CAN_PAGE_MDAR7 =pCanMsg->data[6];
+    CAN_PAGE_MDAR8 =pCanMsg->data[7];
     //Transmit Request
-    //CAN_PAGE_MCSR |=CAN_PAGE_MCSR_TXRQ;
+    CAN_PAGE_MCSR |=CAN_PAGE_MCSR_TXRQ;
 	return(TRUE);
 } 
 
@@ -350,11 +346,11 @@ void CanInterruptRestore (void)
 	CanSavePg();
 
 	CAN.IER = 	//CAN_IER_WKUIE |	/* Wake-up Interrupt */
-				CAN_IER_FOVIE | /* FIFO overrun Interrupt */
-				CAN_IER_FFIE  |	/* FIFO Full Interrupt */
-				CAN_IER_FMPIE;// |	/* FIFO Message Pending Interrupt */
-				//CAN_IER_TMEIE;	/* Transmit Mailbox Empty Interrupt */
-
+				CAN_IER_FOVIE /* FIFO overrun Interrupt */
+				|CAN_IER_FFIE /* FIFO Full Interrupt */
+				|CAN_IER_FMPIE /* FIFO Message Pending Interrupt */
+				//|CAN_IER_TMEIE	/* Transmit Mailbox Empty Interrupt */
+                ;
 	CAN.PSR = CAN_PS_CTRL;
 	CAN_PAGE_EIER = CAN_PAGE_EIER_ERRIE|    /* Error Interrupt */
 				    CAN_PAGE_EIER_LECIE|        /* Last Error Code Interrupt */
@@ -649,6 +645,14 @@ void Can_Main(void)
 		case CAN_RUNNING:
 		    CanTxRxBuffer.id=CANID_SWITCHSTATE;
 		    CanTxRxBuffer.dlc=8;
+		    CanTxRxBuffer.data[0]=BYTE_3(DebugWord[0]);
+		    CanTxRxBuffer.data[1]=BYTE_2(DebugWord[0]);
+		    CanTxRxBuffer.data[2]=BYTE_1(DebugWord[0]);
+		    CanTxRxBuffer.data[3]=BYTE_0(DebugWord[0]);
+		    CanTxRxBuffer.data[4]=BYTE_3(DebugWord[1]);
+		    CanTxRxBuffer.data[5]=BYTE_2(DebugWord[1]);
+		    CanTxRxBuffer.data[6]=BYTE_1(DebugWord[1]);
+		    CanTxRxBuffer.data[7]=BYTE_0(DebugWord[1]);
             SendToCan(&CanTxRxBuffer);
 			break;
 		case CAN_ACCOFF:

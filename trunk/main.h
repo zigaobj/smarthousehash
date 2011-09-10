@@ -17,6 +17,7 @@ EXT BYTE_TypeDef FlagMain; //全局标志位
 
 #ifdef _DEBUG_
 EXT u8 DebugParameter;
+EXT u32 DebugWord[2];
 #endif
 
 EXT u8 FatalCode;
