@@ -61,7 +61,7 @@ void CanInit(u8 CAN_MasterCtrlReg)
 	CAN_PAGE_FCR3 = 0x00;
 
 	/* Filter 0 in one 32-bit registers */
-//	CAN_PAGE_FCR1 = CAN_FCR1_FILTER0_SCALE_1_32BIT;
+	CAN_PAGE_FCR1 = CAN_FCR1_FILTER0_SCALE_1_32BIT;
 	/* Filter 0 in one 32-bit registers & Filter 1 in one 32-bit registers */
 //	CAN_PAGE_FCR1 = CAN_FCR1_FILTER0_SCALE_1_32BIT
 //	               |CAN_FCR1_FILTER1_SCALE_1_32BIT;
@@ -102,13 +102,13 @@ void CanInit(u8 CAN_MasterCtrlReg)
 	CAN.PSR = CAN_PS_FILTER01;
 	/* All ID values are accepted */ 
 	CAN_PAGE_FLR1 = 0x00;
-	CAN_PAGE_FLR2 = 0x80; //mask first bit
+	CAN_PAGE_FLR2 = 0x00;
 	CAN_PAGE_FLR3 = 0x00;
-	CAN_PAGE_FLR4 = 0x08; //mask 5th bit
+	CAN_PAGE_FLR4 = 0x00;
 	CAN_PAGE_FLR5 = 0x00;
-	CAN_PAGE_FLR6 = 0x40; //mask second bit
+	CAN_PAGE_FLR6 = 0x00;
 	CAN_PAGE_FLR7 = 0x00;
-	CAN_PAGE_FLR8 = 0x00; //All Pass
+	CAN_PAGE_FLR8 = 0x00;
 	
 	CAN_PAGE_FHR1 = 0x00;
 	CAN_PAGE_FHR2 = 0x00;
