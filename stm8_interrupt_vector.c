@@ -17,7 +17,7 @@ struct interrupt_vector {
 	return;
 }
 
-extern void _stext();     /* startup routine 该函数在启动文 件中已被编译为O文件*/
+extern @near void _stext();     /* startup routine 该函数在启动文 件中已被编译为O文件*/
 // _vectab向量表已由cosmic指定到0x8000位置上
 struct interrupt_vector const _vectab[] = {
 	{0x82, (interrupt_handler_t)_stext}, /* reset */

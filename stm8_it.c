@@ -182,9 +182,3 @@
 {
 	return;
 }
-extern void _stext(void);
-void Startup(void)
-{
-	_stext();
-}
-
