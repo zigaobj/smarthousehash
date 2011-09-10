@@ -1,5 +1,5 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Generator V4.2.3 - 19 Nov 2007
+   2                     ; Generator V4.2.8 - 03 Dec 2008
 2348                     ; 2 void TIM1Init(void)
 2348                     ; 3 {
 2349                     	switch	.text
@@ -147,149 +147,197 @@
 2653                     	switch	.data
 2654  0000               L5341_CounterTime:
 2655  0000 00            	dc.b	0
-2688                     ; 80 void ISR_TIM4_UPD_OVF(void)
-2688                     ; 81 {
-2689                     	switch	.text
-2690  00e9               f_ISR_TIM4_UPD_OVF:
-2692  00e9 5209          	subw	sp,#9
-2693       00000009      OFST:	set	9
-2696                     ; 83 	TIM4.SR1 &=(~TIM4_SR1_UIF); //清更新事件标志
-2698  00eb 72115342      	bres	_TIM4+2,#0
-2699                     ; 84     FLAGMAIN_4MS=1;
-2701  00ef 72120000      	bset	_FlagMain,#1
-2702                     ; 85     CounterTime++;
-2704  00f3 725c0000      	inc	L5341_CounterTime
-2705                     ; 86     if(24==CounterTime|49==CounterTime|74==CounterTime|99==CounterTime
-2705                     ; 87     |124==CounterTime|149==CounterTime|174==CounterTime|199==CounterTime
-2705                     ; 88     |224==CounterTime|249==CounterTime)
-2707  00f7 c60000        	ld	a,L5341_CounterTime
-2708  00fa a1e0          	cp	a,#224
-2709  00fc 2604          	jrne	L02
-2710  00fe a601          	ld	a,#1
-2711  0100 2001          	jra	L22
-2712  0102               L02:
-2713  0102 4f            	clr	a
-2714  0103               L22:
-2715  0103 6b08          	ld	(OFST-1,sp),a
-2716  0105 c60000        	ld	a,L5341_CounterTime
-2717  0108 a1c7          	cp	a,#199
-2718  010a 2604          	jrne	L42
-2719  010c a601          	ld	a,#1
-2720  010e 2001          	jra	L62
-2721  0110               L42:
-2722  0110 4f            	clr	a
-2723  0111               L62:
-2724  0111 6b07          	ld	(OFST-2,sp),a
-2725  0113 c60000        	ld	a,L5341_CounterTime
-2726  0116 a1ae          	cp	a,#174
-2727  0118 2604          	jrne	L03
-2728  011a a601          	ld	a,#1
-2729  011c 2001          	jra	L23
-2730  011e               L03:
-2731  011e 4f            	clr	a
-2732  011f               L23:
-2733  011f 6b06          	ld	(OFST-3,sp),a
-2734  0121 c60000        	ld	a,L5341_CounterTime
-2735  0124 a195          	cp	a,#149
-2736  0126 2604          	jrne	L43
-2737  0128 a601          	ld	a,#1
-2738  012a 2001          	jra	L63
-2739  012c               L43:
-2740  012c 4f            	clr	a
-2741  012d               L63:
-2742  012d 6b05          	ld	(OFST-4,sp),a
-2743  012f c60000        	ld	a,L5341_CounterTime
-2744  0132 a17c          	cp	a,#124
-2745  0134 2604          	jrne	L04
-2746  0136 a601          	ld	a,#1
-2747  0138 2001          	jra	L24
-2748  013a               L04:
-2749  013a 4f            	clr	a
-2750  013b               L24:
-2751  013b 6b04          	ld	(OFST-5,sp),a
-2752  013d c60000        	ld	a,L5341_CounterTime
-2753  0140 a163          	cp	a,#99
-2754  0142 2604          	jrne	L44
-2755  0144 a601          	ld	a,#1
-2756  0146 2001          	jra	L64
-2757  0148               L44:
-2758  0148 4f            	clr	a
-2759  0149               L64:
-2760  0149 6b03          	ld	(OFST-6,sp),a
-2761  014b c60000        	ld	a,L5341_CounterTime
-2762  014e a14a          	cp	a,#74
-2763  0150 2604          	jrne	L05
-2764  0152 a601          	ld	a,#1
-2765  0154 2001          	jra	L25
-2766  0156               L05:
-2767  0156 4f            	clr	a
-2768  0157               L25:
-2769  0157 6b02          	ld	(OFST-7,sp),a
-2770  0159 c60000        	ld	a,L5341_CounterTime
-2771  015c a131          	cp	a,#49
-2772  015e 2604          	jrne	L45
-2773  0160 a601          	ld	a,#1
-2774  0162 2001          	jra	L65
-2775  0164               L45:
-2776  0164 4f            	clr	a
-2777  0165               L65:
-2778  0165 6b01          	ld	(OFST-8,sp),a
-2779  0167 c60000        	ld	a,L5341_CounterTime
-2780  016a a118          	cp	a,#24
-2781  016c 2604          	jrne	L06
-2782  016e a601          	ld	a,#1
-2783  0170 2001          	jra	L26
-2784  0172               L06:
-2785  0172 4f            	clr	a
-2786  0173               L26:
-2787  0173 1a01          	or	a,(OFST-8,sp)
-2788  0175 1a02          	or	a,(OFST-7,sp)
-2789  0177 1a03          	or	a,(OFST-6,sp)
-2790  0179 1a04          	or	a,(OFST-5,sp)
-2791  017b 1a05          	or	a,(OFST-4,sp)
-2792  017d 1a06          	or	a,(OFST-3,sp)
-2793  017f 1a07          	or	a,(OFST-2,sp)
-2794  0181 1a08          	or	a,(OFST-1,sp)
-2795  0183 6b09          	ld	(OFST+0,sp),a
-2796  0185 c60000        	ld	a,L5341_CounterTime
-2797  0188 a1f9          	cp	a,#249
-2798  018a 2604          	jrne	L46
-2799  018c a601          	ld	a,#1
-2800  018e 2001          	jra	L66
-2801  0190               L46:
-2802  0190 4f            	clr	a
-2803  0191               L66:
-2804  0191 6b08          	ld	(OFST-1,sp),a
-2805  0193 7b09          	ld	a,(OFST+0,sp)
-2806  0195 1a08          	or	a,(OFST-1,sp)
-2807  0197 2704          	jreq	L3541
-2808                     ; 90         FLAGMAIN_100MS=1;
-2810  0199 72140000      	bset	_FlagMain,#2
-2811  019d               L3541:
-2812                     ; 92     if(250<=CounterTime)
-2814  019d c60000        	ld	a,L5341_CounterTime
-2815  01a0 a1fa          	cp	a,#250
-2816  01a2 2508          	jrult	L5541
-2817                     ; 94         FLAGMAIN_1S=1;
-2819  01a4 72160000      	bset	_FlagMain,#3
-2820                     ; 95         CounterTime=0;
-2822  01a8 725f0000      	clr	L5341_CounterTime
-2823  01ac               L5541:
-2824                     ; 98     if(0!=BeepTimer)
-2826  01ac 725d0000      	tnz	_BeepTimer
-2827  01b0 2704          	jreq	L7541
-2828                     ; 99         BeepTimer--;
-2830  01b2 725a0000      	dec	_BeepTimer
-2831  01b6               L7541:
-2832                     ; 101 }
-2835  01b6 5b09          	addw	sp,#9
-2836  01b8 87            	retf
-2848                     	xdef	f_TIM4Init
-2849                     	xdef	f_TIM3Init
-2850                     	xdef	f_TIM2Init
-2851                     	xdef	f_TIM1Init
-2852                     	xref	_FlagMain
-2853                     	xdef	f_ISR_TIM4_UPD_OVF
-2854                     	xdef	f_TimerInit
-2855                     	xref	_BeepTimer
-2874                     	end
+2689                     ; 80 void ISR_TIM4_UPD_OVF(void)
+2689                     ; 81 {
+2690                     	switch	.text
+2691  00e9               f_ISR_TIM4_UPD_OVF:
+2693  00e9 5212          	subw	sp,#18
+2694       00000012      OFST:	set	18
+2697                     ; 83 	TIM4.SR1 &=(~TIM4_SR1_UIF); //清更新事件标志
+2699  00eb 72115342      	bres	_TIM4+2,#0
+2700                     ; 84     FLAGMAIN_4MS=1;
+2702  00ef 72120000      	bset	_FlagMain,#1
+2703                     ; 85     CounterTime++;
+2705  00f3 725c0000      	inc	L5341_CounterTime
+2706                     ; 86     if(24==CounterTime|49==CounterTime|74==CounterTime|99==CounterTime
+2706                     ; 87     |124==CounterTime|149==CounterTime|174==CounterTime|199==CounterTime
+2706                     ; 88     |224==CounterTime|249==CounterTime)
+2708  00f7 c60000        	ld	a,L5341_CounterTime
+2709  00fa a1e0          	cp	a,#224
+2710  00fc 2605          	jrne	L02
+2711  00fe ae0001        	ldw	x,#1
+2712  0101 2001          	jra	L22
+2713  0103               L02:
+2714  0103 5f            	clrw	x
+2715  0104               L22:
+2716  0104 1f0f          	ldw	(OFST-3,sp),x
+2717  0106 c60000        	ld	a,L5341_CounterTime
+2718  0109 a1c7          	cp	a,#199
+2719  010b 2605          	jrne	L42
+2720  010d ae0001        	ldw	x,#1
+2721  0110 2001          	jra	L62
+2722  0112               L42:
+2723  0112 5f            	clrw	x
+2724  0113               L62:
+2725  0113 1f0d          	ldw	(OFST-5,sp),x
+2726  0115 c60000        	ld	a,L5341_CounterTime
+2727  0118 a1ae          	cp	a,#174
+2728  011a 2605          	jrne	L03
+2729  011c ae0001        	ldw	x,#1
+2730  011f 2001          	jra	L23
+2731  0121               L03:
+2732  0121 5f            	clrw	x
+2733  0122               L23:
+2734  0122 1f0b          	ldw	(OFST-7,sp),x
+2735  0124 c60000        	ld	a,L5341_CounterTime
+2736  0127 a195          	cp	a,#149
+2737  0129 2605          	jrne	L43
+2738  012b ae0001        	ldw	x,#1
+2739  012e 2001          	jra	L63
+2740  0130               L43:
+2741  0130 5f            	clrw	x
+2742  0131               L63:
+2743  0131 1f09          	ldw	(OFST-9,sp),x
+2744  0133 c60000        	ld	a,L5341_CounterTime
+2745  0136 a17c          	cp	a,#124
+2746  0138 2605          	jrne	L04
+2747  013a ae0001        	ldw	x,#1
+2748  013d 2001          	jra	L24
+2749  013f               L04:
+2750  013f 5f            	clrw	x
+2751  0140               L24:
+2752  0140 1f07          	ldw	(OFST-11,sp),x
+2753  0142 c60000        	ld	a,L5341_CounterTime
+2754  0145 a163          	cp	a,#99
+2755  0147 2605          	jrne	L44
+2756  0149 ae0001        	ldw	x,#1
+2757  014c 2001          	jra	L64
+2758  014e               L44:
+2759  014e 5f            	clrw	x
+2760  014f               L64:
+2761  014f 1f05          	ldw	(OFST-13,sp),x
+2762  0151 c60000        	ld	a,L5341_CounterTime
+2763  0154 a14a          	cp	a,#74
+2764  0156 2605          	jrne	L05
+2765  0158 ae0001        	ldw	x,#1
+2766  015b 2001          	jra	L25
+2767  015d               L05:
+2768  015d 5f            	clrw	x
+2769  015e               L25:
+2770  015e 1f03          	ldw	(OFST-15,sp),x
+2771  0160 c60000        	ld	a,L5341_CounterTime
+2772  0163 a131          	cp	a,#49
+2773  0165 2605          	jrne	L45
+2774  0167 ae0001        	ldw	x,#1
+2775  016a 2001          	jra	L65
+2776  016c               L45:
+2777  016c 5f            	clrw	x
+2778  016d               L65:
+2779  016d 1f01          	ldw	(OFST-17,sp),x
+2780  016f c60000        	ld	a,L5341_CounterTime
+2781  0172 a118          	cp	a,#24
+2782  0174 2605          	jrne	L06
+2783  0176 ae0001        	ldw	x,#1
+2784  0179 2001          	jra	L26
+2785  017b               L06:
+2786  017b 5f            	clrw	x
+2787  017c               L26:
+2788  017c 01            	rrwa	x,a
+2789  017d 1a02          	or	a,(OFST-16,sp)
+2790  017f 01            	rrwa	x,a
+2791  0180 1a01          	or	a,(OFST-17,sp)
+2792  0182 01            	rrwa	x,a
+2793  0183 01            	rrwa	x,a
+2794  0184 1a04          	or	a,(OFST-14,sp)
+2795  0186 01            	rrwa	x,a
+2796  0187 1a03          	or	a,(OFST-15,sp)
+2797  0189 01            	rrwa	x,a
+2798  018a 01            	rrwa	x,a
+2799  018b 1a06          	or	a,(OFST-12,sp)
+2800  018d 01            	rrwa	x,a
+2801  018e 1a05          	or	a,(OFST-13,sp)
+2802  0190 01            	rrwa	x,a
+2803  0191 01            	rrwa	x,a
+2804  0192 1a08          	or	a,(OFST-10,sp)
+2805  0194 01            	rrwa	x,a
+2806  0195 1a07          	or	a,(OFST-11,sp)
+2807  0197 01            	rrwa	x,a
+2808  0198 01            	rrwa	x,a
+2809  0199 1a0a          	or	a,(OFST-8,sp)
+2810  019b 01            	rrwa	x,a
+2811  019c 1a09          	or	a,(OFST-9,sp)
+2812  019e 01            	rrwa	x,a
+2813  019f 01            	rrwa	x,a
+2814  01a0 1a0c          	or	a,(OFST-6,sp)
+2815  01a2 01            	rrwa	x,a
+2816  01a3 1a0b          	or	a,(OFST-7,sp)
+2817  01a5 01            	rrwa	x,a
+2818  01a6 01            	rrwa	x,a
+2819  01a7 1a0e          	or	a,(OFST-4,sp)
+2820  01a9 01            	rrwa	x,a
+2821  01aa 1a0d          	or	a,(OFST-5,sp)
+2822  01ac 01            	rrwa	x,a
+2823  01ad 01            	rrwa	x,a
+2824  01ae 1a10          	or	a,(OFST-2,sp)
+2825  01b0 01            	rrwa	x,a
+2826  01b1 1a0f          	or	a,(OFST-3,sp)
+2827  01b3 01            	rrwa	x,a
+2828  01b4 1f11          	ldw	(OFST-1,sp),x
+2829  01b6 c60000        	ld	a,L5341_CounterTime
+2830  01b9 a1f9          	cp	a,#249
+2831  01bb 2605          	jrne	L46
+2832  01bd ae0001        	ldw	x,#1
+2833  01c0 2001          	jra	L66
+2834  01c2               L46:
+2835  01c2 5f            	clrw	x
+2836  01c3               L66:
+2837  01c3 1f0f          	ldw	(OFST-3,sp),x
+2838  01c5 1e11          	ldw	x,(OFST-1,sp)
+2839  01c7 01            	rrwa	x,a
+2840  01c8 1a10          	or	a,(OFST-2,sp)
+2841  01ca 01            	rrwa	x,a
+2842  01cb 1a0f          	or	a,(OFST-3,sp)
+2843  01cd 01            	rrwa	x,a
+2844  01ce a30000        	cpw	x,#0
+2845  01d1 2704          	jreq	L3541
+2846                     ; 90         FLAGMAIN_100MS=1;
+2848  01d3 72140000      	bset	_FlagMain,#2
+2849  01d7               L3541:
+2850                     ; 92     if(250<=CounterTime)
+2852  01d7 c60000        	ld	a,L5341_CounterTime
+2853  01da a1fa          	cp	a,#250
+2854  01dc 2508          	jrult	L5541
+2855                     ; 94         FLAGMAIN_1S=1;
+2857  01de 72160000      	bset	_FlagMain,#3
+2858                     ; 95         CounterTime=0;
+2860  01e2 725f0000      	clr	L5341_CounterTime
+2861  01e6               L5541:
+2862                     ; 98     if(0!=BeepTimer)
+2864  01e6 725d0000      	tnz	_BeepTimer
+2865  01ea 2704          	jreq	L7541
+2866                     ; 99         BeepTimer--;
+2868  01ec 725a0000      	dec	_BeepTimer
+2869  01f0               L7541:
+2870                     ; 100     DebugWord[0]++;
+2872  01f0 ae0000        	ldw	x,#_DebugWord
+2873  01f3 a601          	ld	a,#1
+2874  01f5 8d000000      	callf	d_lgadc
+2876                     ; 101     DebugWord[1]=DebugWord[0];
+2878  01f9 ce0002        	ldw	x,_DebugWord+2
+2879  01fc cf0006        	ldw	_DebugWord+6,x
+2880  01ff ce0000        	ldw	x,_DebugWord
+2881  0202 cf0004        	ldw	_DebugWord+4,x
+2882                     ; 103 }
+2885  0205 5b12          	addw	sp,#18
+2886  0207 87            	retf
+2898                     	xdef	f_TIM4Init
+2899                     	xdef	f_TIM3Init
+2900                     	xdef	f_TIM2Init
+2901                     	xdef	f_TIM1Init
+2902                     	xref	_DebugWord
+2903                     	xref	_FlagMain
+2904                     	xdef	f_ISR_TIM4_UPD_OVF
+2905                     	xdef	f_TimerInit
+2906                     	xref	_BeepTimer
+2925                     	xref	d_lgadc
+2926                     	end

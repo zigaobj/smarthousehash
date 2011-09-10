@@ -1,0 +1,1 @@
+#error clnk Debug\smarthouse.lkf:1 symbol f__stext not defined (Debug\stm8_it.o Debug\stm8_interrupt_vector.o )

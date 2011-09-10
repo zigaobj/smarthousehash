@@ -1,5 +1,5 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Generator V4.2.3 - 19 Nov 2007
+   2                     ; Generator V4.2.8 - 03 Dec 2008
 2355                     ; 3 void GPIOInit(void)
 2355                     ; 4 {
 2356                     	switch	.text
