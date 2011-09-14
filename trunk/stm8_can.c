@@ -382,7 +382,6 @@ void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
         case CANID_ILLUM1: // OK
         case CANID_SWITCHSTATE:
         {
-    		CanTxRxBuffer.id = can_msg_id32; //保存ID
     		CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
 			for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
 			{   //保存此帧CAN数据
@@ -552,8 +551,8 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
         case CANID_SWITCHSTATE:
         {
             //这里添加数据分析代码
-            
-            SendToCan(pCanMsg);
+            //LED=pCanMsg->data[3];
+            //SendToCan(pCanMsg);
             break;
         }
     }
@@ -636,7 +635,7 @@ void Can_Main(void)
 	switch(CanBusState)
 	{
 		case CAN_INITIAL:
-			CanWakeUp();                                                                      
+			CanWakeUp();
 			CanInit(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
 			CanInterruptRestore();
 			CanBusWakeup();
@@ -648,7 +647,8 @@ void Can_Main(void)
 		    CanTxRxBuffer.data[0]=BYTE_3(DebugWord[0]);
 		    CanTxRxBuffer.data[1]=BYTE_2(DebugWord[0]);
 		    CanTxRxBuffer.data[2]=BYTE_1(DebugWord[0]);
-		    CanTxRxBuffer.data[3]=BYTE_0(DebugWord[0]);
+		    //CanTxRxBuffer.data[3]=BYTE_0(DebugWord[0]);
+		    CanTxRxBuffer.data[3]=LED;
 		    CanTxRxBuffer.data[4]=BYTE_3(DebugWord[1]);
 		    CanTxRxBuffer.data[5]=BYTE_2(DebugWord[1]);
 		    CanTxRxBuffer.data[6]=BYTE_1(DebugWord[1]);
