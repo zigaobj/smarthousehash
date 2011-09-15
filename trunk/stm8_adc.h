@@ -30,8 +30,6 @@
 #define UICC_8      0x09
 #define UICC_9      0x0a
 
-EXT u16 debug_adc;
-
 void ADCInit(void);
 u8 ADC_8BIT(u8 ch);
 u16 ADC_10BIT(u8 ch);

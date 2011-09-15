@@ -15,7 +15,7 @@ EXT BYTE_TypeDef FlagMain; //全局标志位
 #define FLAGMAIN_LINKSTATE  FlagMain.field.bit5
 #define FLAGMAIN_FATAL  FlagMain.field.bit6
 
-#ifdef _DEBUG_
+#if 0==RELEASE_FOR_PRODUCE
 EXT u8 DebugParameter;
 EXT u32 DebugWord[2];
 #endif
