@@ -59,6 +59,7 @@ void Key_Scan_AD(void)
 {
     u8 index=0;			//µ±«∞…®√Ë÷µ
 	u8 ADC_Value=0;
+	static u8 Key_backup;
 	ADC_Value=ADC_8BIT(ADC_KEY1);
 	for(index=0;index<KEY_NUM;index++)
 	{
@@ -68,10 +69,10 @@ void Key_Scan_AD(void)
 			break;
 		}
 	}
-	if(AD_Key_Tab[index][1]!=debug_adc)
+	if(AD_Key_Tab[index][1]!=Key_backup)
 	{
-	    debug_adc=AD_Key_Tab[index][1];
-	    switch(debug_adc)
+	    Key_backup=AD_Key_Tab[index][1];
+	    switch(Key_backup)
 	    {
 	        case UICC_0:
 	            BeepState=BEEP_ON;
