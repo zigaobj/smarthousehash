@@ -112,5 +112,9 @@ void Key_Scan_AD(void)
 	            BeepState=BEEP_OFF;
 	            break;
 	    }
+#if HASH_MODEL==HS_0002S
+        if(CAN_RUNNING==CanBusState)
+	        SendSwitchState(LED);
+#endif
 	}
 }

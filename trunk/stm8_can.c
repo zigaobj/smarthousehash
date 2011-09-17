@@ -1,4 +1,6 @@
 #include "includes.h"
+/*******       Node ID        ******/
+uc8 UniqueID_Temp[8]={0x51,0x02,0x03,0x04,0x05,0x06,0x07,0x08};
 
 /*******************************************************************************
 * Function Name : CanInit
@@ -378,8 +380,8 @@ void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
     switch(CanTxRxBuffer.id)
     {   //此处对ID进行软件过滤
         case CANID_ACC1: // OK
-        case CANID_ILLUM1: // OK
         case CANID_SWITCHSTATE:
+        case CANID_NODEREGISTER:
         {
     		CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
 			for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
@@ -502,6 +504,7 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
     u16 TempPara;
     u8 u8Temp;
     BoolT FlagCANDataOK=TRUE;
+    CanMsgTypeDef CanBuffer;
     
     switch(pCanMsg->id)
     {
@@ -509,49 +512,42 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
         {
             if(0x4A==pCanMsg->data[0])
             {
-                CAR_ACC_FLAG=1;
-            }
-            else //if(0x85==CANMsgACC.data[0])
-            {
-                CAR_ACC_FLAG=0;
-            }
-            break;
-        }
-        case CANID_ILLUM1: // Illume Message
-        {
-            u8Temp=CanIllumLevel(pCanMsg->data[0]);
-            if(0xFF!=u8Temp)
-            {
-                if(0x7F==u8Temp)
-                {
-                    if(NodeState.IllumeLevel==u8Temp)
-                    {
-                        FlagCANDataOK=FALSE; //重复的数据,不需发给主机
-                    }
-                    CAR_ILLUME_FLAG =0;
-                    NodeState.IllumeLevel=u8Temp;
-                }
-                else
-                {
-                    if(NodeState.IllumeLevel==u8Temp)
-                    {
-                        FlagCANDataOK=FALSE; //重复的数据,不需发给主机
-                    }
-                    CAR_ILLUME_FLAG =1;
-                    NodeState.IllumeLevel=u8Temp;
-                }
-                if(TRUE==FlagCANDataOK)
-                {
-                    //WriteToMainMsgQue(PROTO_TYPE_ILL);
-                }
+                NODE_ACC_FLAG=1;
             }
             break;
         }
         case CANID_SWITCHSTATE:
         {
-            //这里添加数据分析代码
-            //LED=pCanMsg->data[3];
+#if HASH_MODEL==HS_0001M
+            LED=pCanMsg->data[0];
             //SendToCan(pCanMsg);
+#endif
+            break;
+        }
+        case CANID_NODEREGISTER:
+        {
+#if HASH_MODEL==HS_0001M
+            CanBuffer.data[0]=pCanMsg->data[0];
+            CanBuffer.data[1]=pCanMsg->data[1];
+            CanBuffer.data[2]=pCanMsg->data[2];
+            CanBuffer.data[3]=pCanMsg->data[3];
+            CanBuffer.data[4]=pCanMsg->data[4];
+            CanBuffer.data[5]=pCanMsg->data[5];
+            CanBuffer.data[6]=pCanMsg->data[6];
+            CanBuffer.data[7]=pCanMsg->data[7];
+            CanBuffer.id =CANID_NODEREGISTER;
+            CanBuffer.dlc =8;
+            SendToCan(&CanBuffer);
+#elif HASH_MODEL==HS_0002S
+            if(UniqueID_Temp[0]==pCanMsg->data[0]&&UniqueID_Temp[1]==pCanMsg->data[1]
+             &&UniqueID_Temp[2]==pCanMsg->data[2]&&UniqueID_Temp[3]==pCanMsg->data[3]
+             &&UniqueID_Temp[4]==pCanMsg->data[4]&&UniqueID_Temp[5]==pCanMsg->data[5]
+             &&UniqueID_Temp[6]==pCanMsg->data[6]&&UniqueID_Temp[7]==pCanMsg->data[7]
+            )
+            {
+                NODE_REGISTER_FLAG=1;
+            }
+#endif
             break;
         }
     }
@@ -569,7 +565,7 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 ******************************************************************/
 void CanFlagAnalyse(void)
 {
-	if(CAR_ACC_FLAG)
+	if(NODE_ACC_FLAG)
 	{
 		ACC_CTRL=1 ;      
 	}
@@ -610,7 +606,7 @@ BoolT CANGetEmptyMegBox(void)
 /******************************************************************
 *函数名称:SendToCan()
 *功   能 :
-*入口参数:NONE   
+*入口参数:CanMsgTypeDef   
 *出口参数:NONE
 *描   述 :
 *时   间 :2010.5.25
@@ -620,6 +616,48 @@ void SendToCan(CanMsgTypeDef *pCanMsg)
 {
     CanMsgTransmit(pCanMsg);
 }
+/******************************************************************
+*函数名称:NodeRegister()
+*功   能 :
+*入口参数:NONE   
+*出口参数:NONE
+*描   述 :
+*时   间 :2010.5.25
+*作   者 :mjzhang
+******************************************************************/
+void NodeRegister(void)
+{
+    CanMsgTypeDef CanBuffer;
+    CanBuffer.id =CANID_NODEREGISTER;
+    CanBuffer.dlc =8;
+    CanBuffer.data[0]=UniqueID_Temp[0];
+    CanBuffer.data[1]=UniqueID_Temp[1];
+    CanBuffer.data[2]=UniqueID_Temp[2];
+    CanBuffer.data[3]=UniqueID_Temp[3];
+    CanBuffer.data[4]=UniqueID_Temp[4];
+    CanBuffer.data[5]=UniqueID_Temp[5];
+    CanBuffer.data[6]=UniqueID_Temp[6];
+    CanBuffer.data[7]=UniqueID_Temp[7];
+    SendToCan(&CanBuffer);
+}
+/******************************************************************
+*函数名称:SendSwitchState()
+*功   能 :
+*入口参数:u8   
+*出口参数:NONE
+*描   述 :
+*时   间 :2010.5.25
+*作   者 :mjzhang
+******************************************************************/
+void SendSwitchState(u8 Switch)
+{
+    CanMsgTypeDef CanBuffer;
+    CanBuffer.id =CANID_SWITCHSTATE;
+    CanBuffer.dlc =1;
+    CanBuffer.data[0]=Switch;
+    SendToCan(&CanBuffer);
+}
+
 /******************************************************************
 *函数名称:Can_Main()
 *功   能 :
@@ -638,24 +676,25 @@ void Can_Main(void)
 			CanInit(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
 			CanInterruptRestore();
 			CanBusWakeup();
-			CanBusState=CAN_RUNNING;
+			CanBusState=CAN_WAIT;
 			break;
+		case CAN_WAIT:
+#if HASH_MODEL==HS_0002S
+		    if(0==NODE_REGISTER_FLAG)
+		    {
+    		    NodeRegister();
+		    }
+		    else
+#endif 
+		    {
+		        CanBusState=CAN_RUNNING;
+		    }
+		    break;
 		case CAN_RUNNING:
-		    CanTxRxBuffer.id=CANID_SWITCHSTATE;
-		    CanTxRxBuffer.dlc=8;
-		    CanTxRxBuffer.data[0]=BYTE_3(DebugWord[0]);
-		    CanTxRxBuffer.data[1]=BYTE_2(DebugWord[0]);
-		    CanTxRxBuffer.data[2]=BYTE_1(DebugWord[0]);
-		    //CanTxRxBuffer.data[3]=BYTE_0(DebugWord[0]);
-		    CanTxRxBuffer.data[3]=LED;
-		    CanTxRxBuffer.data[4]=BYTE_3(DebugWord[1]);
-		    CanTxRxBuffer.data[5]=BYTE_2(DebugWord[1]);
-		    CanTxRxBuffer.data[6]=BYTE_1(DebugWord[1]);
-		    CanTxRxBuffer.data[7]=BYTE_0(DebugWord[1]);
-            SendToCan(&CanTxRxBuffer);
+		    
 			break;
 		case CAN_ACCOFF:
-			if(CAR_ACC_FLAG==1)
+			if(NODE_ACC_FLAG==1)
 			{
 				CanBusState=CAN_RUNNING;
 			}

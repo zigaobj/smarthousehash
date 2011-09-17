@@ -6,7 +6,7 @@
 #define HS_0001M   1
 #define HS_0002S   2
 
-#define HASH_MODEL   HS_0001M //不同机种软件,在此修改机种代号即可
+#define HASH_MODEL   HS_0002S //不同机种软件,在此修改机种代号即可
 
 #if 0==RELEASE_FOR_PRODUCE
 //#define DEBUG_SEND
