@@ -1,9 +1,8 @@
 /*******       event ID                  DLC          ******/
-#define CANID_ACC1             0x10242040 // 1
+#define CANID_NODEREGISTER      0x10445701
+#define CANID_ACC1              0x10242040 // 1
 
-#define CANID_ILLUM1           0x10466677 // 3
-
-#define CANID_SWITCHSTATE      0x1029C080 // 1
+#define CANID_SWITCHSTATE       0x1029C080 // 1
 
 /*******       event paramter        ******/
 #define PARA_ILL_OFF    0x00
@@ -42,18 +41,17 @@ typedef struct
 		struct
 		{
 			u8 F_ACC_On       :1;
-			u8 F_Illume       :1;
+			u8 F_Register     :1;
 		}field;
 	}Flag;
     u8 WindVelocity;
     u8 Temperature;
-    u8 IllumeLevel;
 }NODE_STATUS;
 
 EXT NODE_STATUS NodeState;
 
-#define CAR_ACC_FLAG        NodeState.Flag.field.F_ACC_On			 
-#define CAR_ILLUME_FLAG	    NodeState.Flag.field.F_Illume	
+#define NODE_ACC_FLAG       NodeState.Flag.field.F_ACC_On			 
+#define NODE_REGISTER_FLAG  NodeState.Flag.field.F_Register	
 
 /* user receive structure */
 typedef volatile struct
@@ -75,6 +73,7 @@ typedef volatile struct
 typedef enum
 {
 	CAN_INITIAL,
+	CAN_WAIT,
 	CAN_RUNNING,
 	CAN_WAITSLEEP,
 	CAN_SLEEP,
@@ -106,6 +105,8 @@ void ISR_Can_Rx(void);
 u8 CanIllumLevel(u8 Byte);
 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg);
 void SendToCan(CanMsgTypeDef *pCanMsg);
+void NodeRegister(void);
+void SendSwitchState(u8 Switch);
 void CanFlagAnalyse(void);
 void Can_Main(void);
 
