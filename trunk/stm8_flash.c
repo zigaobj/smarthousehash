@@ -1,4 +1,3 @@
-#define _FLASH_
 #include "includes.h"
 
 spnear u8 GBuffer[FLASH_BLOCK_SIZE];

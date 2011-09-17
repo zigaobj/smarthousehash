@@ -12,6 +12,7 @@
 
 #include "config.h" //ÅäÖÃÎÄ¼ş
 #include "library.h"
+#include "stm8_eeprom.h"
 #include "stm8_beep.h"
 #include "stm8_it.h"
 #include "stm8_timer.h"
