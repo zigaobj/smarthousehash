@@ -43,7 +43,20 @@ u16 ADC_10BIT(u8 ch)
 
 const u8 AD_Key_Tab[KEY_NUM+1][3]=
 {
-    {0,UICC_0,0},
+#if HASH_MODEL==HS_0001M
+    {0,UICC_0,0},   //10k
+    {22,UICC_1,0},
+    {45,UICC_2,0},
+    {80,UICC_3,0},
+    {109,UICC_4,0},
+    {142,UICC_5,0},
+    {168,UICC_6,0},
+    {191,UICC_7,0},
+    {208,UICC_8,0},
+    {224,UICC_9,0},
+    {255,NO_KEY,0}
+#else
+    {0,UICC_0,0},   //4k7
     {23,UICC_1,0},
     {60,UICC_2,0},
     {92,UICC_3,0},
@@ -54,6 +67,7 @@ const u8 AD_Key_Tab[KEY_NUM+1][3]=
     {214,UICC_8,0},
     {234,UICC_9,0},
     {255,NO_KEY,0}
+#endif
 };
 void Key_Scan_AD(void)
 {
@@ -112,8 +126,10 @@ void Key_Scan_AD(void)
 	            BeepState=BEEP_OFF;
 	            break;
 	    }
-#if HASH_MODEL==HS_0002S
         if(CAN_RUNNING==CanBusState)
+#if HASH_MODEL==HS_0001M
+    	    SendBraodcast(LED);
+#elif HASH_MODEL==HS_0002S
 	        SendSwitchState(LED);
 #endif
 	}

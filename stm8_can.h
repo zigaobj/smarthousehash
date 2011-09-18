@@ -1,8 +1,8 @@
 /*******       event ID                  DLC          ******/
 #define CANID_NODEREGISTER      0x10445701
-#define CANID_ACC1              0x10242040 // 1
+#define CANID_BROADCAST         0x10242040
 
-#define CANID_SWITCHSTATE       0x1029C080 // 1
+#define CANID_SWITCHSTATE       0x1029C080
 
 /*******       event paramter        ******/
 #define PARA_ILL_OFF    0x00
@@ -102,11 +102,11 @@ void CanInterruptRestore (void);
 void Can_Store_Rcvd_Msg(void);	//中断服务程序中执行
 void ISR_Can_Tx(void);
 void ISR_Can_Rx(void);
-u8 CanIllumLevel(u8 Byte);
 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg);
 void SendToCan(CanMsgTypeDef *pCanMsg);
 void NodeRegister(void);
 void SendSwitchState(u8 Switch);
+void SendBraodcast(u8 Broadcast);
 void CanFlagAnalyse(void);
 void Can_Main(void);
 
