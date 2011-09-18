@@ -121,31 +121,31 @@
 2615  0000 00            	dc.b	0
 2616  0001 01            	dc.b	1
 2617  0002 00            	dc.b	0
-2618  0003 17            	dc.b	23
+2618  0003 16            	dc.b	22
 2619  0004 02            	dc.b	2
 2620  0005 00            	dc.b	0
-2621  0006 3c            	dc.b	60
+2621  0006 2d            	dc.b	45
 2622  0007 03            	dc.b	3
 2623  0008 00            	dc.b	0
-2624  0009 5c            	dc.b	92
+2624  0009 50            	dc.b	80
 2625  000a 04            	dc.b	4
 2626  000b 00            	dc.b	0
-2627  000c 72            	dc.b	114
+2627  000c 6d            	dc.b	109
 2628  000d 05            	dc.b	5
 2629  000e 00            	dc.b	0
-2630  000f 91            	dc.b	145
+2630  000f 8e            	dc.b	142
 2631  0010 06            	dc.b	6
 2632  0011 00            	dc.b	0
-2633  0012 a9            	dc.b	169
+2633  0012 a8            	dc.b	168
 2634  0013 07            	dc.b	7
 2635  0014 00            	dc.b	0
-2636  0015 c0            	dc.b	192
+2636  0015 bf            	dc.b	191
 2637  0016 08            	dc.b	8
 2638  0017 00            	dc.b	0
-2639  0018 d6            	dc.b	214
+2639  0018 d0            	dc.b	208
 2640  0019 09            	dc.b	9
 2641  001a 00            	dc.b	0
-2642  001b ea            	dc.b	234
+2642  001b e0            	dc.b	224
 2643  001c 0a            	dc.b	10
 2644  001d 00            	dc.b	0
 2645  001e ff            	dc.b	255
@@ -154,27 +154,27 @@
 2648                     	switch	.bss
 2649  0000               L1641_Key_backup:
 2650  0000 00            	ds.b	1
-2700                     ; 58 void Key_Scan_AD(void)
-2700                     ; 59 {
+2700                     ; 72 void Key_Scan_AD(void)
+2700                     ; 73 {
 2701                     	switch	.text
 2702  00a1               f_Key_Scan_AD:
 2704  00a1 89            	pushw	x
 2705       00000002      OFST:	set	2
-2708                     ; 60     u8 index=0;			//当前扫描值
+2708                     ; 74     u8 index=0;			//当前扫描值
 2710  00a2 7b02          	ld	a,(OFST+0,sp)
 2711  00a4 97            	ld	xl,a
-2712                     ; 61 	u8 ADC_Value=0;
+2712                     ; 75 	u8 ADC_Value=0;
 2714  00a5 7b01          	ld	a,(OFST-1,sp)
 2715  00a7 97            	ld	xl,a
-2716                     ; 63 	ADC_Value=ADC_8BIT(ADC_KEY1);
+2716                     ; 77 	ADC_Value=ADC_8BIT(ADC_KEY1);
 2718  00a8 a609          	ld	a,#9
 2719  00aa 8d110011      	callf	f_ADC_8BIT
 2721  00ae 6b01          	ld	(OFST-1,sp),a
-2722                     ; 64 	for(index=0;index<KEY_NUM;index++)
+2722                     ; 78 	for(index=0;index<KEY_NUM;index++)
 2724  00b0 0f02          	clr	(OFST+0,sp)
 2725  00b2               L7251:
-2726                     ; 66 		if ( (ADC_Value >=((AD_Key_Tab[index][0]>8)?(AD_Key_Tab[index][0]-8):0))
-2726                     ; 67 		 &&(ADC_Value <=(AD_Key_Tab[index][0]+8)) )
+2726                     ; 80 		if ( (ADC_Value >=((AD_Key_Tab[index][0]>8)?(AD_Key_Tab[index][0]-8):0))
+2726                     ; 81 		 &&(ADC_Value <=(AD_Key_Tab[index][0]+8)) )
 2728  00b2 9c            	rvf
 2729  00b3 7b02          	ld	a,(OFST+0,sp)
 2730  00b5 97            	ld	xl,a
@@ -216,15 +216,15 @@
 2767  00f3 90bf01        	ldw	c_y+1,y
 2768  00f6 b301          	cpw	x,c_y+1
 2769  00f8 2e08          	jrsge	L3351
-2770                     ; 69 			break;
+2770                     ; 83 			break;
 2772  00fa               L5351:
-2773                     ; 64 	for(index=0;index<KEY_NUM;index++)
+2773                     ; 78 	for(index=0;index<KEY_NUM;index++)
 2775  00fa 0c02          	inc	(OFST+0,sp)
 2778  00fc 7b02          	ld	a,(OFST+0,sp)
 2779  00fe a10a          	cp	a,#10
 2780  0100 25b0          	jrult	L7251
 2781  0102               L3351:
-2782                     ; 72 	if(AD_Key_Tab[index][1]!=Key_backup)
+2782                     ; 86 	if(AD_Key_Tab[index][1]!=Key_backup)
 2784  0102 7b02          	ld	a,(OFST+0,sp)
 2785  0104 97            	ld	xl,a
 2786  0105 a603          	ld	a,#3
@@ -234,16 +234,16 @@
 2790  010e 2604          	jrne	L02
 2791  0110 aca701a7      	jpf	L7351
 2792  0114               L02:
-2793                     ; 74 	    Key_backup=AD_Key_Tab[index][1];
+2793                     ; 88 	    Key_backup=AD_Key_Tab[index][1];
 2795  0114 7b02          	ld	a,(OFST+0,sp)
 2796  0116 97            	ld	xl,a
 2797  0117 a603          	ld	a,#3
 2798  0119 42            	mul	x,a
 2799  011a d60001        	ld	a,(_AD_Key_Tab+1,x)
 2800  011d c70000        	ld	L1641_Key_backup,a
-2801                     ; 75 	    switch(Key_backup)
+2801                     ; 89 	    switch(Key_backup)
 2803  0120 c60000        	ld	a,L1641_Key_backup
-2805                     ; 113 	            break;
+2805                     ; 127 	            break;
 2806  0123 4a            	dec	a
 2807  0124 271d          	jreq	L3641
 2808  0126 4a            	dec	a
@@ -266,92 +266,92 @@
 2825  013f 2750          	jreq	L5051
 2826  0141 2056          	jra	L3451
 2827  0143               L3641:
-2828                     ; 77 	        case UICC_0:
-2828                     ; 78 	            BeepState=BEEP_ON;
+2828                     ; 91 	        case UICC_0:
+2828                     ; 92 	            BeepState=BEEP_ON;
 2830  0143 35010000      	mov	_BeepState,#1
-2831                     ; 79 	            break;
+2831                     ; 93 	            break;
 2833  0147 2050          	jra	L3451
 2834  0149               L5641:
-2835                     ; 80 	        case UICC_1:
-2835                     ; 81 	            BeepState=BEEP_OFF;
+2835                     ; 94 	        case UICC_1:
+2835                     ; 95 	            BeepState=BEEP_OFF;
 2837  0149 725f0000      	clr	_BeepState
-2838                     ; 82 	            break;
+2838                     ; 96 	            break;
 2840  014d 204a          	jra	L3451
 2841  014f               L7641:
-2842                     ; 83 	        case UICC_2:
-2842                     ; 84 	            BeepState=BEEP_SHORTBREAK;
+2842                     ; 97 	        case UICC_2:
+2842                     ; 98 	            BeepState=BEEP_SHORTBREAK;
 2844  014f 35030000      	mov	_BeepState,#3
-2845                     ; 85 	            break;
+2845                     ; 99 	            break;
 2847  0153 2044          	jra	L3451
 2848  0155               L1741:
-2849                     ; 86 	        case UICC_3:
-2849                     ; 87 	            LED_1=~LED_1;
+2849                     ; 100 	        case UICC_3:
+2849                     ; 101 	            LED_1=~LED_1;
 2851  0155 9012500a      	bcpl	_GPIOC,#1
-2852                     ; 88 	            BeepState=BEEP_MIDDLEBREAK;
+2852                     ; 102 	            BeepState=BEEP_MIDDLEBREAK;
 2854  0159 35040000      	mov	_BeepState,#4
-2855                     ; 89 	            break;
+2855                     ; 103 	            break;
 2857  015d 203a          	jra	L3451
 2858  015f               L3741:
-2859                     ; 90 	        case UICC_4:
-2859                     ; 91 	            LED_2=~LED_2;
+2859                     ; 104 	        case UICC_4:
+2859                     ; 105 	            LED_2=~LED_2;
 2861  015f 9014500a      	bcpl	_GPIOC,#2
-2862                     ; 92 	            BeepState=BEEP_LONGBREAK;
+2862                     ; 106 	            BeepState=BEEP_LONGBREAK;
 2864  0163 35050000      	mov	_BeepState,#5
-2865                     ; 93 	            break;
+2865                     ; 107 	            break;
 2867  0167 2030          	jra	L3451
 2868  0169               L5741:
-2869                     ; 94 	        case UICC_5:
-2869                     ; 95 	            LED_3=~LED_3;
+2869                     ; 108 	        case UICC_5:
+2869                     ; 109 	            LED_3=~LED_3;
 2871  0169 9016500a      	bcpl	_GPIOC,#3
-2872                     ; 96 	            BeepState=BEEP_OFF;
+2872                     ; 110 	            BeepState=BEEP_OFF;
 2874  016d 725f0000      	clr	_BeepState
-2875                     ; 97 	            break;
+2875                     ; 111 	            break;
 2877  0171 2026          	jra	L3451
 2878  0173               L7741:
-2879                     ; 98 	        case UICC_6:
-2879                     ; 99 	            LED_4=~LED_4;
+2879                     ; 112 	        case UICC_6:
+2879                     ; 113 	            LED_4=~LED_4;
 2881  0173 9018500a      	bcpl	_GPIOC,#4
-2882                     ; 100 	            BeepState=BEEP_OFF;
+2882                     ; 114 	            BeepState=BEEP_OFF;
 2884  0177 725f0000      	clr	_BeepState
-2885                     ; 101 	            break;
+2885                     ; 115 	            break;
 2887  017b 201c          	jra	L3451
 2888  017d               L1051:
-2889                     ; 102 	        case UICC_7:
-2889                     ; 103 	            LED_5=~LED_5;
+2889                     ; 116 	        case UICC_7:
+2889                     ; 117 	            LED_5=~LED_5;
 2891  017d 901a500a      	bcpl	_GPIOC,#5
-2892                     ; 104 	            BeepState=BEEP_OFF;
+2892                     ; 118 	            BeepState=BEEP_OFF;
 2894  0181 725f0000      	clr	_BeepState
-2895                     ; 105 	            break;
+2895                     ; 119 	            break;
 2897  0185 2012          	jra	L3451
 2898  0187               L3051:
-2899                     ; 106 	        case UICC_8:
-2899                     ; 107 	            LED_6=~LED_6;
+2899                     ; 120 	        case UICC_8:
+2899                     ; 121 	            LED_6=~LED_6;
 2901  0187 901c500a      	bcpl	_GPIOC,#6
-2902                     ; 108 	            BeepState=BEEP_OFF;
+2902                     ; 122 	            BeepState=BEEP_OFF;
 2904  018b 725f0000      	clr	_BeepState
-2905                     ; 109 	            break;
+2905                     ; 123 	            break;
 2907  018f 2008          	jra	L3451
 2908  0191               L5051:
-2909                     ; 110 	        case UICC_9:
-2909                     ; 111 	            LED_7=~LED_7;
+2909                     ; 124 	        case UICC_9:
+2909                     ; 125 	            LED_7=~LED_7;
 2911  0191 901e500a      	bcpl	_GPIOC,#7
-2912                     ; 112 	            BeepState=BEEP_OFF;
+2912                     ; 126 	            BeepState=BEEP_OFF;
 2914  0195 725f0000      	clr	_BeepState
-2915                     ; 113 	            break;
+2915                     ; 127 	            break;
 2917  0199               L3451:
-2918                     ; 116         if(CAN_RUNNING==CanBusState)
+2918                     ; 129         if(CAN_RUNNING==CanBusState)
 2920  0199 c60000        	ld	a,_CanBusState
 2921  019c a102          	cp	a,#2
 2922  019e 2607          	jrne	L7351
-2923                     ; 117 	        SendSwitchState(LED);
+2923                     ; 131     	    SendBraodcast(LED);
 2925  01a0 c6500a        	ld	a,_GPIOC
-2926  01a3 8d000000      	callf	f_SendSwitchState
+2926  01a3 8d000000      	callf	f_SendBraodcast
 2928  01a7               L7351:
-2929                     ; 120 }
+2929                     ; 136 }
 2932  01a7 85            	popw	x
 2933  01a8 87            	retf
 2958                     	xdef	_AD_Key_Tab
-2959                     	xref	f_SendSwitchState
+2959                     	xref	f_SendBraodcast
 2960                     	xref	_CanBusState
 2961                     	xdef	f_Key_Scan_AD
 2962                     	xdef	f_ADC_10BIT

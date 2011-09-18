@@ -3,7 +3,7 @@ DumpRWOnFly1=0
 DumpRWOnFly2=0
 DumpRWOnFly3=0
 DumpRWOnFly4=0
-WatchVariables1=BEEP.CSR!4;FlagMain.field.bit1!0;BeepState!0;debug_adc!1;ADC.DRH!0;RST!1;UniqueID!1;NodeState!0;UniqueID_Temp!1;CanBusState!0;pCanMsg!1;
+WatchVariables1=BEEP.CSR!4;FlagMain.field.bit1!0;BeepState!0;debug_adc!1;ADC.DRH!0;RST!1;UniqueID!1;NodeState!0;UniqueID_Temp!1;CanBusState!0;pCanMsg!1;GPIOC!1;CanTxRxBuffer!1;ADC_Value!0;
 FormatWatch1=0
 FormatViewType1=1
 FormatViewAddress1=1
@@ -34,7 +34,7 @@ DisplayFormat=1
 ShowPeriphAddress=0
 ShowRegisterAddress=1
 [DebugState_v1-Debug.AddOn.St7McuIcdConf]
-McuName=STM8AF5188
+McuName=STM8S208C8
 [DebugState_v1-Debug.AddOn.IcdBreak]
 ICDBreak0=CR:0x00000000,BK1:0x00000012,BK2:0x00000012
 [DebugState_v1-Debug.AddOn.SteppingMode]
