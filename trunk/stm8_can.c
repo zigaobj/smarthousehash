@@ -379,7 +379,7 @@ void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
 
     switch(CanTxRxBuffer.id)
     {   //此处对ID进行软件过滤
-        case CANID_ACC1: // OK
+        case CANID_BROADCAST: // OK
         case CANID_SWITCHSTATE:
         case CANID_NODEREGISTER:
         {
@@ -452,44 +452,6 @@ void ISR_Can_Rx(void)
 	CanRestorePg();
 }
 /******************************************************************
-*函数名称:CanIllumLevel()
-*功   能 :背光亮度调整
-*入口参数:(u8 Byte)
-*出口参数:u8
-*描   述 :
-*时   间 :2010.6.29
-*作   者 :mjzhang
-******************************************************************/
-u8 CanIllumLevel(u8 Byte)
-{
-    switch(Byte)
-    {
-        case PARA_ILL_OFF:
-            Byte=0x7F;
-            break;
-        case PARA_ILL_LV0:
-            Byte=0; //背光0级亮度
-            break;
-        case PARA_ILL_LV1:
-            Byte=1; //背光1级亮度
-            break;
-        case PARA_ILL_LV17:
-            Byte=17; //背光17级亮度
-            break;
-        default:
-            if(Byte&0x0F)
-            { //数据错误
-                Byte=0xFF;
-            }
-            else
-            {
-                Byte=((Byte>>4)&0x0F)+1;
-            }
-            break;
-    }
-    return(Byte);
-}
-/******************************************************************
 *函数名称:CanMsgAnalyze()
 *功   能 :如果收到CAN消息,分析CAN消息结构体,
 *         将结果保存到NodeState
@@ -508,12 +470,11 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
     
     switch(pCanMsg->id)
     {
-        case CANID_ACC1: // ACC ON\OFF Message
+        case CANID_BROADCAST:
         {
-            if(0x4A==pCanMsg->data[0])
-            {
-                NODE_ACC_FLAG=1;
-            }
+#if HASH_MODEL==HS_0002S
+            LED=pCanMsg->data[0];
+#endif
             break;
         }
         case CANID_SWITCHSTATE:
@@ -565,14 +526,6 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 ******************************************************************/
 void CanFlagAnalyse(void)
 {
-	if(NODE_ACC_FLAG)
-	{
-		ACC_CTRL=1 ;      
-	}
-	else
-	{
-		ACC_CTRL=0;   
-	}
 }
 /******************************************************************
 *函数名称:CANGetEmptyMegBox()
@@ -657,7 +610,23 @@ void SendSwitchState(u8 Switch)
     CanBuffer.data[0]=Switch;
     SendToCan(&CanBuffer);
 }
-
+/******************************************************************
+*函数名称:SendBraodcast()
+*功   能 :
+*入口参数:u8   
+*出口参数:NONE
+*描   述 :
+*时   间 :2010.5.25
+*作   者 :mjzhang
+******************************************************************/
+void SendBraodcast(u8 Broadcast)
+{
+    CanMsgTypeDef CanBuffer;
+    CanBuffer.id =CANID_BROADCAST;
+    CanBuffer.dlc =1;
+    CanBuffer.data[0]=Broadcast;
+    SendToCan(&CanBuffer);
+}
 /******************************************************************
 *函数名称:Can_Main()
 *功   能 :
@@ -694,10 +663,7 @@ void Can_Main(void)
 		    
 			break;
 		case CAN_ACCOFF:
-			if(NODE_ACC_FLAG==1)
-			{
-				CanBusState=CAN_RUNNING;
-			}
+			CanBusState=CAN_RUNNING;
 			break;
 		case CAN_WAITSLEEP:
 			CanSleep();
