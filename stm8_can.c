@@ -1,6 +1,6 @@
 #include "includes.h"
 /*******       Node ID        ******/
-uc8 UniqueID_Temp[8]={0x51,0x02,0x03,0x04,0x05,0x06,0x07,0x08};
+//uc8 UniqueID_Temp[8]={0x51,0x02,0x03,0x04,0x05,0x06,0x07,0x08};
 
 /*******************************************************************************
 * Function Name : CanInit
@@ -500,10 +500,10 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
             CanBuffer.dlc =8;
             SendToCan(&CanBuffer);
 #elif HASH_MODEL==HS_0002S
-            if(UniqueID_Temp[0]==pCanMsg->data[0]&&UniqueID_Temp[1]==pCanMsg->data[1]
-             &&UniqueID_Temp[2]==pCanMsg->data[2]&&UniqueID_Temp[3]==pCanMsg->data[3]
-             &&UniqueID_Temp[4]==pCanMsg->data[4]&&UniqueID_Temp[5]==pCanMsg->data[5]
-             &&UniqueID_Temp[6]==pCanMsg->data[6]&&UniqueID_Temp[7]==pCanMsg->data[7]
+            if(UniqueID[0]==pCanMsg->data[0]&&UniqueID[1]==pCanMsg->data[1]
+             &&UniqueID[2]==pCanMsg->data[2]&&UniqueID[3]==pCanMsg->data[3]
+             &&UniqueID[4]==pCanMsg->data[4]&&UniqueID[5]==pCanMsg->data[5]
+             &&UniqueID[6]==pCanMsg->data[6]&&UniqueID[7]==pCanMsg->data[7]
             )
             {
                 NODE_REGISTER_FLAG=1;
@@ -583,14 +583,14 @@ void NodeRegister(void)
     CanMsgTypeDef CanBuffer;
     CanBuffer.id =CANID_NODEREGISTER;
     CanBuffer.dlc =8;
-    CanBuffer.data[0]=UniqueID_Temp[0];
-    CanBuffer.data[1]=UniqueID_Temp[1];
-    CanBuffer.data[2]=UniqueID_Temp[2];
-    CanBuffer.data[3]=UniqueID_Temp[3];
-    CanBuffer.data[4]=UniqueID_Temp[4];
-    CanBuffer.data[5]=UniqueID_Temp[5];
-    CanBuffer.data[6]=UniqueID_Temp[6];
-    CanBuffer.data[7]=UniqueID_Temp[7];
+    CanBuffer.data[0]=UniqueID[0];
+    CanBuffer.data[1]=UniqueID[1];
+    CanBuffer.data[2]=UniqueID[2];
+    CanBuffer.data[3]=UniqueID[3];
+    CanBuffer.data[4]=UniqueID[4];
+    CanBuffer.data[5]=UniqueID[5];
+    CanBuffer.data[6]=UniqueID[6];
+    CanBuffer.data[7]=UniqueID[7];
     SendToCan(&CanBuffer);
 }
 /******************************************************************
