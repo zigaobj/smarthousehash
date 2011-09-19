@@ -61,7 +61,7 @@ String.100.2=STM8 Cosmic
 String.100.3=ST7 Metrowerks V1.1
 String.100.4=Raisonance
 String.101.0=STM8 Cosmic
-String.102.0=D:\Program Files\COSMIC\CXSTM8
+String.102.0=C:\Program Files\COSMIC\CXSTM8
 String.103.0=
 String.104.0=Hstm8
 String.105.0=Lib
@@ -106,7 +106,7 @@ String.3.0=clnk $(ToolsetLibOpts) -o $(OutputPath)$(TargetSName).sm8 -fakeIntege
 String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8
 String.4.0=$(OutputPath)$(TargetFName)
 String.5.0=$(OutputPath)$(ProjectSFile).elf $(OutputPath)$(TargetSName).map
-String.6.0=2011,9,18,19,50,35
+String.6.0=2011,9,19,16,55,20
 String.100.0=
 String.101.0=crtsi.st7
 String.102.0=+seg .const -b 0x8080 -m 0xff80 -n .const -it
@@ -145,7 +145,7 @@ String.100.2=STM8 Cosmic
 String.100.3=ST7 Metrowerks V1.1
 String.100.4=Raisonance
 String.101.0=STM8 Cosmic
-String.102.0=D:\Program Files\COSMIC\CXSTM8
+String.102.0=C:\Program Files\COSMIC\CXSTM8
 String.103.0=
 String.104.0=Hstm8
 String.105.0=Lib
@@ -318,6 +318,11 @@ Next=Root.Source Files...\code\stm8_can.c
 [Root.Source Files...\code\stm8_can.c]
 ElemType=File
 PathName=..\code\stm8_can.c
+Next=Root.Source Files...\code\stm8_eeprom.c
+
+[Root.Source Files...\code\stm8_eeprom.c]
+ElemType=File
+PathName=..\code\stm8_eeprom.c
 Next=Root.Source Files...\code\stm8_flash.c
 
 [Root.Source Files...\code\stm8_flash.c]

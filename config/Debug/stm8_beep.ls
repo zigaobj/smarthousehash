@@ -1,5 +1,5 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Generator V4.2.8 - 03 Dec 2008
+   2                     ; Generator V4.2.3 - 19 Nov 2007
 2347                     ; 3 void BeepInit(void)
 2347                     ; 4 {
 2348                     	switch	.text
@@ -122,12 +122,12 @@
 2538                     ; 62         if(FLAGMAIN_BEEP_ON)
 2540  009c c60000        	ld	a,_FlagMain
 2541  009f a501          	bcp	a,#1
-2542  00a1 2746          	jreq	L3441
+2542  00a1 274a          	jreq	L3441
 2543                     ; 64             FLAGMAIN_BEEP_ON=BEEP_OFF;
 2545  00a3 72110000      	bres	_FlagMain,#0
 2546                     ; 65             BEEP.CSR &=(~BEEP_CSR_BEEPEN);
 2548  00a7 721b50f3      	bres	_BEEP,#5
-2549  00ab 203c          	jra	L3441
+2549  00ab 2040          	jra	L3441
 2550  00ad               L7341:
 2551                     ; 68     else if(0==BeepTimeOff)
 2553  00ad 725d0001      	tnz	L7731_BeepTimeOff
@@ -135,38 +135,40 @@
 2555                     ; 70         if(!FLAGMAIN_BEEP_ON)
 2557  00b3 c60000        	ld	a,_FlagMain
 2558  00b6 a501          	bcp	a,#1
-2559  00b8 262f          	jrne	L3441
+2559  00b8 2633          	jrne	L3441
 2560                     ; 72             FLAGMAIN_BEEP_ON=BEEP_ON;
 2562  00ba 72100000      	bset	_FlagMain,#0
 2563                     ; 73             BEEP.CSR |=BEEP_CSR_BEEPEN;
 2565  00be 721a50f3      	bset	_BEEP,#5
-2566  00c2 2025          	jra	L3441
+2566  00c2 2029          	jra	L3441
 2567  00c4               L5441:
 2568                     ; 78         if(0==BeepTimer)
 2570  00c4 725d0000      	tnz	_BeepTimer
-2571  00c8 261f          	jrne	L3441
+2571  00c8 2623          	jrne	L3441
 2572                     ; 80             FLAGMAIN_BEEP_ON=~FLAGMAIN_BEEP_ON;
-2574  00ca 90100000      	bcpl	_FlagMain,#0
-2575                     ; 81             if(FLAGMAIN_BEEP_ON)
-2577  00ce c60000        	ld	a,_FlagMain
-2578  00d1 a501          	bcp	a,#1
-2579  00d3 270b          	jreq	L5541
-2580                     ; 83                 BeepTimer=BeepTimeOn;
-2582  00d5 5500000000    	mov	_BeepTimer,L5731_BeepTimeOn
-2583                     ; 84                 BEEP.CSR |=BEEP_CSR_BEEPEN;
-2585  00da 721a50f3      	bset	_BEEP,#5
-2587  00de 2009          	jra	L3441
-2588  00e0               L5541:
-2589                     ; 88                 BeepTimer=BeepTimeOff;
-2591  00e0 5500010000    	mov	_BeepTimer,L7731_BeepTimeOff
-2592                     ; 89                 BEEP.CSR &=(~BEEP_CSR_BEEPEN);
-2594  00e5 721b50f3      	bres	_BEEP,#5
-2595  00e9               L3441:
-2596                     ; 93 }
-2599  00e9 87            	retf
-2611                     	xref	_FlagMain
-2612                     	xdef	f_BeepManage
-2613                     	xdef	f_BeepInit
-2614                     	xref	_BeepTimer
-2615                     	xref	_BeepState
-2634                     	end
+2574  00ca c60000        	ld	a,_FlagMain
+2575  00cd a801          	xor	a,#1
+2576  00cf c70000        	ld	_FlagMain,a
+2577                     ; 81             if(FLAGMAIN_BEEP_ON)
+2579  00d2 c60000        	ld	a,_FlagMain
+2580  00d5 a501          	bcp	a,#1
+2581  00d7 270b          	jreq	L5541
+2582                     ; 83                 BeepTimer=BeepTimeOn;
+2584  00d9 5500000000    	mov	_BeepTimer,L5731_BeepTimeOn
+2585                     ; 84                 BEEP.CSR |=BEEP_CSR_BEEPEN;
+2587  00de 721a50f3      	bset	_BEEP,#5
+2589  00e2 2009          	jra	L3441
+2590  00e4               L5541:
+2591                     ; 88                 BeepTimer=BeepTimeOff;
+2593  00e4 5500010000    	mov	_BeepTimer,L7731_BeepTimeOff
+2594                     ; 89                 BEEP.CSR &=(~BEEP_CSR_BEEPEN);
+2596  00e9 721b50f3      	bres	_BEEP,#5
+2597  00ed               L3441:
+2598                     ; 93 }
+2601  00ed 87            	retf
+2613                     	xref	_FlagMain
+2614                     	xdef	f_BeepManage
+2615                     	xdef	f_BeepInit
+2616                     	xref	_BeepTimer
+2617                     	xref	_BeepState
+2636                     	end

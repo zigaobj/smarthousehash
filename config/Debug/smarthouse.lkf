@@ -57,6 +57,7 @@ Debug\main.o
 Debug\stm8_adc.o
 Debug\stm8_beep.o
 Debug\stm8_can.o
+Debug\stm8_eeprom.o
 Debug\stm8_flash.o
 Debug\stm8_gpio.o
 Debug\stm8_it.o
