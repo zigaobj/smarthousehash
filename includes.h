@@ -20,6 +20,7 @@
 #include "stm8_adc.h"
 //#include "stm8_usart.h"
 //#include "stm8_linuart.h"
+#include "can_protocol.h"
 #include "stm8_can.h"
 #include "stm8_flash.h"
 

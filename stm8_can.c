@@ -376,24 +376,12 @@ void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
     CanTxRxBuffer.id +=CAN_PAGE_MIDR3;
     CanTxRxBuffer.id <<=8;
     CanTxRxBuffer.id +=CAN_PAGE_MIDR4;
-
-    switch(CanTxRxBuffer.id)
-    {   //此处对ID进行软件过滤
-        case CANID_BROADCAST: // OK
-        case CANID_SWITCHSTATE:
-        case CANID_NODEREGISTER:
-        {
-    		CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
-			for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
-			{   //保存此帧CAN数据
-				CanTxRxBuffer.data[idx]=u8p[idx];
-			}
-            CanMsgAnalyze(&CanTxRxBuffer);
-            break;
-        }
-        default:
-    		break;
-    }
+	CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
+	for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
+	{   //保存此帧CAN数据
+		CanTxRxBuffer.data[idx]=u8p[idx];
+	}
+    CanMsgAnalyze(&CanTxRxBuffer);
 }
 /******************************************************************
 *函数名称:ISR_Can_Tx()
