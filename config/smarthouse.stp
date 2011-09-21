@@ -219,7 +219,7 @@ String.6.0=2011,7,9,3,23,59
 [Root.Source Files]
 ElemType=Folder
 PathName=Source Files
-Child=Root.Source Files...\code\fctcpy.s
+Child=Root.Source Files...\code\can_protocol.c
 Next=Root.Include Files
 Config.0=Root.Source Files.Config.0
 Config.1=Root.Source Files.Config.1
@@ -289,6 +289,11 @@ String.3.0=
 String.4.0=
 String.5.0=
 String.6.0=2011,7,9,3,23,59
+
+[Root.Source Files...\code\can_protocol.c]
+ElemType=File
+PathName=..\code\can_protocol.c
+Next=Root.Source Files...\code\fctcpy.s
 
 [Root.Source Files...\code\fctcpy.s]
 ElemType=File
