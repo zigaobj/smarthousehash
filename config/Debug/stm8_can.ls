@@ -399,503 +399,493 @@
 3122  0261 5500005427    	mov	_CAN+7,_CanPage
 3123                     ; 363 }
 3126  0266 87            	retf
-3170                     .const:	section	.text
-3171  0000               L5161:
-3172  0000 0003          	dc.w	3
-3173  0002 10242040      	dc.l	270803008
-3174  0006 02d1          	dc.w	L1751
-3175  0008 1029c080      	dc.l	271171712
-3176  000c 02d1          	dc.w	L1751
-3177  000e 10445701      	dc.l	272914177
-3178  0012 02d1          	dc.w	L1751
-3179  0014 02ff          	dc.w	L7161
-3180                     ; 366 void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
-3180                     ; 367 {
-3181                     	switch	.text
-3182  0267               f_Can_Store_Rcvd_Msg:
-3184  0267 5203          	subw	sp,#3
-3185       00000003      OFST:	set	3
-3188                     ; 369 	u8 *u8p =&CAN_PAGE_MDAR1;
-3190  0269 ae542e        	ldw	x,#_CAN+14
-3191  026c 1f01          	ldw	(OFST-2,sp),x
-3192                     ; 371 	CAN.PSR = CAN_PS_FIFO; //进入接收数据FIFO页面
-3194  026e 35075427      	mov	_CAN+7,#7
-3195                     ; 372     CanTxRxBuffer.id =CAN_PAGE_MIDR1&0x1F;
-3197  0272 c6542a        	ld	a,_CAN+10
-3198  0275 a41f          	and	a,#31
-3199  0277 c70003        	ld	_CanTxRxBuffer+3,a
-3200  027a 4f            	clr	a
-3201  027b c70002        	ld	_CanTxRxBuffer+2,a
-3202  027e c70001        	ld	_CanTxRxBuffer+1,a
-3203  0281 c70000        	ld	_CanTxRxBuffer,a
-3204                     ; 373     CanTxRxBuffer.id <<=8; //移位计算更优
-3206  0284 ae0000        	ldw	x,#_CanTxRxBuffer
-3207  0287 a608          	ld	a,#8
-3208  0289 8d000000      	callf	d_lglsh
-3210                     ; 374     CanTxRxBuffer.id +=CAN_PAGE_MIDR2;
-3212  028d c6542b        	ld	a,_CAN+11
-3213  0290 ae0000        	ldw	x,#_CanTxRxBuffer
-3214  0293 88            	push	a
-3215  0294 8d000000      	callf	d_lgadc
-3217  0298 84            	pop	a
-3218                     ; 375     CanTxRxBuffer.id <<=8;
-3220  0299 ae0000        	ldw	x,#_CanTxRxBuffer
-3221  029c a608          	ld	a,#8
-3222  029e 8d000000      	callf	d_lglsh
-3224                     ; 376     CanTxRxBuffer.id +=CAN_PAGE_MIDR3;
-3226  02a2 c6542c        	ld	a,_CAN+12
-3227  02a5 ae0000        	ldw	x,#_CanTxRxBuffer
-3228  02a8 88            	push	a
-3229  02a9 8d000000      	callf	d_lgadc
-3231  02ad 84            	pop	a
-3232                     ; 377     CanTxRxBuffer.id <<=8;
-3234  02ae ae0000        	ldw	x,#_CanTxRxBuffer
-3235  02b1 a608          	ld	a,#8
-3236  02b3 8d000000      	callf	d_lglsh
-3238                     ; 378     CanTxRxBuffer.id +=CAN_PAGE_MIDR4;
-3240  02b7 c6542d        	ld	a,_CAN+13
-3241  02ba ae0000        	ldw	x,#_CanTxRxBuffer
-3242  02bd 88            	push	a
-3243  02be 8d000000      	callf	d_lgadc
-3245  02c2 84            	pop	a
-3246                     ; 380     switch(CanTxRxBuffer.id)
-3248  02c3 ae0000        	ldw	x,#_CanTxRxBuffer
-3249  02c6 8d000000      	callf	d_ltor
-3252  02ca ae0000        	ldw	x,#L5161
-3253  02cd 8d000000      	callf	d_jltab
-3254  02d1               L1751:
-3255                     ; 386     		CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
-3257  02d1 5554290004    	mov	_CanTxRxBuffer+4,_CAN+9
-3258                     ; 387 			for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
-3260  02d6 0f03          	clr	(OFST+0,sp)
-3262  02d8 2017          	jra	L5261
-3263  02da               L1261:
-3264                     ; 389 				CanTxRxBuffer.data[idx]=u8p[idx];
-3266  02da 7b03          	ld	a,(OFST+0,sp)
-3267  02dc 5f            	clrw	x
-3268  02dd 97            	ld	xl,a
-3269  02de 89            	pushw	x
-3270  02df 7b03          	ld	a,(OFST+0,sp)
-3271  02e1 97            	ld	xl,a
-3272  02e2 7b04          	ld	a,(OFST+1,sp)
-3273  02e4 1b05          	add	a,(OFST+2,sp)
-3274  02e6 2401          	jrnc	L62
-3275  02e8 5c            	incw	x
-3276  02e9               L62:
-3277  02e9 02            	rlwa	x,a
-3278  02ea f6            	ld	a,(x)
-3279  02eb 85            	popw	x
-3280  02ec d70005        	ld	(_CanTxRxBuffer+5,x),a
-3281                     ; 387 			for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
-3283  02ef 0c03          	inc	(OFST+0,sp)
-3284  02f1               L5261:
-3287  02f1 c60004        	ld	a,_CanTxRxBuffer+4
-3288  02f4 1103          	cp	a,(OFST+0,sp)
-3289  02f6 22e2          	jrugt	L1261
-3290                     ; 391             CanMsgAnalyze(&CanTxRxBuffer);
-3292  02f8 ae0000        	ldw	x,#_CanTxRxBuffer
-3293  02fb 8d650365      	callf	L5531f_CanMsgAnalyze
-3295                     ; 392             break;
-3297  02ff               L3751:
-3298                     ; 394         default:
-3298                     ; 395     		break;
-3300  02ff               L7161:
-3301                     ; 397 }
-3304  02ff 5b03          	addw	sp,#3
-3305  0301 87            	retf
-3338                     ; 407 void ISR_Can_Tx(void)
-3338                     ; 408 {
-3339                     	switch	.text
-3340  0302               f_ISR_Can_Tx:
-3342  0302 88            	push	a
-3343       00000001      OFST:	set	1
-3346                     ; 410     CanSavePg();
-3348  0303 5554270000    	mov	_CanPage,_CAN+7
-3349                     ; 412     CAN.PSR =CAN_PS_CTRL;
-3351  0308 35065427      	mov	_CAN+7,#6
-3352                     ; 413     if(CAN_PAGE_ESR)
-3354  030c 725d5428      	tnz	_CAN+8
-3355  0310 2714          	jreq	L5461
-3356                     ; 415         ErrorCode=CAN_PAGE_ESR;
-3358  0312 c65428        	ld	a,_CAN+8
-3359  0315 6b01          	ld	(OFST+0,sp),a
-3360                     ; 416         if((CAN_PAGE_ESR&CAN_PAGE_ESR_LEC)!=0)
-3362  0317 c65428        	ld	a,_CAN+8
-3363  031a a570          	bcp	a,#112
-3364  031c 2704          	jreq	L7461
-3365                     ; 418             CAN_PAGE_ESR =0;//|=CAN_PAGE_ESR_LEC;
-3367  031e 725f5428      	clr	_CAN+8
-3368  0322               L7461:
-3369                     ; 420         CAN.MSR |=CAN_MSR_ERRI;
-3371  0322 72145421      	bset	_CAN+1,#2
-3372  0326               L5461:
-3373                     ; 422     CanRestorePg();
-3375  0326 5500005427    	mov	_CAN+7,_CanPage
-3376                     ; 423 }
-3379  032b 84            	pop	a
-3380  032c 87            	retf
-3405                     ; 434 void ISR_Can_Rx(void)
-3405                     ; 435 {
-3406                     	switch	.text
-3407  032d               f_ISR_Can_Rx:
-3411                     ; 436 	CanSavePg();   
-3413  032d 5554270000    	mov	_CanPage,_CAN+7
-3414                     ; 438 	if (CAN.RFR & CAN_RFR_FOVR)
-3416  0332 c65424        	ld	a,_CAN+4
-3417  0335 a510          	bcp	a,#16
-3418  0337 2706          	jreq	L1661
-3419                     ; 440 		CAN.RFR |= CAN_RFR_FOVR;		/* clear the FIFO Overrun (FOVR) bit */
-3421  0339 72185424      	bset	_CAN+4,#4
-3423  033d 2019          	jra	L1761
-3424  033f               L1661:
-3425                     ; 442 	else if (CAN.RFR & CAN_RFR_FULL)
-3427  033f c65424        	ld	a,_CAN+4
-3428  0342 a508          	bcp	a,#8
-3429  0344 2712          	jreq	L1761
-3430                     ; 444 		CAN.RFR |= CAN_RFR_FULL;		/* clear the FIFO full (FULL) bit */      
-3432  0346 72165424      	bset	_CAN+4,#3
-3433  034a 200c          	jra	L1761
-3434  034c               L7661:
-3435                     ; 448         Can_Store_Rcvd_Msg();
-3437  034c 8d670267      	callf	f_Can_Store_Rcvd_Msg
-3439                     ; 449         CAN.RFR |= CAN_RFR_RFOM; // Release mailbox
-3441  0350 721a5424      	bset	_CAN+4,#5
-3442                     ; 450 		CAN.RFR |= CAN_RFR_RFOM; //此语句要用2句,原因还没搞明白
-3444  0354 721a5424      	bset	_CAN+4,#5
-3445  0358               L1761:
-3446                     ; 446 	while (CAN.RFR & CAN_RFR_FMP)	/* Check until FMP != 0 */
-3448  0358 c65424        	ld	a,_CAN+4
-3449  035b a503          	bcp	a,#3
-3450  035d 26ed          	jrne	L7661
-3451                     ; 452 	CanRestorePg();
-3453  035f 5500005427    	mov	_CAN+7,_CanPage
-3454                     ; 453 }
-3457  0364 87            	retf
-3516                     	switch	.const
-3517  0016               L3371:
-3518  0016 0003          	dc.w	3
-3519  0018 10242040      	dc.l	270803008
-3520  001c 0377          	dc.w	L5761
-3521  001e 1029c080      	dc.l	271171712
-3522  0022 0379          	dc.w	L7761
-3523  0024 10445701      	dc.l	272914177
-3524  0028 0382          	dc.w	L1071
-3525  002a 03c8          	dc.w	L5371
-3526                     ; 464 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
-3526                     ; 465 {
-3527                     	switch	.text
-3528  0365               L5531f_CanMsgAnalyze:
-3530  0365 89            	pushw	x
-3531  0366 520e          	subw	sp,#14
-3532       0000000e      OFST:	set	14
-3535                     ; 468     BoolT FlagCANDataOK=TRUE;
-3537  0368 a601          	ld	a,#1
-3538  036a 6b01          	ld	(OFST-13,sp),a
-3539                     ; 471     switch(pCanMsg->id)
-3541  036c 8d000000      	callf	d_ltor
-3544  0370 ae0016        	ldw	x,#L3371
-3545  0373 8d000000      	callf	d_jltab
-3546  0377               L5761:
-3547                     ; 478             break;
-3549  0377 204f          	jra	L5371
-3550  0379               L7761:
-3551                     ; 483             LED=pCanMsg->data[0];
-3553  0379 1e0f          	ldw	x,(OFST+1,sp)
-3554  037b e605          	ld	a,(5,x)
-3555  037d c7500a        	ld	_GPIOC,a
-3556                     ; 486             break;
-3558  0380 2046          	jra	L5371
-3559  0382               L1071:
-3560                     ; 491             CanBuffer.data[0]=pCanMsg->data[0];
-3562  0382 1e0f          	ldw	x,(OFST+1,sp)
-3563  0384 e605          	ld	a,(5,x)
-3564  0386 6b07          	ld	(OFST-7,sp),a
-3565                     ; 492             CanBuffer.data[1]=pCanMsg->data[1];
-3567  0388 1e0f          	ldw	x,(OFST+1,sp)
-3568  038a e606          	ld	a,(6,x)
-3569  038c 6b08          	ld	(OFST-6,sp),a
-3570                     ; 493             CanBuffer.data[2]=pCanMsg->data[2];
-3572  038e 1e0f          	ldw	x,(OFST+1,sp)
-3573  0390 e607          	ld	a,(7,x)
-3574  0392 6b09          	ld	(OFST-5,sp),a
-3575                     ; 494             CanBuffer.data[3]=pCanMsg->data[3];
-3577  0394 1e0f          	ldw	x,(OFST+1,sp)
-3578  0396 e608          	ld	a,(8,x)
-3579  0398 6b0a          	ld	(OFST-4,sp),a
-3580                     ; 495             CanBuffer.data[4]=pCanMsg->data[4];
-3582  039a 1e0f          	ldw	x,(OFST+1,sp)
-3583  039c e609          	ld	a,(9,x)
-3584  039e 6b0b          	ld	(OFST-3,sp),a
-3585                     ; 496             CanBuffer.data[5]=pCanMsg->data[5];
-3587  03a0 1e0f          	ldw	x,(OFST+1,sp)
-3588  03a2 e60a          	ld	a,(10,x)
-3589  03a4 6b0c          	ld	(OFST-2,sp),a
-3590                     ; 497             CanBuffer.data[6]=pCanMsg->data[6];
-3592  03a6 1e0f          	ldw	x,(OFST+1,sp)
-3593  03a8 e60b          	ld	a,(11,x)
-3594  03aa 6b0d          	ld	(OFST-1,sp),a
-3595                     ; 498             CanBuffer.data[7]=pCanMsg->data[7];
-3597  03ac 1e0f          	ldw	x,(OFST+1,sp)
-3598  03ae e60c          	ld	a,(12,x)
-3599  03b0 6b0e          	ld	(OFST+0,sp),a
-3600                     ; 499             CanBuffer.id =CANID_NODEREGISTER;
-3602  03b2 ae5701        	ldw	x,#22273
-3603  03b5 1f04          	ldw	(OFST-10,sp),x
-3604  03b7 ae1044        	ldw	x,#4164
-3605  03ba 1f02          	ldw	(OFST-12,sp),x
-3606                     ; 500             CanBuffer.dlc =8;
-3608  03bc a608          	ld	a,#8
-3609  03be 6b06          	ld	(OFST-8,sp),a
-3610                     ; 501             SendToCan(&CanBuffer);
-3612  03c0 96            	ldw	x,sp
-3613  03c1 1c0002        	addw	x,#OFST-12
-3614  03c4 8dfa03fa      	callf	f_SendToCan
-3616                     ; 512             break;
-3618  03c8               L5371:
-3619                     ; 515     CanFlagAnalyse();
-3621  03c8 8dcf03cf      	callf	f_CanFlagAnalyse
-3623                     ; 516 }
-3626  03cc 5b10          	addw	sp,#16
-3627  03ce 87            	retf
-3649                     ; 527 void CanFlagAnalyse(void)
-3649                     ; 528 {
-3650                     	switch	.text
-3651  03cf               f_CanFlagAnalyse:
-3655                     ; 529 }
-3658  03cf 87            	retf
-3682                     ; 539 BoolT CANGetEmptyMegBox(void)
-3682                     ; 540 {
-3683                     	switch	.text
-3684  03d0               f_CANGetEmptyMegBox:
-3688                     ; 541     if(CAN.TPR &CAN_TPR_TME0)
-3690  03d0 c65423        	ld	a,_CAN+3
-3691  03d3 a504          	bcp	a,#4
-3692  03d5 2706          	jreq	L7571
-3693                     ; 543         CAN.PSR =CAN_PS_TXMB0;
-3695  03d7 725f5427      	clr	_CAN+7
-3697  03db 2018          	jra	L1671
-3698  03dd               L7571:
-3699                     ; 545     else if(CAN.TPR &CAN_TPR_TME1)
-3701  03dd c65423        	ld	a,_CAN+3
-3702  03e0 a508          	bcp	a,#8
-3703  03e2 2706          	jreq	L3671
-3704                     ; 547         CAN.PSR =CAN_PS_TXMB1;
-3706  03e4 35015427      	mov	_CAN+7,#1
-3708  03e8 200b          	jra	L1671
-3709  03ea               L3671:
-3710                     ; 549     else if(CAN.TPR &CAN_TPR_TME2)
-3712  03ea c65423        	ld	a,_CAN+3
-3713  03ed a510          	bcp	a,#16
-3714  03ef 2707          	jreq	L7671
-3715                     ; 551         CAN.PSR =CAN_PS_TXMB2;
-3717  03f1 35055427      	mov	_CAN+7,#5
-3719  03f5               L1671:
-3720                     ; 557     return TRUE;
-3722  03f5 a601          	ld	a,#1
-3725  03f7 87            	retf
-3726  03f8               L7671:
-3727                     ; 555         return FALSE;
-3729  03f8 4f            	clr	a
-3732  03f9 87            	retf
-3769                     ; 568 void SendToCan(CanMsgTypeDef *pCanMsg)
-3769                     ; 569 {
-3770                     	switch	.text
-3771  03fa               f_SendToCan:
-3775                     ; 570     CanMsgTransmit(pCanMsg);
-3777  03fa 8da201a2      	callf	f_CanMsgTransmit
-3779                     ; 571 }
-3782  03fe 87            	retf
-3818                     ; 581 void NodeRegister(void)
-3818                     ; 582 {
-3819                     	switch	.text
-3820  03ff               f_NodeRegister:
-3822  03ff 520d          	subw	sp,#13
-3823       0000000d      OFST:	set	13
-3826                     ; 584     CanBuffer.id =CANID_NODEREGISTER;
-3828  0401 ae5701        	ldw	x,#22273
-3829  0404 1f03          	ldw	(OFST-10,sp),x
-3830  0406 ae1044        	ldw	x,#4164
-3831  0409 1f01          	ldw	(OFST-12,sp),x
-3832                     ; 585     CanBuffer.dlc =8;
-3834  040b a608          	ld	a,#8
-3835  040d 6b05          	ld	(OFST-8,sp),a
-3836                     ; 586     CanBuffer.data[0]=UniqueID[0];
-3838  040f 72c60000      	ld	a,[_UniqueID.w]
-3839  0413 6b06          	ld	(OFST-7,sp),a
-3840                     ; 587     CanBuffer.data[1]=UniqueID[1];
-3842  0415 ce0000        	ldw	x,_UniqueID
-3843  0418 e601          	ld	a,(1,x)
-3844  041a 6b07          	ld	(OFST-6,sp),a
-3845                     ; 588     CanBuffer.data[2]=UniqueID[2];
-3847  041c ce0000        	ldw	x,_UniqueID
-3848  041f e602          	ld	a,(2,x)
-3849  0421 6b08          	ld	(OFST-5,sp),a
-3850                     ; 589     CanBuffer.data[3]=UniqueID[3];
-3852  0423 ce0000        	ldw	x,_UniqueID
-3853  0426 e603          	ld	a,(3,x)
-3854  0428 6b09          	ld	(OFST-4,sp),a
-3855                     ; 590     CanBuffer.data[4]=UniqueID[4];
-3857  042a ce0000        	ldw	x,_UniqueID
-3858  042d e604          	ld	a,(4,x)
-3859  042f 6b0a          	ld	(OFST-3,sp),a
-3860                     ; 591     CanBuffer.data[5]=UniqueID[5];
-3862  0431 ce0000        	ldw	x,_UniqueID
-3863  0434 e605          	ld	a,(5,x)
-3864  0436 6b0b          	ld	(OFST-2,sp),a
-3865                     ; 592     CanBuffer.data[6]=UniqueID[6];
-3867  0438 ce0000        	ldw	x,_UniqueID
-3868  043b e606          	ld	a,(6,x)
-3869  043d 6b0c          	ld	(OFST-1,sp),a
-3870                     ; 593     CanBuffer.data[7]=UniqueID[7];
-3872  043f ce0000        	ldw	x,_UniqueID
-3873  0442 e607          	ld	a,(7,x)
-3874  0444 6b0d          	ld	(OFST+0,sp),a
-3875                     ; 594     SendToCan(&CanBuffer);
-3877  0446 96            	ldw	x,sp
-3878  0447 1c0001        	addw	x,#OFST-12
-3879  044a 8dfa03fa      	callf	f_SendToCan
-3881                     ; 595 }
-3884  044e 5b0d          	addw	sp,#13
-3885  0450 87            	retf
-3927                     ; 605 void SendSwitchState(u8 Switch)
-3927                     ; 606 {
-3928                     	switch	.text
-3929  0451               f_SendSwitchState:
-3931  0451 88            	push	a
-3932  0452 520d          	subw	sp,#13
-3933       0000000d      OFST:	set	13
-3936                     ; 608     CanBuffer.id =CANID_SWITCHSTATE;
-3938  0454 aec080        	ldw	x,#49280
-3939  0457 1f03          	ldw	(OFST-10,sp),x
-3940  0459 ae1029        	ldw	x,#4137
-3941  045c 1f01          	ldw	(OFST-12,sp),x
-3942                     ; 609     CanBuffer.dlc =1;
-3944  045e a601          	ld	a,#1
-3945  0460 6b05          	ld	(OFST-8,sp),a
-3946                     ; 610     CanBuffer.data[0]=Switch;
-3948  0462 7b0e          	ld	a,(OFST+1,sp)
-3949  0464 6b06          	ld	(OFST-7,sp),a
-3950                     ; 611     SendToCan(&CanBuffer);
-3952  0466 96            	ldw	x,sp
-3953  0467 1c0001        	addw	x,#OFST-12
-3954  046a 8dfa03fa      	callf	f_SendToCan
-3956                     ; 612 }
-3959  046e 5b0e          	addw	sp,#14
-3960  0470 87            	retf
-4002                     ; 622 void SendBraodcast(u8 Broadcast)
-4002                     ; 623 {
-4003                     	switch	.text
-4004  0471               f_SendBraodcast:
-4006  0471 88            	push	a
-4007  0472 520d          	subw	sp,#13
-4008       0000000d      OFST:	set	13
-4011                     ; 625     CanBuffer.id =CANID_BROADCAST;
-4013  0474 ae2040        	ldw	x,#8256
-4014  0477 1f03          	ldw	(OFST-10,sp),x
-4015  0479 ae1024        	ldw	x,#4132
-4016  047c 1f01          	ldw	(OFST-12,sp),x
-4017                     ; 626     CanBuffer.dlc =1;
-4019  047e a601          	ld	a,#1
-4020  0480 6b05          	ld	(OFST-8,sp),a
-4021                     ; 627     CanBuffer.data[0]=Broadcast;
-4023  0482 7b0e          	ld	a,(OFST+1,sp)
-4024  0484 6b06          	ld	(OFST-7,sp),a
-4025                     ; 628     SendToCan(&CanBuffer);
-4027  0486 96            	ldw	x,sp
-4028  0487 1c0001        	addw	x,#OFST-12
-4029  048a 8dfa03fa      	callf	f_SendToCan
-4031                     ; 629 }
-4034  048e 5b0e          	addw	sp,#14
-4035  0490 87            	retf
-4064                     ; 639 void Can_Main(void)
-4064                     ; 640 {
-4065                     	switch	.text
-4066  0491               f_Can_Main:
-4070                     ; 641 	switch(CanBusState)
-4072  0491 c60000        	ld	a,_CanBusState
-4074                     ; 677 			CLEAR_WWDG;			
-4075  0494 4d            	tnz	a
-4076  0495 271d          	jreq	L1702
-4077  0497 4a            	dec	a
-4078  0498 2732          	jreq	L3702
-4079  049a 4a            	dec	a
-4080  049b 2747          	jreq	L1212
-4081  049d 4a            	dec	a
-4082  049e 2738          	jreq	L1012
-4083  04a0 4a            	dec	a
-4084  04a1 2741          	jreq	L1212
-4085  04a3 4a            	dec	a
-4086  04a4 272c          	jreq	L7702
-4087  04a6               L5012:
-4088                     ; 676 			BEGIN_WWDG;			
-4090  04a6 357f50d2      	mov	_WWDG+1,#127
-4093  04aa 35ff50d1      	mov	_WWDG,#255
-4094                     ; 677 			CLEAR_WWDG;			
-4097  04ae 357f50d1      	mov	_WWDG,#127
-4098  04b2               L3212:
-4100  04b2 20fe          	jra	L3212
-4101  04b4               L1702:
-4102                     ; 643 		case CAN_INITIAL:
-4102                     ; 644 			CanWakeUp();
-4104  04b4 8d8f018f      	callf	f_CanWakeUp
-4106                     ; 645 			CanInit(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
-4108  04b8 a670          	ld	a,#112
-4109  04ba 8d000000      	callf	f_CanInit
-4111                     ; 646 			CanInterruptRestore();
-4113  04be 8d500250      	callf	f_CanInterruptRestore
-4115                     ; 647 			CanBusWakeup();
-4117  04c2 72175014      	bres	_GPIOE,#3
-4118                     ; 648 			CanBusState=CAN_WAIT;
-4121  04c6 35010000      	mov	_CanBusState,#1
-4122                     ; 649 			break;
-4124  04ca 2018          	jra	L1212
-4125  04cc               L3702:
-4126                     ; 659 		        CanBusState=CAN_RUNNING;
-4128  04cc 35020000      	mov	_CanBusState,#2
-4129                     ; 661 		    break;
-4131  04d0 2012          	jra	L1212
-4132  04d2               L7702:
-4133                     ; 665 		case CAN_ACCOFF:
-4133                     ; 666 			CanBusState=CAN_RUNNING;
-4135  04d2 35020000      	mov	_CanBusState,#2
-4136                     ; 667 			break;
-4138  04d6 200c          	jra	L1212
-4139  04d8               L1012:
-4140                     ; 668 		case CAN_WAITSLEEP:
-4140                     ; 669 			CanSleep();
-4142  04d8 8d770177      	callf	f_CanSleep
-4144                     ; 670 			CanBusSleep();
-4146  04dc 72165014      	bset	_GPIOE,#3
-4147                     ; 671 			CanBusState=CAN_SLEEP;	
-4150  04e0 35040000      	mov	_CanBusState,#4
-4151                     ; 672 			break;
-4153  04e4               L1212:
-4154                     ; 684 }
-4157  04e4 87            	retf
-4169                     	xdef	f_CANGetEmptyMegBox
-4170                     	xdef	f_CanMsgTransmit
-4171                     	xdef	f_Can_Main
-4172                     	xdef	f_CanFlagAnalyse
-4173                     	xdef	f_SendBraodcast
-4174                     	xdef	f_SendSwitchState
-4175                     	xdef	f_NodeRegister
-4176                     	xdef	f_SendToCan
-4177                     	xdef	f_ISR_Can_Rx
-4178                     	xdef	f_ISR_Can_Tx
-4179                     	xdef	f_Can_Store_Rcvd_Msg
-4180                     	xdef	f_CanInterruptRestore
-4181                     	xdef	f_CanInterruptDisable
-4182                     	xdef	f_CanWakeUp
-4183                     	xdef	f_Can_Wakeup_Enable
-4184                     	xdef	f_CanSleep
-4185                     	xdef	f_CanInit
-4186                     	xref	_CanTxRxBuffer
-4187                     	xref	_CanBusState
-4188                     	xref	_CanPage
-4189                     	xref	_UniqueID
-4190                     	xref.b	c_x
-4209                     	xref	d_jltab
-4210                     	xref	d_ltor
-4211                     	xref	d_lgadc
-4212                     	xref	d_lglsh
-4213                     	end
+3170                     ; 366 void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
+3170                     ; 367 {
+3171                     	switch	.text
+3172  0267               f_Can_Store_Rcvd_Msg:
+3174  0267 5203          	subw	sp,#3
+3175       00000003      OFST:	set	3
+3178                     ; 369 	u8 *u8p =&CAN_PAGE_MDAR1;
+3180  0269 ae542e        	ldw	x,#_CAN+14
+3181  026c 1f01          	ldw	(OFST-2,sp),x
+3182                     ; 371 	CAN.PSR = CAN_PS_FIFO; //进入接收数据FIFO页面
+3184  026e 35075427      	mov	_CAN+7,#7
+3185                     ; 372     CanTxRxBuffer.id =CAN_PAGE_MIDR1&0x1F;
+3187  0272 c6542a        	ld	a,_CAN+10
+3188  0275 a41f          	and	a,#31
+3189  0277 c70003        	ld	_CanTxRxBuffer+3,a
+3190  027a 4f            	clr	a
+3191  027b c70002        	ld	_CanTxRxBuffer+2,a
+3192  027e c70001        	ld	_CanTxRxBuffer+1,a
+3193  0281 c70000        	ld	_CanTxRxBuffer,a
+3194                     ; 373     CanTxRxBuffer.id <<=8; //移位计算更优
+3196  0284 ae0000        	ldw	x,#_CanTxRxBuffer
+3197  0287 a608          	ld	a,#8
+3198  0289 8d000000      	callf	d_lglsh
+3200                     ; 374     CanTxRxBuffer.id +=CAN_PAGE_MIDR2;
+3202  028d c6542b        	ld	a,_CAN+11
+3203  0290 ae0000        	ldw	x,#_CanTxRxBuffer
+3204  0293 88            	push	a
+3205  0294 8d000000      	callf	d_lgadc
+3207  0298 84            	pop	a
+3208                     ; 375     CanTxRxBuffer.id <<=8;
+3210  0299 ae0000        	ldw	x,#_CanTxRxBuffer
+3211  029c a608          	ld	a,#8
+3212  029e 8d000000      	callf	d_lglsh
+3214                     ; 376     CanTxRxBuffer.id +=CAN_PAGE_MIDR3;
+3216  02a2 c6542c        	ld	a,_CAN+12
+3217  02a5 ae0000        	ldw	x,#_CanTxRxBuffer
+3218  02a8 88            	push	a
+3219  02a9 8d000000      	callf	d_lgadc
+3221  02ad 84            	pop	a
+3222                     ; 377     CanTxRxBuffer.id <<=8;
+3224  02ae ae0000        	ldw	x,#_CanTxRxBuffer
+3225  02b1 a608          	ld	a,#8
+3226  02b3 8d000000      	callf	d_lglsh
+3228                     ; 378     CanTxRxBuffer.id +=CAN_PAGE_MIDR4;
+3230  02b7 c6542d        	ld	a,_CAN+13
+3231  02ba ae0000        	ldw	x,#_CanTxRxBuffer
+3232  02bd 88            	push	a
+3233  02be 8d000000      	callf	d_lgadc
+3235  02c2 84            	pop	a
+3236                     ; 379 	CanTxRxBuffer.dlc= CAN_PAGE_MDLCR; //此帧长度(字节数)
+3238  02c3 5554290004    	mov	_CanTxRxBuffer+4,_CAN+9
+3239                     ; 380 	for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
+3241  02c8 0f03          	clr	(OFST+0,sp)
+3243  02ca 2017          	jra	L5161
+3244  02cc               L1161:
+3245                     ; 382 		CanTxRxBuffer.data[idx]=u8p[idx];
+3247  02cc 7b03          	ld	a,(OFST+0,sp)
+3248  02ce 5f            	clrw	x
+3249  02cf 97            	ld	xl,a
+3250  02d0 89            	pushw	x
+3251  02d1 7b03          	ld	a,(OFST+0,sp)
+3252  02d3 97            	ld	xl,a
+3253  02d4 7b04          	ld	a,(OFST+1,sp)
+3254  02d6 1b05          	add	a,(OFST+2,sp)
+3255  02d8 2401          	jrnc	L62
+3256  02da 5c            	incw	x
+3257  02db               L62:
+3258  02db 02            	rlwa	x,a
+3259  02dc f6            	ld	a,(x)
+3260  02dd 85            	popw	x
+3261  02de d70005        	ld	(_CanTxRxBuffer+5,x),a
+3262                     ; 380 	for (idx=0;idx<CanTxRxBuffer.dlc;idx++)
+3264  02e1 0c03          	inc	(OFST+0,sp)
+3265  02e3               L5161:
+3268  02e3 c60004        	ld	a,_CanTxRxBuffer+4
+3269  02e6 1103          	cp	a,(OFST+0,sp)
+3270  02e8 22e2          	jrugt	L1161
+3271                     ; 384     CanMsgAnalyze(&CanTxRxBuffer);
+3273  02ea ae0000        	ldw	x,#_CanTxRxBuffer
+3274  02ed 8d570357      	callf	L5531f_CanMsgAnalyze
+3276                     ; 385 }
+3279  02f1 5b03          	addw	sp,#3
+3280  02f3 87            	retf
+3313                     ; 395 void ISR_Can_Tx(void)
+3313                     ; 396 {
+3314                     	switch	.text
+3315  02f4               f_ISR_Can_Tx:
+3317  02f4 88            	push	a
+3318       00000001      OFST:	set	1
+3321                     ; 398     CanSavePg();
+3323  02f5 5554270000    	mov	_CanPage,_CAN+7
+3324                     ; 400     CAN.PSR =CAN_PS_CTRL;
+3326  02fa 35065427      	mov	_CAN+7,#6
+3327                     ; 401     if(CAN_PAGE_ESR)
+3329  02fe 725d5428      	tnz	_CAN+8
+3330  0302 2714          	jreq	L5361
+3331                     ; 403         ErrorCode=CAN_PAGE_ESR;
+3333  0304 c65428        	ld	a,_CAN+8
+3334  0307 6b01          	ld	(OFST+0,sp),a
+3335                     ; 404         if((CAN_PAGE_ESR&CAN_PAGE_ESR_LEC)!=0)
+3337  0309 c65428        	ld	a,_CAN+8
+3338  030c a570          	bcp	a,#112
+3339  030e 2704          	jreq	L7361
+3340                     ; 406             CAN_PAGE_ESR =0;//|=CAN_PAGE_ESR_LEC;
+3342  0310 725f5428      	clr	_CAN+8
+3343  0314               L7361:
+3344                     ; 408         CAN.MSR |=CAN_MSR_ERRI;
+3346  0314 72145421      	bset	_CAN+1,#2
+3347  0318               L5361:
+3348                     ; 410     CanRestorePg();
+3350  0318 5500005427    	mov	_CAN+7,_CanPage
+3351                     ; 411 }
+3354  031d 84            	pop	a
+3355  031e 87            	retf
+3380                     ; 422 void ISR_Can_Rx(void)
+3380                     ; 423 {
+3381                     	switch	.text
+3382  031f               f_ISR_Can_Rx:
+3386                     ; 424 	CanSavePg();   
+3388  031f 5554270000    	mov	_CanPage,_CAN+7
+3389                     ; 426 	if (CAN.RFR & CAN_RFR_FOVR)
+3391  0324 c65424        	ld	a,_CAN+4
+3392  0327 a510          	bcp	a,#16
+3393  0329 2706          	jreq	L1561
+3394                     ; 428 		CAN.RFR |= CAN_RFR_FOVR;		/* clear the FIFO Overrun (FOVR) bit */
+3396  032b 72185424      	bset	_CAN+4,#4
+3398  032f 2019          	jra	L1661
+3399  0331               L1561:
+3400                     ; 430 	else if (CAN.RFR & CAN_RFR_FULL)
+3402  0331 c65424        	ld	a,_CAN+4
+3403  0334 a508          	bcp	a,#8
+3404  0336 2712          	jreq	L1661
+3405                     ; 432 		CAN.RFR |= CAN_RFR_FULL;		/* clear the FIFO full (FULL) bit */      
+3407  0338 72165424      	bset	_CAN+4,#3
+3408  033c 200c          	jra	L1661
+3409  033e               L7561:
+3410                     ; 436         Can_Store_Rcvd_Msg();
+3412  033e 8d670267      	callf	f_Can_Store_Rcvd_Msg
+3414                     ; 437         CAN.RFR |= CAN_RFR_RFOM; // Release mailbox
+3416  0342 721a5424      	bset	_CAN+4,#5
+3417                     ; 438 		CAN.RFR |= CAN_RFR_RFOM; //此语句要用2句,原因还没搞明白
+3419  0346 721a5424      	bset	_CAN+4,#5
+3420  034a               L1661:
+3421                     ; 434 	while (CAN.RFR & CAN_RFR_FMP)	/* Check until FMP != 0 */
+3423  034a c65424        	ld	a,_CAN+4
+3424  034d a503          	bcp	a,#3
+3425  034f 26ed          	jrne	L7561
+3426                     ; 440 	CanRestorePg();
+3428  0351 5500005427    	mov	_CAN+7,_CanPage
+3429                     ; 441 }
+3432  0356 87            	retf
+3482                     .const:	section	.text
+3483  0000               L7171:
+3484  0000 0003          	dc.w	3
+3485  0002 04010000      	dc.l	67174400
+3486  0006 0373          	dc.w	L1761
+3487  0008 04020000      	dc.l	67239936
+3488  000c 0368          	dc.w	L5661
+3489  000e 04030000      	dc.l	67305472
+3490  0012 0371          	dc.w	L7661
+3491  0014 03ce          	dc.w	L1271
+3492                     ; 452 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
+3492                     ; 453 {
+3493                     	switch	.text
+3494  0357               L5531f_CanMsgAnalyze:
+3496  0357 89            	pushw	x
+3497  0358 88            	push	a
+3498       00000001      OFST:	set	1
+3501                     ; 456     BoolT FlagCANDataOK=TRUE;
+3503  0359 a601          	ld	a,#1
+3504  035b 6b01          	ld	(OFST+0,sp),a
+3505                     ; 459     switch(pCanMsg->id)
+3507  035d 8d000000      	callf	d_ltor
+3510  0361 ae0000        	ldw	x,#L7171
+3511  0364 8d000000      	callf	d_jltab
+3512  0368               L5661:
+3513                     ; 464             LED=pCanMsg->data[0];
+3515  0368 1e02          	ldw	x,(OFST+1,sp)
+3516  036a e605          	ld	a,(5,x)
+3517  036c c7500a        	ld	_GPIOC,a
+3518                     ; 466             break;
+3520  036f 205d          	jra	L1271
+3521  0371               L7661:
+3522                     ; 474             break;
+3524  0371 205b          	jra	L1271
+3525  0373               L1761:
+3526                     ; 491             if(UniqueID[0]==pCanMsg->data[0]&&UniqueID[1]==pCanMsg->data[1]
+3526                     ; 492              &&UniqueID[2]==pCanMsg->data[2]&&UniqueID[3]==pCanMsg->data[3]
+3526                     ; 493              &&UniqueID[4]==pCanMsg->data[4]&&UniqueID[5]==pCanMsg->data[5]
+3526                     ; 494              &&UniqueID[6]==pCanMsg->data[6]&&UniqueID[7]==pCanMsg->data[7]
+3526                     ; 495             )
+3528  0373 72c60000      	ld	a,[_UniqueID.w]
+3529  0377 1e02          	ldw	x,(OFST+1,sp)
+3530  0379 e105          	cp	a,(5,x)
+3531  037b 2651          	jrne	L1271
+3533  037d ce0000        	ldw	x,_UniqueID
+3534  0380 e601          	ld	a,(1,x)
+3535  0382 1e02          	ldw	x,(OFST+1,sp)
+3536  0384 e106          	cp	a,(6,x)
+3537  0386 2646          	jrne	L1271
+3539  0388 ce0000        	ldw	x,_UniqueID
+3540  038b e602          	ld	a,(2,x)
+3541  038d 1e02          	ldw	x,(OFST+1,sp)
+3542  038f e107          	cp	a,(7,x)
+3543  0391 263b          	jrne	L1271
+3545  0393 ce0000        	ldw	x,_UniqueID
+3546  0396 e603          	ld	a,(3,x)
+3547  0398 1e02          	ldw	x,(OFST+1,sp)
+3548  039a e108          	cp	a,(8,x)
+3549  039c 2630          	jrne	L1271
+3551  039e ce0000        	ldw	x,_UniqueID
+3552  03a1 e604          	ld	a,(4,x)
+3553  03a3 1e02          	ldw	x,(OFST+1,sp)
+3554  03a5 e109          	cp	a,(9,x)
+3555  03a7 2625          	jrne	L1271
+3557  03a9 ce0000        	ldw	x,_UniqueID
+3558  03ac e605          	ld	a,(5,x)
+3559  03ae 1e02          	ldw	x,(OFST+1,sp)
+3560  03b0 e10a          	cp	a,(10,x)
+3561  03b2 261a          	jrne	L1271
+3563  03b4 ce0000        	ldw	x,_UniqueID
+3564  03b7 e606          	ld	a,(6,x)
+3565  03b9 1e02          	ldw	x,(OFST+1,sp)
+3566  03bb e10b          	cp	a,(11,x)
+3567  03bd 260f          	jrne	L1271
+3569  03bf ce0000        	ldw	x,_UniqueID
+3570  03c2 e607          	ld	a,(7,x)
+3571  03c4 1e02          	ldw	x,(OFST+1,sp)
+3572  03c6 e10c          	cp	a,(12,x)
+3573  03c8 2604          	jrne	L1271
+3574                     ; 497                 NODE_REGISTER_FLAG=1;
+3576  03ca 72120000      	bset	_NodeState,#1
+3577  03ce               L1271:
+3578                     ; 503     CanFlagAnalyse();
+3580  03ce 8dd503d5      	callf	f_CanFlagAnalyse
+3582                     ; 504 }
+3585  03d2 5b03          	addw	sp,#3
+3586  03d4 87            	retf
+3608                     ; 515 void CanFlagAnalyse(void)
+3608                     ; 516 {
+3609                     	switch	.text
+3610  03d5               f_CanFlagAnalyse:
+3614                     ; 517 }
+3617  03d5 87            	retf
+3641                     ; 527 BoolT CANGetEmptyMegBox(void)
+3641                     ; 528 {
+3642                     	switch	.text
+3643  03d6               f_CANGetEmptyMegBox:
+3647                     ; 529     if(CAN.TPR &CAN_TPR_TME0)
+3649  03d6 c65423        	ld	a,_CAN+3
+3650  03d9 a504          	bcp	a,#4
+3651  03db 2706          	jreq	L5471
+3652                     ; 531         CAN.PSR =CAN_PS_TXMB0;
+3654  03dd 725f5427      	clr	_CAN+7
+3656  03e1 2018          	jra	L7471
+3657  03e3               L5471:
+3658                     ; 533     else if(CAN.TPR &CAN_TPR_TME1)
+3660  03e3 c65423        	ld	a,_CAN+3
+3661  03e6 a508          	bcp	a,#8
+3662  03e8 2706          	jreq	L1571
+3663                     ; 535         CAN.PSR =CAN_PS_TXMB1;
+3665  03ea 35015427      	mov	_CAN+7,#1
+3667  03ee 200b          	jra	L7471
+3668  03f0               L1571:
+3669                     ; 537     else if(CAN.TPR &CAN_TPR_TME2)
+3671  03f0 c65423        	ld	a,_CAN+3
+3672  03f3 a510          	bcp	a,#16
+3673  03f5 2707          	jreq	L5571
+3674                     ; 539         CAN.PSR =CAN_PS_TXMB2;
+3676  03f7 35055427      	mov	_CAN+7,#5
+3678  03fb               L7471:
+3679                     ; 545     return TRUE;
+3681  03fb a601          	ld	a,#1
+3684  03fd 87            	retf
+3685  03fe               L5571:
+3686                     ; 543         return FALSE;
+3688  03fe 4f            	clr	a
+3691  03ff 87            	retf
+3728                     ; 556 void SendToCan(CanMsgTypeDef *pCanMsg)
+3728                     ; 557 {
+3729                     	switch	.text
+3730  0400               f_SendToCan:
+3734                     ; 558     CanMsgTransmit(pCanMsg);
+3736  0400 8da201a2      	callf	f_CanMsgTransmit
+3738                     ; 559 }
+3741  0404 87            	retf
+3777                     ; 569 void NodeRegister(void)
+3777                     ; 570 {
+3778                     	switch	.text
+3779  0405               f_NodeRegister:
+3781  0405 520d          	subw	sp,#13
+3782       0000000d      OFST:	set	13
+3785                     ; 572     CanBuffer.id =CANID_NODEREGISTER;
+3787  0407 ae0000        	ldw	x,#0
+3788  040a 1f03          	ldw	(OFST-10,sp),x
+3789  040c ae0401        	ldw	x,#1025
+3790  040f 1f01          	ldw	(OFST-12,sp),x
+3791                     ; 573     CanBuffer.dlc =8;
+3793  0411 a608          	ld	a,#8
+3794  0413 6b05          	ld	(OFST-8,sp),a
+3795                     ; 574     CanBuffer.data[0]=UniqueID[0];
+3797  0415 72c60000      	ld	a,[_UniqueID.w]
+3798  0419 6b06          	ld	(OFST-7,sp),a
+3799                     ; 575     CanBuffer.data[1]=UniqueID[1];
+3801  041b ce0000        	ldw	x,_UniqueID
+3802  041e e601          	ld	a,(1,x)
+3803  0420 6b07          	ld	(OFST-6,sp),a
+3804                     ; 576     CanBuffer.data[2]=UniqueID[2];
+3806  0422 ce0000        	ldw	x,_UniqueID
+3807  0425 e602          	ld	a,(2,x)
+3808  0427 6b08          	ld	(OFST-5,sp),a
+3809                     ; 577     CanBuffer.data[3]=UniqueID[3];
+3811  0429 ce0000        	ldw	x,_UniqueID
+3812  042c e603          	ld	a,(3,x)
+3813  042e 6b09          	ld	(OFST-4,sp),a
+3814                     ; 578     CanBuffer.data[4]=UniqueID[4];
+3816  0430 ce0000        	ldw	x,_UniqueID
+3817  0433 e604          	ld	a,(4,x)
+3818  0435 6b0a          	ld	(OFST-3,sp),a
+3819                     ; 579     CanBuffer.data[5]=UniqueID[5];
+3821  0437 ce0000        	ldw	x,_UniqueID
+3822  043a e605          	ld	a,(5,x)
+3823  043c 6b0b          	ld	(OFST-2,sp),a
+3824                     ; 580     CanBuffer.data[6]=UniqueID[6];
+3826  043e ce0000        	ldw	x,_UniqueID
+3827  0441 e606          	ld	a,(6,x)
+3828  0443 6b0c          	ld	(OFST-1,sp),a
+3829                     ; 581     CanBuffer.data[7]=UniqueID[7];
+3831  0445 ce0000        	ldw	x,_UniqueID
+3832  0448 e607          	ld	a,(7,x)
+3833  044a 6b0d          	ld	(OFST+0,sp),a
+3834                     ; 582     SendToCan(&CanBuffer);
+3836  044c 96            	ldw	x,sp
+3837  044d 1c0001        	addw	x,#OFST-12
+3838  0450 8d000400      	callf	f_SendToCan
+3840                     ; 583 }
+3843  0454 5b0d          	addw	sp,#13
+3844  0456 87            	retf
+3886                     ; 593 void SendSwitchState(u8 Switch)
+3886                     ; 594 {
+3887                     	switch	.text
+3888  0457               f_SendSwitchState:
+3890  0457 88            	push	a
+3891  0458 520d          	subw	sp,#13
+3892       0000000d      OFST:	set	13
+3895                     ; 596     CanBuffer.id =CANID_SWITCHSTATE;
+3897  045a ae0000        	ldw	x,#0
+3898  045d 1f03          	ldw	(OFST-10,sp),x
+3899  045f ae0403        	ldw	x,#1027
+3900  0462 1f01          	ldw	(OFST-12,sp),x
+3901                     ; 597     CanBuffer.dlc =1;
+3903  0464 a601          	ld	a,#1
+3904  0466 6b05          	ld	(OFST-8,sp),a
+3905                     ; 598     CanBuffer.data[0]=Switch;
+3907  0468 7b0e          	ld	a,(OFST+1,sp)
+3908  046a 6b06          	ld	(OFST-7,sp),a
+3909                     ; 599     SendToCan(&CanBuffer);
+3911  046c 96            	ldw	x,sp
+3912  046d 1c0001        	addw	x,#OFST-12
+3913  0470 8d000400      	callf	f_SendToCan
+3915                     ; 600 }
+3918  0474 5b0e          	addw	sp,#14
+3919  0476 87            	retf
+3961                     ; 610 void SendBraodcast(u8 Broadcast)
+3961                     ; 611 {
+3962                     	switch	.text
+3963  0477               f_SendBraodcast:
+3965  0477 88            	push	a
+3966  0478 520d          	subw	sp,#13
+3967       0000000d      OFST:	set	13
+3970                     ; 613     CanBuffer.id =CANID_BROADCAST;
+3972  047a ae0000        	ldw	x,#0
+3973  047d 1f03          	ldw	(OFST-10,sp),x
+3974  047f ae0402        	ldw	x,#1026
+3975  0482 1f01          	ldw	(OFST-12,sp),x
+3976                     ; 614     CanBuffer.dlc =1;
+3978  0484 a601          	ld	a,#1
+3979  0486 6b05          	ld	(OFST-8,sp),a
+3980                     ; 615     CanBuffer.data[0]=Broadcast;
+3982  0488 7b0e          	ld	a,(OFST+1,sp)
+3983  048a 6b06          	ld	(OFST-7,sp),a
+3984                     ; 616     SendToCan(&CanBuffer);
+3986  048c 96            	ldw	x,sp
+3987  048d 1c0001        	addw	x,#OFST-12
+3988  0490 8d000400      	callf	f_SendToCan
+3990                     ; 617 }
+3993  0494 5b0e          	addw	sp,#14
+3994  0496 87            	retf
+4025                     ; 627 void Can_Main(void)
+4025                     ; 628 {
+4026                     	switch	.text
+4027  0497               f_Can_Main:
+4031                     ; 629 	switch(CanBusState)
+4033  0497 c60000        	ld	a,_CanBusState
+4035                     ; 665 			CLEAR_WWDG;			
+4036  049a 4d            	tnz	a
+4037  049b 271d          	jreq	L7502
+4038  049d 4a            	dec	a
+4039  049e 2732          	jreq	L1602
+4040  04a0 4a            	dec	a
+4041  04a1 2754          	jreq	L7012
+4042  04a3 4a            	dec	a
+4043  04a4 2745          	jreq	L7602
+4044  04a6 4a            	dec	a
+4045  04a7 274e          	jreq	L7012
+4046  04a9 4a            	dec	a
+4047  04aa 2739          	jreq	L5602
+4048  04ac               L3702:
+4049                     ; 664 			BEGIN_WWDG;			
+4051  04ac 357f50d2      	mov	_WWDG+1,#127
+4054  04b0 35ff50d1      	mov	_WWDG,#255
+4055                     ; 665 			CLEAR_WWDG;			
+4058  04b4 357f50d1      	mov	_WWDG,#127
+4059  04b8               L5112:
+4061  04b8 20fe          	jra	L5112
+4062  04ba               L7502:
+4063                     ; 631 		case CAN_INITIAL:
+4063                     ; 632 			CanWakeUp();
+4065  04ba 8d8f018f      	callf	f_CanWakeUp
+4067                     ; 633 			CanInit(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
+4069  04be a670          	ld	a,#112
+4070  04c0 8d000000      	callf	f_CanInit
+4072                     ; 634 			CanInterruptRestore();
+4074  04c4 8d500250      	callf	f_CanInterruptRestore
+4076                     ; 635 			CanBusWakeup();
+4078  04c8 72175014      	bres	_GPIOE,#3
+4079                     ; 636 			CanBusState=CAN_WAIT;
+4082  04cc 35010000      	mov	_CanBusState,#1
+4083                     ; 637 			break;
+4085  04d0 2025          	jra	L7012
+4086  04d2               L1602:
+4087                     ; 638 		case CAN_WAIT:
+4087                     ; 639 #if HASH_MODEL==HS_0002S
+4087                     ; 640 		    if(0==NODE_REGISTER_FLAG)
+4089  04d2 c60000        	ld	a,_NodeState
+4090  04d5 a502          	bcp	a,#2
+4091  04d7 2606          	jrne	L1112
+4092                     ; 642     		    NodeRegister();
+4094  04d9 8d050405      	callf	f_NodeRegister
+4097  04dd 2018          	jra	L7012
+4098  04df               L1112:
+4099                     ; 647 		        CanBusState=CAN_RUNNING;
+4101  04df 35020000      	mov	_CanBusState,#2
+4102  04e3 2012          	jra	L7012
+4103  04e5               L5602:
+4104                     ; 653 		case CAN_ACCOFF:
+4104                     ; 654 			CanBusState=CAN_RUNNING;
+4106  04e5 35020000      	mov	_CanBusState,#2
+4107                     ; 655 			break;
+4109  04e9 200c          	jra	L7012
+4110  04eb               L7602:
+4111                     ; 656 		case CAN_WAITSLEEP:
+4111                     ; 657 			CanSleep();
+4113  04eb 8d770177      	callf	f_CanSleep
+4115                     ; 658 			CanBusSleep();
+4117  04ef 72165014      	bset	_GPIOE,#3
+4118                     ; 659 			CanBusState=CAN_SLEEP;	
+4121  04f3 35040000      	mov	_CanBusState,#4
+4122                     ; 660 			break;
+4124  04f7               L7012:
+4125                     ; 672 }
+4128  04f7 87            	retf
+4140                     	xdef	f_CANGetEmptyMegBox
+4141                     	xdef	f_CanMsgTransmit
+4142                     	xdef	f_Can_Main
+4143                     	xdef	f_CanFlagAnalyse
+4144                     	xdef	f_SendBraodcast
+4145                     	xdef	f_SendSwitchState
+4146                     	xdef	f_NodeRegister
+4147                     	xdef	f_SendToCan
+4148                     	xdef	f_ISR_Can_Rx
+4149                     	xdef	f_ISR_Can_Tx
+4150                     	xdef	f_Can_Store_Rcvd_Msg
+4151                     	xdef	f_CanInterruptRestore
+4152                     	xdef	f_CanInterruptDisable
+4153                     	xdef	f_CanWakeUp
+4154                     	xdef	f_Can_Wakeup_Enable
+4155                     	xdef	f_CanSleep
+4156                     	xdef	f_CanInit
+4157                     	xref	_CanTxRxBuffer
+4158                     	xref	_CanBusState
+4159                     	xref	_NodeState
+4160                     	xref	_CanPage
+4161                     	xref	_UniqueID
+4162                     	xref.b	c_x
+4181                     	xref	d_jltab
+4182                     	xref	d_ltor
+4183                     	xref	d_lgadc
+4184                     	xref	d_lglsh
+4185                     	end

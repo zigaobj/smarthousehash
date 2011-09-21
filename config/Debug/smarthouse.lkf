@@ -51,6 +51,7 @@ crtsi.sm8
 
 # Object files list - section reserved for STVD
 #<BEGIN OBJECT_FILES>
+Debug\can_protocol.o
 Debug\fctcpy.o
 Debug\library.o
 Debug\main.o
