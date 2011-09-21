@@ -1,9 +1,3 @@
-/*******       event ID                  DLC          ******/
-#define CANID_NODEREGISTER      0x10445701
-#define CANID_BROADCAST         0x10242040
-
-#define CANID_SWITCHSTATE       0x1029C080
-
 /*******       event paramter        ******/
 #define PARA_ILL_OFF    0x00
 #define PARA_ILL_LV0    0x0C
