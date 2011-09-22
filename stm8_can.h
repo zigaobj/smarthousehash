@@ -1,10 +1,4 @@
 /*******       event paramter        ******/
-#define PARA_ILL_OFF    0x00
-#define PARA_ILL_LV0    0x0C
-#define PARA_ILL_LV1    0x0B
-#define PARA_ILL_LV17   0xFA
-#define PARA_ILL_ON     0x80
-
 #define PROTO_TYPE_STENDCMD 0x81
 #define PROTO_TYPE_AIRCMD   0x82
 #define PROTO_TYPE_CENCMD   0x83
