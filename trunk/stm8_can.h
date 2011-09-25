@@ -64,8 +64,7 @@ typedef enum
 	CAN_WAIT,
 	CAN_RUNNING,
 	CAN_WAITSLEEP,
-	CAN_SLEEP,
-	CAN_ACCOFF
+	CAN_SLEEP
 }CANBUS_STATUS;
 EXT CANBUS_STATUS CanBusState;
 
@@ -92,7 +91,6 @@ void ISR_Can_Tx(void);
 void ISR_Can_Rx(void);
 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg);
 void SendToCan(CanMsgTypeDef *pCanMsg);
-void NodeRegister(void);
 void SendSwitchState(u8 Switch);
 void SendBraodcast(u8 Broadcast);
 void CanFlagAnalyse(void);

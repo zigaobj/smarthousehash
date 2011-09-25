@@ -39,6 +39,7 @@ void VariableInit(void)
 }
 void HardwareInit(void)
 {
+    EepromInit();
     SysClkInit();
     Delay(10000); //wait for system power stability
     GPIOInit();

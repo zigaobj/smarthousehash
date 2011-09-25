@@ -29,6 +29,25 @@ typedef enum
     NMT_RESET_NODE              = 0x81,
     NMT_RESET_COMMUNICATION     = 0x82
 }NMT_MODULE_CONTROL;
+typedef enum
+{
+	CANPROTOCOL_INITIAL,
+	CANPROTOCOL_WAIT,
+	CANPROTOCOL_RUNNING,
+	CANPROTOCOL_WAITSLEEP,
+	CANPROTOCOL_SLEEP
+}CANPROTOCOL_STATUS;
+EXT CANPROTOCOL_STATUS CanProtocolState;
+
+typedef enum e_accessAttribute { RW, WO, RO, CONST }AccessAttribute;
+typedef struct td_subindex
+{
+    AccessAttribute         bAccessType;    // Access type (RO, RW, ...)
+    u8                      bDataType;      // Defines of what datatype the entry is
+    u32                     size;           // The size (in Byte) of the variable
+    void*                   pObject;        // This is the pointer of the Variable
+} SubIndex;
 
 void SendNMTModuleControl(NMT_MODULE_CONTROL NmtCmd,NODEID NodeID);
-
+void SendNodeRegister(NODEID NodeId);
+void MainCanProtocol(void);
