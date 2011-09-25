@@ -451,9 +451,7 @@ void ISR_Can_Rx(void)
 ******************************************************************/
 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 {
-    u16 TempPara;
-    u8 u8Temp;
-    BoolT FlagCANDataOK=TRUE;
+    u8 i;
     CanMsgTypeDef CanBuffer;
     
     switch(pCanMsg->id)
@@ -476,6 +474,26 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
         case CANID_NODEREGISTER:
         {
 #if HASH_MODEL==HS_0001M
+            for(i=0;i<NODEIDLIST_MAX_NUM;i++)
+            {
+                if(eep_NodeIdList[i].address[0]==pCanMsg->data[0]
+                 &&eep_NodeIdList[i].address[1]==pCanMsg->data[1]
+                 &&eep_NodeIdList[i].address[2]==pCanMsg->data[2]
+                 &&eep_NodeIdList[i].address[3]==pCanMsg->data[3]
+                 &&eep_NodeIdList[i].address[4]==pCanMsg->data[4]
+                 &&eep_NodeIdList[i].address[5]==pCanMsg->data[5]
+                 &&eep_NodeIdList[i].address[6]==pCanMsg->data[6]
+                 &&eep_NodeIdList[i].address[7]==pCanMsg->data[7]
+                )
+                {
+                    break;
+                }
+            }
+            if(NODEIDLIST_MAX_NUM==i)
+            {
+                NodeIdListNodeNum++;
+                eep_NodeIdList[i].nodeid.id=NodeIdListNodeNum;
+            }
             CanBuffer.data[0]=pCanMsg->data[0];
             CanBuffer.data[1]=pCanMsg->data[1];
             CanBuffer.data[2]=pCanMsg->data[2];
@@ -484,7 +502,7 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
             CanBuffer.data[5]=pCanMsg->data[5];
             CanBuffer.data[6]=pCanMsg->data[6];
             CanBuffer.data[7]=pCanMsg->data[7];
-            CanBuffer.id =CANID_NODEREGISTER;
+            CanBuffer.id =CANID_NODEREGISTER+eep_NodeIdList[i].nodeid.id;
             CanBuffer.dlc =8;
             SendToCan(&CanBuffer);
 #elif HASH_MODEL==HS_0002S
@@ -558,30 +576,6 @@ void SendToCan(CanMsgTypeDef *pCanMsg)
     CanMsgTransmit(pCanMsg);
 }
 /******************************************************************
-*函数名称:NodeRegister()
-*功   能 :
-*入口参数:NONE   
-*出口参数:NONE
-*描   述 :
-*时   间 :2010.5.25
-*作   者 :mjzhang
-******************************************************************/
-void NodeRegister(void)
-{
-    CanMsgTypeDef CanBuffer;
-    CanBuffer.id =CANID_NODEREGISTER;
-    CanBuffer.dlc =8;
-    CanBuffer.data[0]=UniqueID[0];
-    CanBuffer.data[1]=UniqueID[1];
-    CanBuffer.data[2]=UniqueID[2];
-    CanBuffer.data[3]=UniqueID[3];
-    CanBuffer.data[4]=UniqueID[4];
-    CanBuffer.data[5]=UniqueID[5];
-    CanBuffer.data[6]=UniqueID[6];
-    CanBuffer.data[7]=UniqueID[7];
-    SendToCan(&CanBuffer);
-}
-/******************************************************************
 *函数名称:SendSwitchState()
 *功   能 :
 *入口参数:u8   
@@ -629,44 +623,45 @@ void Can_Main(void)
 	switch(CanBusState)
 	{
 		case CAN_INITIAL:
+		{
 			CanWakeUp();
 			CanInit(CAN_MCR_ABOM | CAN_MCR_AWUM |CAN_MCR_NART);
 			CanInterruptRestore();
 			CanBusWakeup();
 			CanBusState=CAN_WAIT;
 			break;
+		}
 		case CAN_WAIT:
-#if HASH_MODEL==HS_0002S
-		    if(0==NODE_REGISTER_FLAG)
-		    {
-    		    NodeRegister();
-		    }
-		    else
-#endif 
-		    {
-		        CanBusState=CAN_RUNNING;
-		    }
+        {
+			CanProtocolState=CANPROTOCOL_INITIAL;
+	        CanBusState=CAN_RUNNING;
 		    break;
+        }
 		case CAN_RUNNING:
-		    
+		{
+		    MainCanProtocol();
 			break;
-		case CAN_ACCOFF:
-			CanBusState=CAN_RUNNING;
-			break;
+		}
 		case CAN_WAITSLEEP:
+		{
 			CanSleep();
 			CanBusSleep();
 			CanBusState=CAN_SLEEP;	
 			break;
+		}
 		case CAN_SLEEP:
+		{
 			break;
+		}
 		default:
+		{
 			BEGIN_WWDG;			
 			CLEAR_WWDG;			
 			for(;;)
 			{
 				//break;
 			}
+		}
 	}
 
 }

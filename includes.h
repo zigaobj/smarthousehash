@@ -12,7 +12,6 @@
 
 #include "config.h" //ÅäÖÃÎÄ¼ş
 #include "library.h"
-#include "stm8_eeprom.h"
 #include "stm8_beep.h"
 #include "stm8_it.h"
 #include "stm8_timer.h"
@@ -23,6 +22,7 @@
 #include "can_protocol.h"
 #include "stm8_can.h"
 #include "stm8_flash.h"
+#include "stm8_eeprom.h"
 
 #include "main.h"
 

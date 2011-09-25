@@ -22,17 +22,10 @@ typedef enum {
   FLASH_PROGRAMMODE_FAST     = (u8)0x10  /*!< Fast programming mode */
 } FLASH_ProgramMode_TypeDef;
 typedef enum {
-  FLASH_PROGRAMTIME_HALFTPROG = (u8)0x00, /*!< programming time fixed at 1/2 tprog */
+  FLASH_PROGRAMTIME_STANDARD = (u8)0x00, /*!< programming time fixed at 1/2 tprog */
   FLASH_PROGRAMTIME_TPROG     = (u8)0x01  /*!< Programming time fixed at tprog */
 } FLASH_ProgramTime_TypeDef;
 
-void EepromUnlock(void);
-void EepromSave(void);
-BoolT EepromLoad(void);
-void FlashWaitForEepromOperation(void);
-void FlashSetProgrammingTime(FLASH_ProgramTime_TypeDef ProgTime);
-void FlashUnlock(FlashType MemType);
-void FlashLock(FlashType MemType);
 void FlashWaitForLastOperation(void);
 void FlashWriteByte(u32 Address,u8 Data);
 void FlashWriteWord(u32 Address,u32 Data32);
@@ -41,5 +34,4 @@ u32 FlashReadWord(u32 Address);
 void FlashEraseByte(u32 Address);
 void FlashEraseBlock(u16 BlockNum, FlashType MemType);
 void FlashProgramBlock(u16 BlockNum, FlashType MemType, FLASH_ProgramMode_TypeDef ProgMode, u8 *Buffer);
-void IapProc(u8 Byte);
 
