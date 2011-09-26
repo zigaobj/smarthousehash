@@ -93,6 +93,8 @@ void ISR_TIM4_UPD_OVF(void)
     {
         FLAGMAIN_1S=1;
         CounterTime=0;
+        if(CanProtocol1sTimer>0)
+            CanProtocol1sTimer--;
     }
     
     if(0!=BeepTimer)

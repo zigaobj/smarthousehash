@@ -48,6 +48,8 @@ typedef struct td_subindex
     void*                   pObject;        // This is the pointer of the Variable
 } SubIndex;
 
+EXT u8 CanProtocol1sTimer;
+
 void SendNMTModuleControl(NMT_MODULE_CONTROL NmtCmd,NODEID NodeID);
 void SendNodeRegister(NODEID NodeId);
 void MainCanProtocol(void);

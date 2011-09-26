@@ -42,29 +42,32 @@ void MainCanProtocol(void)
         {
 #if HASH_MODEL==HS_0001M
             SendNMTModuleControl(NMT_RESET_COMMUNICATION,CANID_NMT_MODULE_CONTROL);
+            CanProtocol1sTimer=0;
 #elif HASH_MODEL==HS_0002S
             SendNodeRegister(eep_NodeId);
+            CanProtocol1sTimer=5;
 #endif
-            CanBusState=CANPROTOCOL_WAIT;
+            CanProtocolState=CANPROTOCOL_WAIT;
             break;
         }
         case CANPROTOCOL_WAIT:
         {
+            if(CanProtocol1sTimer>0)break;
 #if HASH_MODEL==HS_0002S
             if(0==NODE_REGISTER_FLAG)
             {
-                CanBusState=CANPROTOCOL_INITIAL;
+                CanProtocolState=CANPROTOCOL_INITIAL;
             }
             else
 #endif
             {
-                CanBusState=CANPROTOCOL_RUNNING;
+                CanProtocolState=CANPROTOCOL_RUNNING;
             }
             break;
         }
         case CANPROTOCOL_RUNNING:
         {
-            
+            if(CanProtocol1sTimer>0)break;
             break;
         }
         case CANPROTOCOL_WAITSLEEP:
