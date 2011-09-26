@@ -10,8 +10,8 @@ typedef struct
 {
     struct
     {
-        u8 F_valid  :1;
-        u8 id       :1;
+        unsigned F_valid  :1;
+        unsigned id       :15;
     }nodeid;
     u8  address[8];
 }NodeIdListTypeDef;

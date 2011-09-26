@@ -367,7 +367,7 @@ void Can_Store_Rcvd_Msg(void)	//中断服务程序中执行
 {
 	u8 idx;
 	u8 *u8p =&CAN_PAGE_MDAR1;
-	
+	CLEAR_WATCHDOG;
 	CAN.PSR = CAN_PS_FIFO; //进入接收数据FIFO页面
     CanTxRxBuffer.id =CAN_PAGE_MIDR1&0x1F;
     CanTxRxBuffer.id <<=8; //移位计算更优
@@ -452,9 +452,10 @@ void ISR_Can_Rx(void)
 static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 {
     u8 i;
+    u32 u32CanId=pCanMsg->id & 0xFFFF0000;
     CanMsgTypeDef CanBuffer;
     
-    switch(pCanMsg->id)
+    switch(u32CanId)
     {
         case CANID_BROADCAST:
         {
@@ -491,8 +492,41 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
             }
             if(NODEIDLIST_MAX_NUM==i)
             {
+                for(i=0;i<NODEIDLIST_MAX_NUM;i++)
+                {
+                    if(0==eep_NodeIdList[i].nodeid.F_valid)
+                    {
+                        eep_NodeIdList[i].nodeid.F_valid=1;
+                        eep_NodeIdList[i].nodeid.id=i+1;
+                        eep_NodeIdList[i].address[0]=pCanMsg->data[0];
+                        eep_NodeIdList[i].address[1]=pCanMsg->data[1];
+                        eep_NodeIdList[i].address[2]=pCanMsg->data[2];
+                        eep_NodeIdList[i].address[3]=pCanMsg->data[3];
+                        eep_NodeIdList[i].address[4]=pCanMsg->data[4];
+                        eep_NodeIdList[i].address[5]=pCanMsg->data[5];
+                        eep_NodeIdList[i].address[6]=pCanMsg->data[6];
+                        eep_NodeIdList[i].address[7]=pCanMsg->data[7];
+                        break;
+                    }
+                }
+                if(NODEIDLIST_MAX_NUM==i)
+                {
+                    return;
+                }
                 NodeIdListNodeNum++;
-                eep_NodeIdList[i].nodeid.id=NodeIdListNodeNum;
+            }
+            else
+            {
+                eep_NodeIdList[i].nodeid.F_valid=1;
+                eep_NodeIdList[i].nodeid.id=i+1;
+                eep_NodeIdList[i].address[0]=pCanMsg->data[0];
+                eep_NodeIdList[i].address[1]=pCanMsg->data[1];
+                eep_NodeIdList[i].address[2]=pCanMsg->data[2];
+                eep_NodeIdList[i].address[3]=pCanMsg->data[3];
+                eep_NodeIdList[i].address[4]=pCanMsg->data[4];
+                eep_NodeIdList[i].address[5]=pCanMsg->data[5];
+                eep_NodeIdList[i].address[6]=pCanMsg->data[6];
+                eep_NodeIdList[i].address[7]=pCanMsg->data[7];
             }
             CanBuffer.data[0]=pCanMsg->data[0];
             CanBuffer.data[1]=pCanMsg->data[1];
@@ -513,6 +547,7 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
             )
             {
                 NODE_REGISTER_FLAG=1;
+                eep_NodeId=pCanMsg->id & 0x0000FFFF;
             }
 #endif
             break;
