@@ -552,6 +552,42 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 #endif
             break;
         }
+        case CANID_NMT_MODULE_CONTROL:
+        {
+            switch(pCanMsg->data[0])
+            {
+                case NMT_START_REMOTE_NODE:
+                {
+                    
+                    break;
+                }
+                case NMT_STOP_REMOTE_NODE:
+                {
+                    
+                    break;
+                }
+                case NMT_ENTER_PREOPERATIONAL:
+                {
+                    
+                    break;
+                }
+                case NMT_RESET_NODE:
+                {
+                    
+                    break;
+                }
+                case NMT_RESET_COMMUNICATION:
+                {
+                    CanProtocolState=CANPROTOCOL_INITIAL;
+                    break;
+                }
+                default:
+                {
+                    
+                    break;
+                }
+            }
+        }
     }
     CanFlagAnalyse();
 }

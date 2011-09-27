@@ -15,13 +15,14 @@ typedef struct
     }nodeid;
     u8  address[8];
 }NodeIdListTypeDef;
+#if HASH_MODEL==HS_0001M
 #define EEP_NODEIDLIST_ADDRESS 0x4100
 #define NODEIDLIST_MAX_NUM 25
 EXT volatile NodeIdListTypeDef eep_NodeIdList[NODEIDLIST_MAX_NUM] @(EEP_NODEIDLIST_ADDRESS);
 EXT vu8 NodeIdListNodeNum   @(EEP_NODEIDLIST_ADDRESS+250);
 #define NODEIDLIST_BTYE_NUM 256
 EXT vu8 NodeIdListCheckSum  @(EEP_NODEIDLIST_ADDRESS+NODEIDLIST_BTYE_NUM-1);
-
+#endif
 
 void FlashWaitForEepromOperation(void);
 void FlashSetProgrammingTime(FLASH_ProgramTime_TypeDef ProgTime);
