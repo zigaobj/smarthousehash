@@ -126,7 +126,7 @@ void Key_Scan_AD(void)
 	            BeepState=BEEP_OFF;
 	            break;
 	    }
-        if(CAN_RUNNING==CanBusState)
+        if(CANPROTOCOL_RUNNING==CanProtocolState)
 #if HASH_MODEL==HS_0001M
     	    SendBraodcast(LED);
 #elif HASH_MODEL==HS_0002S

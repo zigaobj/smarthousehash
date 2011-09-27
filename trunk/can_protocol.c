@@ -36,9 +36,23 @@ void SendNodeRegister(NODEID NodeId)
 }
 void MainCanProtocol(void)
 {
+    u8 i;
     switch(CanProtocolState)
     {
         case CANPROTOCOL_INITIAL:
+        {
+            NODE_REGISTER_FLAG=0;
+#if HASH_MODEL==HS_0001M
+            for(i=0;i<NODEIDLIST_MAX_NUM;i++)
+            {
+                CLEAR_WATCHDOG;
+                eep_NodeIdList[i].nodeid.F_valid=0;
+            }
+#endif
+            CanProtocolState=CANPROTOCOL_BUILDCOMM;
+            break;
+        }
+        case CANPROTOCOL_BUILDCOMM:
         {
 #if HASH_MODEL==HS_0001M
             SendNMTModuleControl(NMT_RESET_COMMUNICATION,CANID_NMT_MODULE_CONTROL);
@@ -56,7 +70,7 @@ void MainCanProtocol(void)
 #if HASH_MODEL==HS_0002S
             if(0==NODE_REGISTER_FLAG)
             {
-                CanProtocolState=CANPROTOCOL_INITIAL;
+                CanProtocolState=CANPROTOCOL_BUILDCOMM;
             }
             else
 #endif
