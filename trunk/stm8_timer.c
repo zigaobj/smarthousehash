@@ -88,13 +88,13 @@ void ISR_TIM4_UPD_OVF(void)
     |224==CounterTime|249==CounterTime)
     {
         FLAGMAIN_100MS=1;
+        if(CanProtocol1sTimer>0)
+            CanProtocol1sTimer--;
     }
     if(250<=CounterTime)
     {
         FLAGMAIN_1S=1;
         CounterTime=0;
-        if(CanProtocol1sTimer>0)
-            CanProtocol1sTimer--;
     }
     
     if(0!=BeepTimer)

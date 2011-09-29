@@ -472,7 +472,7 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
 #endif
             break;
         }
-        case CANID_NODEREGISTER:
+        case CANID_NODEREGISTER_REQUEST:
         {
 #if HASH_MODEL==HS_0001M
             for(i=0;i<NODEIDLIST_MAX_NUM;i++)
@@ -536,10 +536,13 @@ static void CanMsgAnalyze(CanMsgTypeDef *pCanMsg)
             CanBuffer.data[5]=pCanMsg->data[5];
             CanBuffer.data[6]=pCanMsg->data[6];
             CanBuffer.data[7]=pCanMsg->data[7];
-            CanBuffer.id =CANID_NODEREGISTER+eep_NodeIdList[i].nodeid.id;
+            CanBuffer.id =CANID_NODEREGISTER_SUCCESS+eep_NodeIdList[i].nodeid.id;
             CanBuffer.dlc =8;
             SendToCan(&CanBuffer);
-#elif HASH_MODEL==HS_0002S
+#endif
+            break;
+        case CANID_NODEREGISTER_SUCCESS:
+#if HASH_MODEL==HS_0002S
             if(UniqueID[0]==pCanMsg->data[0]&&UniqueID[1]==pCanMsg->data[1]
              &&UniqueID[2]==pCanMsg->data[2]&&UniqueID[3]==pCanMsg->data[3]
              &&UniqueID[4]==pCanMsg->data[4]&&UniqueID[5]==pCanMsg->data[5]

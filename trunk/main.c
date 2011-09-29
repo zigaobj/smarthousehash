@@ -33,6 +33,31 @@ void InterruptInit(void)
 }
 void VariableInit(void)
 {
+    if(Check_CheckSum())
+    {
+        if(RST.SR&RST_SR_EMCF) 
+        {
+            ResetSource=RESET_B_Power_Blinking;
+        }
+        else if(RST.SR&(RST_SR_IWDGF|RST_SR_WWDGF))
+        {
+            ResetSource=RESET_Watchdog;
+        }
+        else if(RST.SR&RST_SR_SWIMF)
+        {
+            ResetSource=RESET_B_Power; //调试复位可根据需要修改
+        }
+        else//外部Reset按键复位		
+        {
+            ResetSource=RESET_Key;	
+        }
+    }
+    else
+    {
+        ResetSource=RESET_B_Power;
+    }
+    RST.SR=0x1F;    //清除复位标志
+    Generate_CheckSum();    //重新计算CheckSum
     FlagMain.byte=0;
     PowerState =POWER_INITIAL;
     CanBusState=CAN_INITIAL;
