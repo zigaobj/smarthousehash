@@ -106,7 +106,7 @@ String.3.0=clnk $(ToolsetLibOpts) -o $(OutputPath)$(TargetSName).sm8 -fakeIntege
 String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8
 String.4.0=$(OutputPath)$(TargetFName)
 String.5.0=$(OutputPath)$(ProjectSFile).elf $(OutputPath)$(TargetSName).map
-String.6.0=2011,9,19,16,55,20
+String.6.0=2011,9,30,0,28,20
 String.100.0=
 String.101.0=crtsi.st7
 String.102.0=+seg .const -b 0x8080 -m 0xff80 -n .const -it
@@ -114,14 +114,15 @@ String.102.1=+seg .text -a .const -n .text
 String.102.2=+seg .eeprom -b 0x4000 -m 0x800 -n .eeprom
 String.102.3=+seg .bsct -b 0x0 -m 0x100 -n .bsct
 String.102.4=+seg .ubsct -a .bsct -n .ubsct
-String.102.5=+seg .bit -a .ubsct -n .bit -id
-String.102.6=+seg .share -a .bit -n .share -is
-String.102.7=+seg .data -b 0x100 -m 0x1300 -n .data
-String.102.8=+seg .bss -a .data -n .bss
-String.102.9=+seg .iapcode -a .bss -n .iapcode
+String.102.5=+seg .nochange -a .ubsct -n .nochange -ib
+String.102.6=+seg .bit -a .nochange -n .bit -id
+String.102.7=+seg .share -a .bit -n .share -is
+String.102.8=+seg .data -b 0x100 -m 0x1300 -n .data
+String.102.9=+seg .bss -a .data -n .bss
+String.102.10=+seg .iapcode -a .bss -n .iapcode
 String.103.0=Code,Constants[0x8080-0x17fff]=.const,.text
 String.103.1=Eeprom[0x4000-0x47ff]=.eeprom
-String.103.2=Zero Page[0x0-0xff]=.bsct,.ubsct,.bit,.share
+String.103.2=Zero Page[0x0-0xff]=.bsct,.ubsct,.nochange,.bit,.share
 String.103.3=Ram[0x100-0x13ff]=.data,.bss,.iapcode
 String.104.0=0x17ff
 String.105.0=libisl.sm8;libm.sm8
