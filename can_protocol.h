@@ -2,12 +2,13 @@
 #define CANID_NMT_MODULE_CONTROL        0x00000000
 #define CANID_SYNC                      0x02000000
 #define CANID_TIME_STAMP                0x04000000
-#define CANID_BROADCAST                 0x04020000
-#define CANID_SWITCHSTATE               0x04030000
+#define CANID_BROADCAST                 0x04030000
+#define CANID_SWITCHSTATE               0x04040000
 
 //Point to Point , need to add NodeID
 #define CANID_EMERGENCY                 0x02000000
-#define CANID_NODEREGISTER              0x04010000
+#define CANID_NODEREGISTER_REQUEST      0x04010000
+#define CANID_NODEREGISTER_SUCCESS      0x04020000
 #define CANID_PDO1_TRANSMIT             0x06000000
 #define CANID_PDO1_RECEIVE              0x08000000
 #define CANID_PDO2_TRANSMIT             0x0A000000

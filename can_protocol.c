@@ -22,7 +22,7 @@ void SendNMTModuleControl(NMT_MODULE_CONTROL NmtCmd,NODEID NodeID)
 void SendNodeRegister(NODEID NodeId)
 {
     CanMsgTypeDef CanBuffer;
-    CanBuffer.id =CANID_NODEREGISTER|NodeId;
+    CanBuffer.id =CANID_NODEREGISTER_REQUEST|NodeId;
     CanBuffer.dlc =8;
     CanBuffer.data[0]=UniqueID[0];
     CanBuffer.data[1]=UniqueID[1];
@@ -55,7 +55,10 @@ void MainCanProtocol(void)
         case CANPROTOCOL_BUILDCOMM:
         {
 #if HASH_MODEL==HS_0001M
-            SendNMTModuleControl(NMT_RESET_COMMUNICATION,CANID_NMT_MODULE_CONTROL);
+            if(RESET_Key==ResetSource)
+            {
+                SendNMTModuleControl(NMT_RESET_COMMUNICATION,CANID_NMT_MODULE_CONTROL);
+            }
             CanProtocol1sTimer=0;
 #elif HASH_MODEL==HS_0002S
             SendNodeRegister(eep_NodeId);

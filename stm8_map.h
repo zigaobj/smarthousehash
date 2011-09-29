@@ -1149,10 +1149,10 @@ RST_TypeDef;
   */
 
 #define RST_SR_EMCF   ((u8)0x10) /*!< EMC reset flag bit mask */
-#define RST_SR_SWIMF  ((u8)0x10) /*!< SWIM reset flag bit mask */
-#define RST_SR_ILLOPF ((u8)0x10) /*!< Illegal opcode reset flag bit mask */
-#define RST_SR_IWDGF  ((u8)0x10) /*!< IWDG reset flag bit mask */
-#define RST_SR_WWDGF  ((u8)0x10) /*!< WWDG reset flag bit mask */
+#define RST_SR_SWIMF  ((u8)0x08) /*!< SWIM reset flag bit mask */
+#define RST_SR_ILLOPF ((u8)0x04) /*!< Illegal opcode reset flag bit mask */
+#define RST_SR_IWDGF  ((u8)0x02) /*!< IWDG reset flag bit mask */
+#define RST_SR_WWDGF  ((u8)0x01) /*!< WWDG reset flag bit mask */
 
 /**
   * @}
