@@ -34,7 +34,8 @@
 # Segment Zero Page:
 +seg .bsct -b 0x0 -m 0x100 -n .bsct
 +seg .ubsct -a .bsct -n .ubsct
-+seg .bit -a .ubsct -n .bit -id
++seg .nochange -a .ubsct -n .nochange -ib
++seg .bit -a .nochange -n .bit -id
 +seg .share -a .bit -n .share -is
 # Segment Ram:
 +seg .data -b 0x100 -m 0x1300 -n .data

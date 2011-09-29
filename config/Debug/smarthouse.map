@@ -1,117 +1,127 @@
 
-Map of Debug\smarthouse.sm8 from link file Debug\smarthouse.lkf - Wed Sep 21 17:55:47 2011
+Map of Debug\smarthouse.sm8 from link file Debug\smarthouse.lkf - Fri Sep 30 01:12:19 2011
 
 
                                --------
                                Segments
                                --------
 
-start 00008080 end 000080b9 length    57 segment .const
-start 000080c5 end 00008da3 length  3294 segment .text
+start 00008080 end 000080c3 length    67 segment .const
+start 000080cf end 00009272 length  4515 segment .text
 start 00004000 end 00004000 length     0 segment .eeprom
 start 00000000 end 00000000 length     0 segment .bsct
 start 00000000 end 0000000a length    10 segment .ubsct
-start 0000000a end 0000000a length     0 segment .bit
-start 0000000a end 0000000a length     0 segment .share
+start 0000000a end 00000015 length    11 segment .nochange
+start 00000015 end 00000015 length     0 segment .bit
+start 00000015 end 00000015 length     0 segment .share
 start 00000100 end 00000104 length     4 segment .data, initialized
-start 000080c1 end 000080c5 length     4 segment .data, from
-start 00000104 end 00000140 length    60 segment .bss
-start 00000140 end 00000140 length     0 segment .iapcode
-start 00000000 end 00017adb length 96987 segment .debug
+start 000080cb end 000080cf length     4 segment .data, from
+start 00000104 end 00000142 length    62 segment .bss
+start 00000142 end 00000142 length     0 segment .iapcode
+start 00000000 end 00019333 length 103219 segment .debug
 start 00008000 end 00008080 length   128 segment .const
-start 000080b9 end 000080c1 length     8 segment .init
+start 000080c3 end 000080cb length     8 segment .init
 
 
                                -------
                                Modules
                                -------
 
-C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8:
-start 000080c5 end 00008111 length    76 section .text
+D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8:
+start 000080cf end 0000811b length    76 section .text
 start 00000104 end 00000104 length     0 section .bss
 start 00000000 end 00000000 length     0 section .ubsct
 
 Debug\can_protocol.o:
-start ******** end ******** length     0 section .text *** removed ***
-start 00000000 end 00001dd5 length  7637 section .debug
+start 0000811b end 0000820e length   243 section .text
+start 00000000 end 00002045 length  8261 section .debug
 
 Debug\fctcpy.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 00001dd5 end 00001e85 length   176 section .debug
+start 00002045 end 000020f5 length   176 section .debug
 
 Debug\library.o:
-start 00008111 end 00008129 length    24 section .text
-start 00001e85 end 00003ae1 length  7260 section .debug
+start 0000820e end 0000829d length   143 section .text
+start 000020f5 end 00003fa6 length  7857 section .debug
 
 Debug\main.o:
-start 00008129 end 000081df length   182 section .text
-start 00000104 end 0000013f length    59 section .bss
-start 00003ae1 end 000061d6 length  9973 section .debug
+start 0000829d end 00008395 length   248 section .text
+start 00000104 end 00000141 length    61 section .bss
+start 00003fa6 end 00006b9c length 11254 section .debug
+start 0000000a end 00000015 length    11 section .nochange
 
 Debug\stm8_adc.o:
-start 000081df end 000083a4 length   453 section .text
-start 0000013f end 00000140 length     1 section .bss
-start 000061d6 end 00007fcc length  7670 section .debug
+start 00008395 end 0000853e length   425 section .text
+start 00000141 end 00000142 length     1 section .bss
+start 00006b9c end 00008b29 length  8077 section .debug
 start 00008080 end 000080a1 length    33 section .const
 
 Debug\stm8_beep.o:
-start 000083a4 end 00008492 length   238 section .text
+start 0000853e end 00008628 length   234 section .text
 start 00000100 end 00000102 length     2 section .data
-start 00007fcc end 00009c8d length  7361 section .debug
+start 00008b29 end 0000a981 length  7768 section .debug
 
 Debug\stm8_can.o:
-start 00008492 end 0000898a length  1272 section .text
-start 00009c8d end 0000bf7f length  8946 section .debug
-start 000080a1 end 000080b7 length    22 section .const
+start 00008628 end 00008cfe length  1750 section .text
+start 0000a981 end 0000cdce length  9293 section .debug
+start 000080a1 end 000080c1 length    32 section .const
 
 Debug\stm8_eeprom.o:
-start 0000bf7f end 0000dbb5 length  7222 section .debug
-start 000080b7 end 000080b9 length     2 section .const
+start 00008cfe end 00008de4 length   230 section .text
+start 0000cdce end 0000f019 length  8779 section .debug
+start 000080c1 end 000080c3 length     2 section .const
 
 Debug\stm8_flash.o:
-start ******** end ******** length     0 section .text *** removed ***
-start ******** end ******** length     0 section .bss *** removed ***
-start 0000dbb5 end 00010051 length  9372 section .debug
+start 0000f019 end 0001124d length  8756 section .debug
 start ******** end ******** length     0 section .iapcode *** removed ***
 
 Debug\stm8_gpio.o:
-start 0000898a end 00008a1b length   145 section .text
-start 00010051 end 00011c99 length  7240 section .debug
+start 00008de4 end 00008e75 length   145 section .text
+start 0001124d end 0001302c length  7647 section .debug
 
 Debug\stm8_it.o:
-start 00008a1b end 00008b7e length   355 section .text
+start 00008e75 end 00008fd8 length   355 section .text
 start 00000102 end 00000103 length     1 section .data
-start 00011c99 end 0001404a length  9137 section .debug
+start 0001302c end 00015574 length  9544 section .debug
 
 Debug\stm8_timer.o:
-start 00008b7e end 00008d4c length   462 section .text
+start 00008fd8 end 000091ea length   530 section .text
 start 00000103 end 00000104 length     1 section .data
-start 0001404a end 00015ddf length  7573 section .debug
+start 00015574 end 000174a0 length  7980 section .debug
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)xreg.o:
-start 00000000 end 00000003 length     3 section .ubsct
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lreg.o:
+start 00000000 end 00000004 length     4 section .ubsct
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)yreg.o:
-start 00000003 end 00000006 length     3 section .ubsct
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)xreg.o:
+start 00000004 end 00000007 length     3 section .ubsct
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lreg.o:
-start 00000006 end 0000000a length     4 section .ubsct
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)yreg.o:
+start 00000007 end 0000000a length     3 section .ubsct
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o:
-start 00008d4c end 00008d72 length    38 section .text
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o:
+start 000091ea end 00009210 length    38 section .text
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lgadc.o:
-start 00008d72 end 00008d82 length    16 section .text
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ladd.o:
+start 00009210 end 00009228 length    24 section .text
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lglsh.o:
-start 00008d82 end 00008d90 length    14 section .text
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lgadc.o:
+start 00009228 end 00009238 length    16 section .text
 
-(C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ltor.o:
-start 00008d90 end 00008da2 length    18 section .text
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lglsh.o:
+start 00009238 end 00009246 length    14 section .text
+
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ltor.o:
+start 00009246 end 00009258 length    18 section .text
+
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)rtol.o:
+start 00009258 end 0000926a length    18 section .text
+
+(D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)utolx.o:
+start 0000926a end 00009271 length     7 section .text
 
 Debug\stm8_interrupt_vector.o:
-start 00008da2 end 00008da3 length     1 section .text
-start 00015ddf end 00017adb length  7420 section .debug
+start 00009271 end 00009272 length     1 section .text
+start 000174a0 end 00019333 length  7827 section .debug
 start 00008000 end 00008080 length   128 section .const
 
 
@@ -119,15 +129,22 @@ start 00008000 end 00008080 length   128 section .const
                              Stack usage
                              -----------
 
+Debug\can_protocol.o:
+f_MainCanProtocol                      28   (3)
+f_SendNMTModuleControl                 25   (18)
+f_SendNodeRegister                 >   22   (15)
+
 Debug\library.o:
+f_Check_CheckSum                        2   (2)
 f_Delay                                 4   (4)
+f_Generate_CheckSum                     2   (2)
 
 Debug\main.o:
-f_HardwareInit                          6   (2)
+f_HardwareInit                          7   (2)
 f_InterruptInit                         2   (2)
 f_SysClkInit                            2   (2)
-f_VariableInit                          2   (2)
-f_main                             >   29   (2)
+f_VariableInit                          4   (2)
+f_main                             >   32   (2)
 
 Debug\stm8_adc.o:
 f_ADCInit                          >    2   (2)
@@ -140,7 +157,7 @@ f_BeepInit                              2   (2)
 f_BeepManage                            2   (2)
 
 Debug\stm8_can.o:
-L5531f_CanMsgAnalyze                    8   (5)
+L5531f_CanMsgAnalyze                   29   (22)
 f_CANGetEmptyMegBox                >    2   (2)
 f_CanFlagAnalyse                        2   (2)
 f_CanInit                               3   (3)
@@ -149,15 +166,24 @@ f_CanInterruptRestore                   2   (2)
 f_CanMsgTransmit                        5   (5)
 f_CanSleep                              5   (2)
 f_CanWakeUp                             2   (2)
-f_Can_Main                             24   (2)
-f_Can_Store_Rcvd_Msg                   13   (5)
+f_Can_Main                             30   (2)
+f_Can_Store_Rcvd_Msg                   34   (5)
 f_Can_Wakeup_Enable                     2   (2)
-f_ISR_Can_Rx                           15   (2)
+f_ISR_Can_Rx                           36   (2)
 f_ISR_Can_Tx                            3   (3)
-f_NodeRegister                         22   (15)
-f_SendBraodcast                    >   23   (16)
-f_SendSwitchState                      23   (16)
+f_SendBraodcast                        23   (16)
+f_SendSwitchState                  >   23   (16)
 f_SendToCan                             7   (2)
+
+Debug\stm8_eeprom.o:
+f_CalculateSettingChkSum           >    6   (6)
+f_CheckSettingChkSum               >    6   (6)
+f_EepromInit                            5   (2)
+f_FlashLock                        >    3   (3)
+f_FlashSetProgrammingTime               2   (2)
+f_FlashUnlock                           3   (3)
+f_FlashWaitForEepromOperation      >    2   (2)
+f_MemeryCopy                       >    8   (8)
 
 Debug\stm8_gpio.o:
 f_GPIOInit                              2   (2)
@@ -168,7 +194,7 @@ f_NonHandledInterrupt              >    5   (5)
 Debug\stm8_it.o:
 f_ADC_IRQHandler                   >    9   (9)
 f_AWU_IRQHandler                   >    5   (5)
-f_CAN_RX_IRQHandler                >   26   (11)
+f_CAN_RX_IRQHandler                >   47   (11)
 f_CAN_TX_IRQHandler                >   14   (11)
 f_CLK_IRQHandler                   >    5   (5)
 f_EEPROM_EEC_IRQHandler            >    5   (5)
@@ -187,26 +213,29 @@ f_TIM2_CAP_COM_IRQHandler          >    6   (6)
 f_TIM2_UPD_OVF_BRK_IRQHandler      >    6   (6)
 f_TIM3_CAP_COM_IRQHandler          >    5   (5)
 f_TIM3_UPD_OVF_BRK_IRQHandler      >    5   (5)
-f_TIM4_UPD_OVF_IRQHandler          >   25   (11)
+f_TIM4_UPD_OVF_IRQHandler          >   34   (11)
 f_TLI_IRQHandler                   >    5   (5)
 f_TRAP_IRQHandler                  >    5   (5)
 f_USART_RX_IRQHandler              >    5   (5)
 f_USART_TX_IRQHandler              >    5   (5)
 
 Debug\stm8_timer.o:
-f_ISR_TIM4_UPD_OVF                     14   (11)
+f_ISR_TIM4_UPD_OVF                     23   (20)
 f_TIM1Init                         >    2   (2)
 f_TIM2Init                         >    2   (2)
 f_TIM3Init                         >    2   (2)
 f_TIM4Init                              2   (2)
 f_TimerInit                             4   (2)
 
-C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8:
+D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8:
+d_ladd                                  3   (3)
 d_lgadc                                 3   (3)
 d_lglsh                                 3   (3)
 d_ltor                                  3   (3)
+d_rtol                                  4   (4)
+d_uitolx                                3   (3)
 
-Stack size: 55
+Stack size: 79
 
 
                               ---------
@@ -228,164 +257,199 @@ Stack size: 55
    8 > f_CAN_RX_IRQHandler: (11)
    9      + f_ISR_Can_Rx: (2)
   10      |    + f_Can_Store_Rcvd_Msg: (5)
-  11      |    |    + L5531f_CanMsgAnalyze: (5)
+  11      |    |    + L5531f_CanMsgAnalyze: (22)
   12      |    |    |    + f_CanFlagAnalyse: (2)
+  13      |    |    |    + f_SendToCan: (2)
+  14      |    |    |    |    + f_CanMsgTransmit: (5)
+          |    |    |    | 
           |    |    | 
           |    | 
           | 
        
-  13 > f_CAN_TX_IRQHandler: (11)
-  14      + f_ISR_Can_Tx: (3)
+  15 > f_CAN_TX_IRQHandler: (11)
+  16      + f_ISR_Can_Tx: (3)
        
-  15 > f_CLK_IRQHandler: (5)
+  17 > f_CLK_IRQHandler: (5)
 
-  16 > f_CanInterruptDisable: (2)
+  18 > f_CalculateSettingChkSum: (6)
 
-  17 > f_EEPROM_EEC_IRQHandler: (5)
+  19 > f_CanInterruptDisable: (2)
 
-  18 > f_EXTI_PORTA_IRQHandler: (5)
+  20 > f_CheckSettingChkSum: (6)
 
-  19 > f_EXTI_PORTB_IRQHandler: (5)
+  21 > f_EEPROM_EEC_IRQHandler: (5)
 
-  20 > f_EXTI_PORTC_IRQHandler: (5)
+  22 > f_EXTI_PORTA_IRQHandler: (5)
 
-  21 > f_EXTI_PORTD_IRQHandler: (5)
+  23 > f_EXTI_PORTB_IRQHandler: (5)
 
-  22 > f_EXTI_PORTE_IRQHandler: (5)
+  24 > f_EXTI_PORTC_IRQHandler: (5)
 
-  23 > f_I2C_IRQHandler: (5)
+  25 > f_EXTI_PORTD_IRQHandler: (5)
 
-  24 > f_LINUART_RX_IRQHandler: (5)
+  26 > f_EXTI_PORTE_IRQHandler: (5)
 
-  25 > f_LINUART_TX_IRQHandler: (5)
+  27 > f_FlashLock: (3)
 
-  26 > f_NonHandledInterrupt: (5)
+  28 > f_FlashWaitForEepromOperation: (2)
 
-  27 > f_SPI_IRQHandler: (5)
+  29 > f_I2C_IRQHandler: (5)
 
-  28 > f_SendBraodcast: (16)
-  29      + f_SendToCan: (2)
-  30      |    + f_CanMsgTransmit: (5)
-          | 
+  30 > f_LINUART_RX_IRQHandler: (5)
+
+  31 > f_LINUART_TX_IRQHandler: (5)
+
+  32 > f_MemeryCopy: (8)
+
+  33 > f_NonHandledInterrupt: (5)
+
+  34 > f_SPI_IRQHandler: (5)
+
+  35 > f_SendNodeRegister: (15)
+  36      + f_SendToCan --> 13
        
-  31 > f_TIM1Init: (2)
-
-  32 > f_TIM1_CAP_COM_IRQHandler: (5)
-
-  33 > f_TIM1_UPD_OVF_TRG_BRK_IRQHandler: (5)
-
-  34 > f_TIM2Init: (2)
-
-  35 > f_TIM2_CAP_COM_IRQHandler: (6)
-
-  36 > f_TIM2_UPD_OVF_BRK_IRQHandler: (6)
-
-  37 > f_TIM3Init: (2)
-
-  38 > f_TIM3_CAP_COM_IRQHandler: (5)
-
-  39 > f_TIM3_UPD_OVF_BRK_IRQHandler: (5)
-
-  40 > f_TIM4_UPD_OVF_IRQHandler: (11)
-  41      + f_ISR_TIM4_UPD_OVF: (11)
+  37 > f_SendSwitchState: (16)
+  38      + f_SendToCan --> 13
        
-  42 > f_TLI_IRQHandler: (5)
+  39 > f_TIM1Init: (2)
 
-  43 > f_TRAP_IRQHandler: (5)
+  40 > f_TIM1_CAP_COM_IRQHandler: (5)
 
-  44 > f_USART_RX_IRQHandler: (5)
+  41 > f_TIM1_UPD_OVF_TRG_BRK_IRQHandler: (5)
 
-  45 > f_USART_TX_IRQHandler: (5)
+  42 > f_TIM2Init: (2)
 
-  46 > f_main: (2)
-  47      + f_BeepManage: (2)
-  48      + f_Can_Main: (2)
-  49      |    + f_CanInit: (3)
-  50      |    + f_CanInterruptRestore: (2)
-  51      |    + f_CanSleep: (2)
-  52      |    |    + f_CanInit --> 49
-  53      |    |    + f_Can_Wakeup_Enable: (2)
+  43 > f_TIM2_CAP_COM_IRQHandler: (6)
+
+  44 > f_TIM2_UPD_OVF_BRK_IRQHandler: (6)
+
+  45 > f_TIM3Init: (2)
+
+  46 > f_TIM3_CAP_COM_IRQHandler: (5)
+
+  47 > f_TIM3_UPD_OVF_BRK_IRQHandler: (5)
+
+  48 > f_TIM4_UPD_OVF_IRQHandler: (11)
+  49      + f_ISR_TIM4_UPD_OVF: (20)
+       
+  50 > f_TLI_IRQHandler: (5)
+
+  51 > f_TRAP_IRQHandler: (5)
+
+  52 > f_USART_RX_IRQHandler: (5)
+
+  53 > f_USART_TX_IRQHandler: (5)
+
+  54 > f_main: (2)
+  55      + f_BeepManage: (2)
+  56      + f_Can_Main: (2)
+  57      |    + f_CanInit: (3)
+  58      |    + f_CanInterruptRestore: (2)
+  59      |    + f_CanSleep: (2)
+  60      |    |    + f_CanInit --> 57
+  61      |    |    + f_Can_Wakeup_Enable: (2)
           |    | 
-  54      |    + f_CanWakeUp: (2)
-  55      |    + f_NodeRegister: (15)
-  56      |    |    + f_SendToCan --> 29
-          |    | 
-          | 
-  57      + f_HardwareInit: (2)
-  58      |    + f_BeepInit: (2)
-  59      |    + f_Delay --> 4
-  60      |    + f_GPIOInit: (2)
-  61      |    + f_SysClkInit: (2)
-  62      |    + f_TimerInit: (2)
-  63      |    |    + f_TIM4Init: (2)
-          |    | 
-          | 
-  64      + f_InterruptInit: (2)
-  65      + f_Key_Scan_AD: (4)
-  66      |    + f_ADC_8BIT: (5)
-  67      |    |    + f_Delay --> 4
-          |    | 
-  68      |    + f_SendSwitchState: (16)
-  69      |    |    + f_SendToCan --> 29
+  62      |    + f_CanWakeUp: (2)
+  63      |    + f_MainCanProtocol: (3)
+  64      |    |    + f_SendNMTModuleControl: (18)
+  65      |    |    |    + f_SendToCan --> 13
+          |    |    | 
           |    | 
           | 
-  70      + f_VariableInit: (2)
+  66      + f_HardwareInit: (2)
+  67      |    + f_BeepInit: (2)
+  68      |    + f_Delay --> 4
+  69      |    + f_EepromInit: (2)
+  70      |    |    + f_FlashSetProgrammingTime: (2)
+  71      |    |    + f_FlashUnlock: (3)
+          |    | 
+  72      |    + f_GPIOInit: (2)
+  73      |    + f_SysClkInit: (2)
+  74      |    + f_TimerInit: (2)
+  75      |    |    + f_TIM4Init: (2)
+          |    | 
+          | 
+  76      + f_InterruptInit: (2)
+  77      + f_Key_Scan_AD: (4)
+  78      |    + f_ADC_8BIT: (5)
+  79      |    |    + f_Delay --> 4
+          |    | 
+  80      |    + f_SendBraodcast: (16)
+  81      |    |    + f_SendToCan --> 13
+          |    | 
+          | 
+  82      + f_VariableInit: (2)
+  83      |    + f_Check_CheckSum: (2)
+  84      |    + f_Generate_CheckSum: (2)
+          | 
        
-  71   L5531f_CanMsgAnalyze --> 11
+  85   L5531f_CanMsgAnalyze --> 11
 
-  72   f_ADC_8BIT --> 66
+  86   f_ADC_8BIT --> 78
 
-  73   f_BeepInit --> 58
+  87   f_BeepInit --> 67
 
-  74   f_BeepManage --> 47
+  88   f_BeepManage --> 55
 
-  75   f_CanFlagAnalyse --> 12
+  89   f_CanFlagAnalyse --> 12
 
-  76   f_CanInit --> 49
+  90   f_CanInit --> 57
 
-  77   f_CanInterruptRestore --> 50
+  91   f_CanInterruptRestore --> 58
 
-  78   f_CanMsgTransmit --> 30
+  92   f_CanMsgTransmit --> 14
 
-  79   f_CanSleep --> 51
+  93   f_CanSleep --> 59
 
-  80   f_CanWakeUp --> 54
+  94   f_CanWakeUp --> 62
 
-  81   f_Can_Main --> 48
+  95   f_Can_Main --> 56
 
-  82   f_Can_Store_Rcvd_Msg --> 10
+  96   f_Can_Store_Rcvd_Msg --> 10
 
-  83   f_Can_Wakeup_Enable --> 53
+  97   f_Can_Wakeup_Enable --> 61
 
-  84   f_Delay --> 4
+  98   f_Check_CheckSum --> 83
 
-  85   f_GPIOInit --> 60
+  99   f_Delay --> 4
 
-  86   f_HardwareInit --> 57
+ 100   f_EepromInit --> 69
 
-  87   f_ISR_Can_Rx --> 9
+ 101   f_FlashSetProgrammingTime --> 70
 
-  88   f_ISR_Can_Tx --> 14
+ 102   f_FlashUnlock --> 71
 
-  89   f_ISR_TIM4_UPD_OVF --> 41
+ 103   f_GPIOInit --> 72
 
-  90   f_InterruptInit --> 64
+ 104   f_Generate_CheckSum --> 84
 
-  91   f_Key_Scan_AD --> 65
+ 105   f_HardwareInit --> 66
 
-  92   f_NodeRegister --> 55
+ 106   f_ISR_Can_Rx --> 9
 
-  93   f_SendSwitchState --> 68
+ 107   f_ISR_Can_Tx --> 16
 
-  94   f_SendToCan --> 29
+ 108   f_ISR_TIM4_UPD_OVF --> 49
 
-  95   f_SysClkInit --> 61
+ 109   f_InterruptInit --> 76
 
-  96   f_TIM4Init --> 63
+ 110   f_Key_Scan_AD --> 77
 
-  97   f_TimerInit --> 62
+ 111   f_MainCanProtocol --> 63
 
-  98   f_VariableInit --> 70
+ 112   f_SendBraodcast --> 80
+
+ 113   f_SendNMTModuleControl --> 64
+
+ 114   f_SendToCan --> 13
+
+ 115   f_SysClkInit --> 73
+
+ 116   f_TIM4Init --> 75
+
+ 117   f_TimerInit --> 74
+
+ 118   f_VariableInit --> 82
 
 
 
@@ -399,40 +463,49 @@ _AWU                                000050f0   defined in Debug\can_protocol.o
 _AdcValue                           00000110   defined in Debug\main.o section .bss
                                                used in Debug\stm8_it.o
 _BEEP                               000050f3   defined in Debug\can_protocol.o
-_BeepState                          0000013e   defined in Debug\main.o section .bss
+_BeepState                          00000140   defined in Debug\main.o section .bss
                                                used in Debug\stm8_adc.o
                                                        Debug\stm8_beep.o
-_BeepTimer                          0000013d   defined in Debug\main.o section .bss
+_BeepTimer                          0000013f   defined in Debug\main.o section .bss
                                                used in Debug\stm8_beep.o
                                                        Debug\stm8_timer.o
-_Block                              ********   *** removed from Debug\stm8_flash.o ***
 _CAN                                00005420   defined in Debug\can_protocol.o
 _CANMsgACC                          0000011a   defined in Debug\main.o section .bss
 _CFG                                00007f60   defined in Debug\can_protocol.o
 _CLK                                000050c0   defined in Debug\can_protocol.o
 _CanBusState                        00000138   defined in Debug\main.o section .bss
-                                               used in Debug\stm8_adc.o
-                                                       Debug\stm8_can.o
+                                               used in Debug\stm8_can.o
 _CanPage                            0000013c   defined in Debug\main.o section .bss
                                                used in Debug\stm8_can.o
+_CanProtocol1sTimer                 0000013d   defined in Debug\main.o section .bss
+                                               used in Debug\can_protocol.o
+                                                       Debug\stm8_timer.o
+_CanProtocolState                   0000013e   defined in Debug\main.o section .bss
+                                               used in Debug\can_protocol.o
+                                                       Debug\stm8_adc.o
+                                                       Debug\stm8_can.o
 _CanTxRxBuffer                      0000012b   defined in Debug\main.o section .bss
                                                used in Debug\stm8_can.o
+_CheckHead                          00000014   defined in Debug\main.o section .nochange
+                                               used in Debug\library.o
+_CheckSum                           0000000b   defined in Debug\main.o section .nochange
+                                               used in Debug\library.o
+_CheckTail                          0000000a   defined in Debug\main.o section .nochange
+                                               used in Debug\library.o
+_Clock                              0000000d   defined in Debug\main.o section .nochange
+                                               used in Debug\library.o
 _CntSendFalse                       00000118   defined in Debug\main.o section .bss
 _DM                                 00007f90   defined in Debug\can_protocol.o
 _DebugParameter                     0000010e   defined in Debug\main.o section .bss
 _DebugWord                          00000106   defined in Debug\main.o section .bss
                                                used in Debug\stm8_timer.o
 _EXTI                               000050a0   defined in Debug\can_protocol.o
-_Eeprom                             00004000   defined in Debug\stm8_flash.o
 _FLASH                              0000505a   defined in Debug\can_protocol.o
 _FatalCode                          00000105   defined in Debug\main.o section .bss
 _FlagCan                            00000119   defined in Debug\main.o section .bss
 _FlagMain                           0000010f   defined in Debug\main.o section .bss
                                                used in Debug\stm8_beep.o
                                                        Debug\stm8_timer.o
-_FlashByte                          ********   *** removed from Debug\stm8_flash.o ***
-_FlashWord                          ********   *** removed from Debug\stm8_flash.o ***
-_GBuffer                            ********   *** removed from Debug\stm8_flash.o ***
 _GPIOA                              00005000   defined in Debug\can_protocol.o
 _GPIOB                              00005005   defined in Debug\can_protocol.o
 _GPIOC                              0000500a   defined in Debug\can_protocol.o
@@ -446,195 +519,227 @@ _I2C                                00005210   defined in Debug\can_protocol.o
 _ITC                                00007f70   defined in Debug\can_protocol.o
 _IWDG                               000050e0   defined in Debug\can_protocol.o
 _LINUART                            00005240   defined in Debug\can_protocol.o
+_NodeIdListCheckSum                 000041ff   defined in Debug\can_protocol.o
+_NodeIdListNodeNum                  000041fa   defined in Debug\can_protocol.o
 _NodeState                          00000139   defined in Debug\main.o section .bss
-                                               used in Debug\stm8_can.o
+                                               used in Debug\can_protocol.o
 _OPT                                00005067   defined in Debug\can_protocol.o
 _PowerState                         00000104   defined in Debug\main.o section .bss
 _RST                                000050b3   defined in Debug\can_protocol.o
+_ResetSource                        0000000c   defined in Debug\main.o section .nochange
+                                               used in Debug\can_protocol.o
+                                                       Debug\library.o
 _SPI                                00005200   defined in Debug\can_protocol.o
 _SWIM                               00007f80   defined in Debug\can_protocol.o
+_SettingChkSum                      0000403f   defined in Debug\can_protocol.o
 _TIM1                               00005250   defined in Debug\can_protocol.o
 _TIM2                               00005300   defined in Debug\can_protocol.o
 _TIM3                               00005320   defined in Debug\can_protocol.o
 _TIM4                               00005340   defined in Debug\can_protocol.o
 _USART                              00005230   defined in Debug\can_protocol.o
-_UniqueID                           000080b7   defined in Debug\stm8_eeprom.o section .const
-                                               used in Debug\stm8_can.o
+_UniqueID                           000080c1   defined in Debug\stm8_eeprom.o section .const
+                                               used in Debug\can_protocol.o
 _WWDG                               000050d1   defined in Debug\can_protocol.o
 __endmem                            000013ff   defined in command file
                                                *** not used ***
 __endzp                             0000000a   defined in command file section .ubsct
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
 __fctcpy                            ********   *** removed from Debug\fctcpy.o ***
-__idesc__                           000080b9   defined in linker section .init
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+__idesc__                           000080c3   defined in linker section .init
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
                                                        Debug\fctcpy.o
-__memory                            00000140   defined in command file section .bss
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+__memory                            00000142   defined in command file section .bss
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
 __stack                             000017ff   defined in command file
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
-__startmem                          00000140   defined in command file section .iapcode
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+__startmem                          00000142   defined in command file section .iapcode
                                                *** not used ***
-__stext                             000080c5   defined in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8 section .text
+__stext                             000080cf   defined in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8 section .text
                                                used in Debug\stm8_interrupt_vector.o
 __vectab                            00008000   defined in Debug\stm8_interrupt_vector.o section .const
 _can_msg_id16                       00000116   defined in Debug\main.o section .bss
 _can_msg_id32                       00000112   defined in Debug\main.o section .bss
-c_lreg                              00000006   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lreg.o section .ubsct
-                                               used in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)cmulx.o
-                                                       (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)fltor.o
-                                                       (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o
-                                                       (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lgadd.o
-                                                       (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ltor.o
-c_x                                 00000000   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)xreg.o section .ubsct
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+_eep_NodeId                         00004000   defined in Debug\can_protocol.o
+_eep_NodeIdList                     00004100   defined in Debug\can_protocol.o
+c_lreg                              00000000   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lreg.o section .ubsct
+                                               used in Debug\can_protocol.o
+                                                       Debug\stm8_can.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)cmulx.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)fltor.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ladd.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lgadd.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ltor.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)rtol.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)utolx.o
+c_x                                 00000004   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)xreg.o section .ubsct
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
                                                        Debug\fctcpy.o
                                                        Debug\stm8_flash.o
                                                        Debug\stm8_it.o
-                                                       (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)fltor.o
-                                                       (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o
-c_y                                 00000003   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)yreg.o section .ubsct
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)fltor.o
+                                                       (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o
+c_y                                 00000007   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)yreg.o section .ubsct
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
                                                        Debug\stm8_adc.o
                                                        Debug\stm8_it.o
-d_jltab                             00008d4c   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o section .text
+d_jltab                             000091ea   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)jltab.o section .text
                                                used in Debug\stm8_can.o
-d_lgadc                             00008d72   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lgadc.o section .text
+d_ladd                              00009210   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ladd.o section .text
+                                               used in Debug\stm8_can.o
+d_lgadc                             00009228   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lgadc.o section .text
                                                used in Debug\stm8_can.o
                                                        Debug\stm8_timer.o
-d_lglsh                             00008d82   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lglsh.o section .text
+d_lglsh                             00009238   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)lglsh.o section .text
                                                used in Debug\stm8_can.o
-d_ltor                              00008d90   defined in (C:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ltor.o section .text
+d_ltor                              00009246   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)ltor.o section .text
                                                used in Debug\stm8_can.o
                                                        Debug\stm8_flash.o
-f_ADCInit                           000081df   defined in Debug\stm8_adc.o section .text
+d_rtol                              00009258   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)rtol.o section .text
+                                               used in Debug\can_protocol.o
+                                                       Debug\stm8_can.o
+d_uitolx                            0000926a   defined in (D:\Program Files\COSMIC\CXSTM8\Lib\libm.sm8)utolx.o section .text
+                                               used in Debug\can_protocol.o
+                                                       Debug\stm8_can.o
+f_ADCInit                           00008395   defined in Debug\stm8_adc.o section .text
                                                *** not used ***
-f_ADC_10BIT                         0000822e   defined in Debug\stm8_adc.o section .text
+f_ADC_10BIT                         000083e4   defined in Debug\stm8_adc.o section .text
                                                *** not used ***
-f_ADC_8BIT                          000081f0   defined in Debug\stm8_adc.o section .text
-f_ADC_IRQHandler                    00008b30   defined in Debug\stm8_it.o section .text
+f_ADC_8BIT                          000083a6   defined in Debug\stm8_adc.o section .text
+f_ADC_IRQHandler                    00008f8a   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_AWU_IRQHandler                    00008a1d   defined in Debug\stm8_it.o section .text
+f_AWU_IRQHandler                    00008e77   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_BeepInit                          000083a4   defined in Debug\stm8_beep.o section .text
+f_BeepInit                          0000853e   defined in Debug\stm8_beep.o section .text
                                                used in Debug\main.o
-f_BeepManage                        000083ad   defined in Debug\stm8_beep.o section .text
+f_BeepManage                        00008547   defined in Debug\stm8_beep.o section .text
                                                used in Debug\main.o
-f_CANGetEmptyMegBox                 00008868   defined in Debug\stm8_can.o section .text
+f_CANGetEmptyMegBox                 00008c3a   defined in Debug\stm8_can.o section .text
                                                *** not used ***
-f_CAN_RX_IRQHandler                 00008a24   defined in Debug\stm8_it.o section .text
+f_CAN_RX_IRQHandler                 00008e7e   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_CAN_TX_IRQHandler                 00008a41   defined in Debug\stm8_it.o section .text
+f_CAN_TX_IRQHandler                 00008e9b   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_CLK_IRQHandler                    00008a1e   defined in Debug\stm8_it.o section .text
+f_CLK_IRQHandler                    00008e78   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_CanFlagAnalyse                    00008867   defined in Debug\stm8_can.o section .text
-f_CanInit                           00008492   defined in Debug\stm8_can.o section .text
-f_CanInterruptDisable               000086cb   defined in Debug\stm8_can.o section .text
+f_CalculateSettingChkSum            00008d84   defined in Debug\stm8_eeprom.o section .text
                                                *** not used ***
-f_CanInterruptRestore               000086e2   defined in Debug\stm8_can.o section .text
-f_CanMsgTransmit                    00008634   defined in Debug\stm8_can.o section .text
-f_CanSleep                          00008609   defined in Debug\stm8_can.o section .text
-f_CanWakeUp                         00008621   defined in Debug\stm8_can.o section .text
-f_Can_Main                          00008929   defined in Debug\stm8_can.o section .text
+f_CanFlagAnalyse                    00008c39   defined in Debug\stm8_can.o section .text
+f_CanInit                           00008628   defined in Debug\stm8_can.o section .text
+f_CanInterruptDisable               00008861   defined in Debug\stm8_can.o section .text
+                                               *** not used ***
+f_CanInterruptRestore               00008878   defined in Debug\stm8_can.o section .text
+f_CanMsgTransmit                    000087ca   defined in Debug\stm8_can.o section .text
+f_CanSleep                          0000879f   defined in Debug\stm8_can.o section .text
+f_CanWakeUp                         000087b7   defined in Debug\stm8_can.o section .text
+f_Can_Main                          00008ca9   defined in Debug\stm8_can.o section .text
                                                used in Debug\main.o
-f_Can_Store_Rcvd_Msg                000086f9   defined in Debug\stm8_can.o section .text
-f_Can_Wakeup_Enable                 000085f2   defined in Debug\stm8_can.o section .text
-f_Delay                             00008111   defined in Debug\library.o section .text
+f_Can_Store_Rcvd_Msg                0000888f   defined in Debug\stm8_can.o section .text
+f_Can_Wakeup_Enable                 00008788   defined in Debug\stm8_can.o section .text
+f_CheckSettingChkSum                00008db2   defined in Debug\stm8_eeprom.o section .text
+                                               *** not used ***
+f_Check_CheckSum                    00008258   defined in Debug\library.o section .text
+                                               used in Debug\main.o
+f_Delay                             0000820e   defined in Debug\library.o section .text
                                                used in Debug\main.o
                                                        Debug\stm8_adc.o
-f_EEPROM_EEC_IRQHandler             00008b7d   defined in Debug\stm8_it.o section .text
+f_EEPROM_EEC_IRQHandler             00008fd7   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTA_IRQHandler             00008a1f   defined in Debug\stm8_it.o section .text
+f_EXTI_PORTA_IRQHandler             00008e79   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTB_IRQHandler             00008a20   defined in Debug\stm8_it.o section .text
+f_EXTI_PORTB_IRQHandler             00008e7a   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTC_IRQHandler             00008a21   defined in Debug\stm8_it.o section .text
+f_EXTI_PORTC_IRQHandler             00008e7b   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTD_IRQHandler             00008a22   defined in Debug\stm8_it.o section .text
+f_EXTI_PORTD_IRQHandler             00008e7c   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTE_IRQHandler             00008a23   defined in Debug\stm8_it.o section .text
+f_EXTI_PORTE_IRQHandler             00008e7d   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EepromLoad                        ********   *** removed from Debug\stm8_flash.o ***
-f_EepromSave                        ********   *** removed from Debug\stm8_flash.o ***
-f_EepromUnlock                      ********   *** removed from Debug\stm8_flash.o ***
+f_EepromInit                        00008d4d   defined in Debug\stm8_eeprom.o section .text
+                                               used in Debug\main.o
 f_FlashEraseBlock                   ********   *** removed from Debug\stm8_flash.o ***
 f_FlashEraseByte                    ********   *** removed from Debug\stm8_flash.o ***
-f_FlashLock                         ********   *** removed from Debug\stm8_flash.o ***
+f_FlashLock                         00008d36   defined in Debug\stm8_eeprom.o section .text
+                                               *** not used ***
 f_FlashProgramBlock                 ********   *** removed from Debug\stm8_flash.o ***
 f_FlashReadByte                     ********   *** removed from Debug\stm8_flash.o ***
 f_FlashReadWord                     ********   *** removed from Debug\stm8_flash.o ***
-f_FlashSetProgrammingTime           ********   *** removed from Debug\stm8_flash.o ***
-f_FlashUnlock                       ********   *** removed from Debug\stm8_flash.o ***
-f_FlashWaitForEepromOperation       ********   *** removed from Debug\stm8_flash.o ***
+f_FlashSetProgrammingTime           00008d0c   defined in Debug\stm8_eeprom.o section .text
+f_FlashUnlock                       00008d17   defined in Debug\stm8_eeprom.o section .text
+f_FlashWaitForEepromOperation       00008cfe   defined in Debug\stm8_eeprom.o section .text
+                                               *** not used ***
 f_FlashWaitForLastOperation         ********   *** removed from Debug\stm8_flash.o ***
 f_FlashWriteByte                    ********   *** removed from Debug\stm8_flash.o ***
 f_FlashWriteWord                    ********   *** removed from Debug\stm8_flash.o ***
-f_GPIOInit                          0000898a   defined in Debug\stm8_gpio.o section .text
+f_GPIOInit                          00008de4   defined in Debug\stm8_gpio.o section .text
                                                used in Debug\main.o
-f_HardwareInit                      00008184   defined in Debug\main.o section .text
-f_I2C_IRQHandler                    00008b2d   defined in Debug\stm8_it.o section .text
-                                               used in Debug\stm8_interrupt_vector.o
-f_ISR_Can_Rx                        000087b1   defined in Debug\stm8_can.o section .text
-                                               used in Debug\stm8_it.o
-f_ISR_Can_Tx                        00008786   defined in Debug\stm8_can.o section .text
-                                               used in Debug\stm8_it.o
-f_ISR_TIM4_UPD_OVF                  00008c67   defined in Debug\stm8_timer.o section .text
-                                               used in Debug\stm8_it.o
-f_IapProc                           ********   *** removed from Debug\stm8_flash.o ***
-f_InterruptInit                     0000814c   defined in Debug\main.o section .text
-f_Key_Scan_AD                       00008280   defined in Debug\stm8_adc.o section .text
+f_Generate_CheckSum                 00008226   defined in Debug\library.o section .text
                                                used in Debug\main.o
-f_LINUART_RX_IRQHandler             00008b2f   defined in Debug\stm8_it.o section .text
+f_HardwareInit                      00008336   defined in Debug\main.o section .text
+f_I2C_IRQHandler                    00008f87   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_LINUART_TX_IRQHandler             00008b2e   defined in Debug\stm8_it.o section .text
+f_ISR_Can_Rx                        0000894b   defined in Debug\stm8_can.o section .text
+                                               used in Debug\stm8_it.o
+f_ISR_Can_Tx                        00008920   defined in Debug\stm8_can.o section .text
+                                               used in Debug\stm8_it.o
+f_ISR_TIM4_UPD_OVF                  000090c1   defined in Debug\stm8_timer.o section .text
+                                               used in Debug\stm8_it.o
+f_InterruptInit                     000082c0   defined in Debug\main.o section .text
+f_Key_Scan_AD                       00008436   defined in Debug\stm8_adc.o section .text
+                                               used in Debug\main.o
+f_LINUART_RX_IRQHandler             00008f89   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_NodeRegister                      00008897   defined in Debug\stm8_can.o section .text
-f_NonHandledInterrupt               00008da2   defined in Debug\stm8_interrupt_vector.o section .text
-f_SPI_IRQHandler                    00008a5e   defined in Debug\stm8_it.o section .text
+f_LINUART_TX_IRQHandler             00008f88   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_SendBraodcast                     00008909   defined in Debug\stm8_can.o section .text
+f_MainCanProtocol                   000081a3   defined in Debug\can_protocol.o section .text
+                                               used in Debug\stm8_can.o
+f_MemeryCopy                        00008d59   defined in Debug\stm8_eeprom.o section .text
                                                *** not used ***
-f_SendNMTModuleControl              ********   *** removed from Debug\can_protocol.o ***
-f_SendSwitchState                   000088e9   defined in Debug\stm8_can.o section .text
+f_NonHandledInterrupt               00009271   defined in Debug\stm8_interrupt_vector.o section .text
+f_SPI_IRQHandler                    00008eb8   defined in Debug\stm8_it.o section .text
+                                               used in Debug\stm8_interrupt_vector.o
+f_SendBraodcast                     00008c89   defined in Debug\stm8_can.o section .text
                                                used in Debug\stm8_adc.o
-f_SendToCan                         00008892   defined in Debug\stm8_can.o section .text
+f_SendNMTModuleControl              0000811b   defined in Debug\can_protocol.o section .text
+f_SendNodeRegister                  00008147   defined in Debug\can_protocol.o section .text
+                                               *** not used ***
+f_SendSwitchState                   00008c69   defined in Debug\stm8_can.o section .text
+                                               *** not used ***
+f_SendToCan                         00008c64   defined in Debug\stm8_can.o section .text
                                                used in Debug\can_protocol.o
-f_SysClkInit                        00008129   defined in Debug\main.o section .text
-f_TIM1Init                          00008b7e   defined in Debug\stm8_timer.o section .text
+f_SysClkInit                        0000829d   defined in Debug\main.o section .text
+f_TIM1Init                          00008fd8   defined in Debug\stm8_timer.o section .text
                                                *** not used ***
-f_TIM1_CAP_COM_IRQHandler           00008a6c   defined in Debug\stm8_it.o section .text
+f_TIM1_CAP_COM_IRQHandler           00008ec6   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM1_UPD_OVF_TRG_BRK_IRQHandler   00008a5f   defined in Debug\stm8_it.o section .text
+f_TIM1_UPD_OVF_TRG_BRK_IRQHandler   00008eb9   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM2Init                          00008bf7   defined in Debug\stm8_timer.o section .text
+f_TIM2Init                          00009051   defined in Debug\stm8_timer.o section .text
                                                *** not used ***
-f_TIM2_CAP_COM_IRQHandler           00008a95   defined in Debug\stm8_it.o section .text
+f_TIM2_CAP_COM_IRQHandler           00008eef   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM2_UPD_OVF_BRK_IRQHandler       00008a78   defined in Debug\stm8_it.o section .text
+f_TIM2_UPD_OVF_BRK_IRQHandler       00008ed2   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM3Init                          00008c28   defined in Debug\stm8_timer.o section .text
+f_TIM3Init                          00009082   defined in Debug\stm8_timer.o section .text
                                                *** not used ***
-f_TIM3_CAP_COM_IRQHandler           00008b2a   defined in Debug\stm8_it.o section .text
+f_TIM3_CAP_COM_IRQHandler           00008f84   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM3_UPD_OVF_BRK_IRQHandler       00008b25   defined in Debug\stm8_it.o section .text
+f_TIM3_UPD_OVF_BRK_IRQHandler       00008f7f   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM4Init                          00008c45   defined in Debug\stm8_timer.o section .text
-f_TIM4_UPD_OVF_IRQHandler           00008b60   defined in Debug\stm8_it.o section .text
+f_TIM4Init                          0000909f   defined in Debug\stm8_timer.o section .text
+f_TIM4_UPD_OVF_IRQHandler           00008fba   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TLI_IRQHandler                    00008a1c   defined in Debug\stm8_it.o section .text
+f_TLI_IRQHandler                    00008e76   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TRAP_IRQHandler                   00008a1b   defined in Debug\stm8_it.o section .text
+f_TRAP_IRQHandler                   00008e75   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TimerInit                         00008c62   defined in Debug\stm8_timer.o section .text
+f_TimerInit                         000090bc   defined in Debug\stm8_timer.o section .text
                                                used in Debug\main.o
-f_USART_RX_IRQHandler               00008b2c   defined in Debug\stm8_it.o section .text
+f_USART_RX_IRQHandler               00008f86   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_USART_TX_IRQHandler               00008b2b   defined in Debug\stm8_it.o section .text
+f_USART_TX_IRQHandler               00008f85   defined in Debug\stm8_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_VariableInit                      00008177   defined in Debug\main.o section .text
-f__stext                            000080c5   defined in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8 section .text
-                                               *** not used ***
-f_exit                              0000810f   defined in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8 section .text
-f_main                              0000819c   defined in Debug\main.o section .text
-                                               used in C:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
+f_VariableInit                      000082eb   defined in Debug\main.o section .text
+f_exit                              00008119   defined in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8 section .text
+f_main                              00008352   defined in Debug\main.o section .text
+                                               used in D:\Program Files\COSMIC\CXSTM8\Lib\crtsi.sm8
