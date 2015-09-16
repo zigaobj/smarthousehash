@@ -1,0 +1,1 @@
+通过CAN总线来实现house内部多节点的互联通信，来实现smart house局域网络
